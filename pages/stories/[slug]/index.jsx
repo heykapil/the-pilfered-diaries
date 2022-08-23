@@ -1,7 +1,3 @@
-import React from "react";
-import fs from "fs";
-import grayMatter from "gray-matter";
-import { join } from "path";
 import {
   Box,
   Container,
@@ -10,71 +6,88 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaMatch } from "../../../hooks/isMobile";
 import dayjs from "dayjs";
+import Image from "next/image";
+import React from "react";
 import { Point } from "tabler-icons-react";
+import firestore from "../../../firebase/config";
+import { useMediaMatch } from "../../../hooks/isMobile";
+import axios from "axios";
+import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import Image from "next/image";
-import { NextLink } from "@mantine/next";
+import SectionBreak from "../../../components/textElements/SectionBreak";
+import ChapterCard from "../../../components/cards/ChapterCard";
+import { NextSeo } from "next-seo";
 
-function Story({ data, content, chapters }) {
+function Story({ story, chapters }) {
   const isMobile = useMediaMatch();
   const { breakpoints } = useMantineTheme();
 
   return (
-    <Container size="lg" mt="lg">
-      <Image
-        src={data.headerImg}
-        width={1280}
-        height={720}
-        alt={data.title + "Cover Img"}
-        style={{ marginBottom: "1.25rem", borderRadius: "0.75rem" }}
-      />
-      <Text
-        weight="bold"
-        color="orange"
-        sx={{
-          textAlign: "center",
-          fontSize: isMobile ? "1.75rem" : "2.5rem",
-          marginTop: "2rem",
-        }}>
-        {data.title}
-      </Text>
-      <Group spacing={4} position="center">
-        <Text size="sm" color="dimmed">
-          {data.author}
+    <>
+      <NextSeo title={`Story - ${story.title} | The Pilfered Diaries`} />
+      <Container fluid px={0}>
+        <Image
+          src={story.cover}
+          width={1920}
+          height={1080}
+          alt={story.slug + "-cover"}
+        />
+      </Container>
+      <Container size="md" pb="xl">
+        <Text
+          weight="bold"
+          color="indigo"
+          sx={{
+            textAlign: "center",
+            fontSize: isMobile ? "1.75rem" : "2.5rem",
+            marginTop: "1rem",
+          }}>
+          {story.title}
         </Text>
-        <Point size={8} />
-        <Text size="sm" color="dimmed">
-          {data.chapterCount} Chapters
+        <Group spacing={4} position="center">
+          <Text size="sm" color="dimmed">
+            {story.author}
+          </Text>
+          <Point size={8} />
+          <Text size="sm" color="dimmed">
+            {story.chapterCount} Chapters
+          </Text>
+          <Point size={8} />
+          <Text size="sm" color="dimmed">
+            {dayjs(story.published).format("MMM DD, YYYY")}
+          </Text>
+        </Group>
+        <SectionBreak />
+        <Box my={isMobile ? "1rem" : "2.25rem"} className="story-preface">
+          <MDXRemote {...story.preface} />
+        </Box>
+        <Text color="dimmed" size="xl" my="lg" weight={500}>
+          Chapters List
         </Text>
-        <Point size={8} />
-        <Text size="sm" color="dimmed">
-          {dayjs(data.date).format("MMM DD, YYYY")}
-        </Text>
-      </Group>
-      <Box my={isMobile ? "2.5rem" : "4rem"} className="story-preface">
-        <MDXRemote {...content} />
-      </Box>
-      <SimpleGrid
-        cols={2}
-        spacing="md"
-        breakpoints={[
-          { maxWidth: breakpoints.md, cols: 2 },
-          { maxWidth: breakpoints.sm, cols: 1 },
-        ]}>
-        {chapters.map((story, i) => (
-          <Box
-            key={i}
-            component={NextLink}
-            sx={{ border: "1px solid gray" }}
-            href={`${story.parent}/${story.slug}`}>
-            <pre>{JSON.stringify(story, null, 2)}</pre>
-          </Box>
-        ))}
-      </SimpleGrid>
-    </Container>
+        <SimpleGrid
+          cols={2}
+          spacing="md"
+          breakpoints={[
+            { maxWidth: breakpoints.md, cols: 2 },
+            { maxWidth: breakpoints.sm, cols: 1 },
+          ]}>
+          {chapters.map((chapter) => (
+            <ChapterCard
+              key={chapter.slug}
+              data={chapter}
+              storyName={story.slug}
+            />
+          ))}
+        </SimpleGrid>
+        <Box mt="lg">
+          <Text color="dimmed" size="xl" my="lg" weight={500}>
+            Comments & Responses
+          </Text>
+        </Box>
+      </Container>
+    </>
   );
 }
 
@@ -82,47 +95,45 @@ export default Story;
 
 export async function getStaticProps(ctx) {
   const { params } = ctx;
-  const storyFile = fs.readFileSync(
-    join(process.cwd(), `content/stories/${params.slug}.mdx`)
-  );
 
-  const chapterFiles = fs.readdirSync(
-    join(process.cwd(), `content/stories/${params.slug}`),
-    { withFileTypes: false }
-  );
-  const chapters = chapterFiles.map((file) => {
-    const fileContent = fs.readFileSync(
-      join(process.cwd(), `content/stories/${params.slug}/${file}`)
-    );
-    const { data: chapterMeta } = grayMatter(fileContent);
-    return chapterMeta;
-  });
+  const storeRes = await firestore.doc(`stories/${params.slug}`).get();
+  const chapterRes = await firestore
+    .collection(`stories/${params.slug}/chapters`)
+    .orderBy("order", "asc")
+    .get();
+  const prefaceRes = await axios.get(storeRes.data().content);
+  const { content: prefaceRaw } = grayMatter(prefaceRes.data);
 
-  const { content, data } = grayMatter(storyFile);
+  const story = {
+    ...storeRes.data(),
+    slug: storeRes.id,
+    published: storeRes.data().published.toDate().toISOString(),
+    preface: await serialize(prefaceRaw),
+  };
+  const chapters = chapterRes.docs.map((doc) => ({
+    ...doc.data(),
+    slug: doc.id,
+  }));
 
   return {
     props: {
-      data,
-      content: await serialize(content),
+      story,
       chapters,
     },
   };
 }
 
 export async function getStaticPaths() {
-  const files = fs
-    .readdirSync(join(process.cwd(), "content/stories"), {
-      withFileTypes: true,
-    })
-    .filter((file = "") => {
-      return file.name.includes(".mdx");
-    });
-
-  const paths = files.map((file) => ({
+  const response = await firestore
+    .collection("stories")
+    .orderBy("published", "desc")
+    .get();
+  const paths = response.docs.map((doc) => ({
     params: {
-      slug: file.name.split(".")[0],
+      slug: doc.id,
     },
   }));
+
   return {
     paths,
     fallback: false,

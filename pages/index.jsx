@@ -9,21 +9,19 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import fs from "fs";
-import grayMatter from "gray-matter";
-import { join } from "path";
-import { BrandInstagram } from "tabler-icons-react";
-import StoryCard from "../components/StoryCard";
+import { ArrowRight, BrandInstagram } from "tabler-icons-react";
+import StoryCard from "../components/cards/StoryCard";
+import firestore from "../firebase/config";
 import { useMediaMatch } from "../hooks/isMobile";
 
-export default function Home({ stories = [], totalStories }) {
+export default function Home({ stories }) {
   const { breakpoints } = useMantineTheme();
   const isMobile = useMediaMatch();
   const { classes } = useStyles();
 
   return (
     <>
-      <Container size="lg" p="sm" mb="xl">
+      <Container size="lg" p="sm" pb="xl">
         <Box
           className={classes.header}
           sx={{ height: isMobile ? "75vh" : "60vh" }}>
@@ -35,13 +33,23 @@ export default function Home({ stories = [], totalStories }) {
             <BrandInstagram /> /the.pilfered.diaries
           </Group>
         </Box>
-        <Text
-          sx={{ fontSize: "1.25rem" }}
-          color="dimmed"
-          mb={"1.5rem"}
-          mt="2rem">
-          Latest Stories
-        </Text>
+        <Group position="apart" align="center">
+          <Text
+            sx={{ fontSize: "1.25rem" }}
+            color="dimmed"
+            mb={"1.5rem"}
+            mt="2rem">
+            Latest Stories
+          </Text>
+          <Button
+            size="sm"
+            component={NextLink}
+            href="/stories"
+            variant="subtle"
+            rightIcon={<ArrowRight size={16} />}>
+            All Stories
+          </Button>
+        </Group>
         <SimpleGrid
           cols={2}
           spacing="md"
@@ -50,51 +58,29 @@ export default function Home({ stories = [], totalStories }) {
             { maxWidth: breakpoints.sm, cols: 1 },
           ]}>
           {stories.map((story) => (
-            <StoryCard key={story.frontMatter.slug} meta={story.frontMatter} />
+            <StoryCard key={story.slug} data={story} showChapterCount />
           ))}
         </SimpleGrid>
-        {totalStories > 5 && (
-          <Group position="center" mt="lg">
-            <Button
-              size="sm"
-              component={NextLink}
-              href="/stories"
-              fullWidth={isMobile}>
-              View All Stories
-            </Button>
-          </Group>
-        )}
       </Container>
     </>
   );
 }
 
 export async function getServerSideProps() {
-  const files = fs
-    .readdirSync(join(process.cwd(), "content/stories"), {
-      withFileTypes: true,
-    })
-    .filter((file = "") => {
-      return file.name.includes(".mdx");
-    });
-
-  const stories = files
-    .slice(0, 5)
-    .map((file) => {
-      const storyFile = fs.readFileSync(
-        join(process.cwd(), `content/stories/${file.name}`),
-        "utf-8"
-      );
-
-      const { data: frontMatter } = grayMatter(storyFile);
-      return { frontMatter };
-    })
-    .sort((s1, s2) => (s1.frontMatter.date > s2.frontMatter.date ? -1 : 1));
+  const response = await firestore
+    .collection("stories")
+    .orderBy("published", "desc")
+    .limit(5)
+    .get();
+  const stories = response.docs.map((doc) => ({
+    ...doc.data(),
+    slug: doc.id,
+    published: doc.data().published.toDate().toISOString(),
+  }));
 
   return {
     props: {
-      stories,
-      totalStories: files.length,
+      stories: stories,
     },
   };
 }
@@ -116,7 +102,7 @@ const useStyles = createStyles((theme) => ({
     lineHeight: "1",
     marginTop: "1.25rem",
     marginBottom: "0.5rem",
-    color: theme.colors.orange[6],
+    color: theme.colors.indigo[6],
     fontWeight: 500,
   },
 }));

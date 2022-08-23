@@ -1,4 +1,12 @@
-import { Burger, Button, Drawer, Group, Header, Text } from "@mantine/core";
+import {
+  Burger,
+  Button,
+  createStyles,
+  Drawer,
+  Group,
+  Header,
+  Text,
+} from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -8,6 +16,7 @@ import { useMediaMatch } from "../hooks/isMobile";
 function Nav() {
   const { pathname } = useRouter();
   const isMobile = useMediaMatch();
+  const { classes } = useStyles();
 
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
@@ -16,14 +25,7 @@ function Nav() {
 
   return (
     <>
-      <Header
-        height={60}
-        sx={(theme) => ({
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing.sm,
-          flexGrow: 0,
-        })}>
+      <Header height={60} className={classes.header}>
         <Text component={NextLink} href="/" weight="bold" size="xl">
           {APP_TITLE}
         </Text>
@@ -66,3 +68,15 @@ function Nav() {
 }
 
 export default Nav;
+
+const useStyles = createStyles((theme) => ({
+  header: {
+    display: "flex",
+    position: "sticky",
+    top: "0",
+    alignItems: "center",
+    padding: theme.spacing.sm,
+    flexGrow: 0,
+    boxShadow: theme.shadows.sm,
+  },
+}));

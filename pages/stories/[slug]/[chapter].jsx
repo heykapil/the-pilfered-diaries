@@ -1,45 +1,117 @@
-import { Container, createStyles } from "@mantine/core";
-import fs from "fs";
+import {
+  Blockquote,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Group,
+  SimpleGrid,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
+import axios from "axios";
 import grayMatter from "gray-matter";
-import Image from "next/image";
-import { join } from "path";
+import { MDXRemote } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+import { NextSeo } from "next-seo";
+import Link from "next/link";
 import React from "react";
+import readingTime from "reading-time";
+import { ChevronLeft, ChevronRight, Point } from "tabler-icons-react";
+import AuthorNoteSeparator from "../../../components/textElements/AuthorNoteSeparator";
+import SectionBreak from "../../../components/textElements/SectionBreak";
+import firestore from "../../../firebase/config";
 
-function Chapter({ chapterMeta, content }) {
-  console.log({ chapterMeta, content });
+function Chapter({ metadata, content }) {
+  const { primaryColor } = useMantineTheme();
+
   return (
-    <Container size="lg" mt="md">
-      {/* <Image
-        src={
-          "https://firebasestorage.googleapis.com/v0/b/the-pilfered-diaries.appspot.com/o/postHeaders%2Fthe-obsession.jpg?alt=media&token=607668da-e3f3-4435-99da-cd273f816e04"
-        }
-        height={720}
-        width={1280}
-        alt={`${chapterMeta.title} Header`}
-      /> */}
-    </Container>
+    <>
+      <NextSeo
+        title={`${metadata.title} | The Pilfered Diaries`}
+        description={metadata.excerpt}
+      />
+      <Container size="md" mt="md">
+        <Text
+          sx={{
+            fontSize: "2rem",
+            marginTop: "2rem",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+          color="indigo">
+          {metadata.title}
+        </Text>
+        <Group spacing={4} position="center">
+          <Text color="dimmed" size="sm">
+            by {metadata.author}
+          </Text>
+          <Point size={8} color={primaryColor} style={{ marginTop: "2px" }} />
+          <Text color="dimmed" size="sm">
+            {metadata.readTime.text} ({metadata.readTime.words} words)
+          </Text>
+        </Group>
+        <Divider variant="dashed" my="md" color={primaryColor} />
+        <Box className="story-content" mt="lg">
+          <MDXRemote
+            {...content}
+            components={{ SectionBreak, AuthorNoteSeparator, Blockquote }}
+          />
+        </Box>
+        <Divider variant="dashed" color="indigo" my="lg" />
+        <SimpleGrid cols={2} spacing="md">
+          <Group mb="lg" position="right">
+            {metadata.previousChapter && (
+              <Link
+                passHref
+                scroll
+                href={`/stories/${metadata.parent}/${metadata.previousChapter}`}>
+                <Button
+                  component="a"
+                  leftIcon={<ChevronLeft size={18} />}
+                  size="sm"
+                  variant="subtle">
+                  Previous Chapter
+                </Button>
+              </Link>
+            )}
+          </Group>
+          <Group mb="lg" position="left">
+            {metadata.nextChapter && (
+              <Link
+                passHref
+                scroll
+                href={`/stories/${metadata.parent}/${metadata.nextChapter}`}>
+                <Button
+                  component="a"
+                  rightIcon={<ChevronRight size={18} />}
+                  size="sm"
+                  variant="subtle">
+                  Next Chapter
+                </Button>
+              </Link>
+            )}
+          </Group>
+        </SimpleGrid>
+      </Container>
+    </>
   );
 }
 
 export default Chapter;
 
 export async function getStaticPaths() {
-  const paths = fs
-    .readdirSync(join(process.cwd(), "content/stories"), {
-      withFileTypes: true,
-    })
-    .filter((item) => !item.name.includes(".mdx"))
-    .flatMap((folder) => {
-      const files = fs.readdirSync(
-        join(process.cwd(), `content/stories/${folder.name}`)
-      );
-      return files.map((file) => ({
+  const paths = (await firestore.collection("stories").get()).docs.flatMap(
+    (doc) => {
+      const chapterPaths = doc.data().rawChaptersList.map((chapter) => ({
         params: {
-          chapter: file.split(".")[0],
-          slug: folder.name,
+          slug: doc.id,
+          chapter,
         },
       }));
-    });
+      return chapterPaths;
+    }
+  );
 
   return {
     paths,
@@ -49,14 +121,21 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(ctx) {
   const { params } = ctx;
-  const storyFile = fs.readFileSync(
-    join(process.cwd(), `content/stories/${params.slug}/${params.chapter}.mdx`)
-  );
-  const { data: chapterMeta, content } = grayMatter(storyFile);
+  const filePath = (
+    await firestore
+      .doc(`stories/${params.slug}/chapters/${params.chapter}`)
+      .get()
+  ).data().content;
+
+  const storyFile = await axios.get(filePath);
+  const { data: metadata, content: source } = grayMatter(storyFile.data);
+  const time = readingTime(source);
+  metadata["readTime"] = time;
+  const content = await serialize(source);
 
   return {
     props: {
-      chapterMeta,
+      metadata,
       content,
     },
   };

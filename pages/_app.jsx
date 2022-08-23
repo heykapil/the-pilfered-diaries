@@ -1,7 +1,7 @@
+import { Box, MantineProvider } from "@mantine/core";
 import Head from "next/head";
-import { Box, MantineProvider, ScrollArea } from "@mantine/core";
-import { APP_TITLE } from "../constants/app.constants";
 import Nav from "../components/Nav";
+import { APP_TITLE } from "../constants/app.constants";
 import theme from "../styles/mantine";
 
 export default function App({ Component, pageProps }) {
@@ -24,12 +24,7 @@ export default function App({ Component, pageProps }) {
                 : theme.colors.gray[9],
           })}>
           <Nav />
-          <Box
-            sx={{ flexGrow: 1 }}
-            component={ScrollArea}
-            style={{ height: "calc(100vh - 60px)" }}>
-            <Component {...pageProps} />
-          </Box>
+          <Component {...pageProps} />
         </Box>
       </MantineProvider>
     </>

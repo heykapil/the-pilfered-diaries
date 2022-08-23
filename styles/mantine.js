@@ -2,7 +2,7 @@ const overrides = {
   emotionOptions: { key: "tpd" },
   theme: {
     colorScheme: "light",
-    primaryColor: "orange",
+    primaryColor: "indigo",
     transitionTimingFunction: "ease-in-out",
   },
   defaultProps: {
