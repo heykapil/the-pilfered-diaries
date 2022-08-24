@@ -8,7 +8,7 @@ import { Point } from "tabler-icons-react";
 function StoryCard({ data }) {
   const { classes } = useStyles();
   return (
-    <Box>
+    <Box className={classes.wrapper}>
       <Image
         className={classes.coverImg}
         src={data.cover}
@@ -42,6 +42,7 @@ function StoryCard({ data }) {
           variant="link"
           ml="auto"
           mr="xs"
+          mt="md"
           component={NextLink}
           href={`/stories/${data.slug}`}
           weight="bold"
@@ -56,6 +57,16 @@ function StoryCard({ data }) {
 export default StoryCard;
 
 const useStyles = createStyles((theme) => ({
+  wrapper: {
+    border: `1px solid ${theme.colors.gray[4]}`,
+    transition: "all 0.2s ease-in-out",
+    backgroundColor: "#fff",
+    borderRadius: theme.radius.md,
+    "&:hover": {
+      boxShadow: theme.shadows.md,
+      border: `1px solid ${theme.colors.indigo[4]}`,
+    },
+  },
   coverImg: {
     borderTopLeftRadius: theme.radius.md,
     borderTopRightRadius: theme.radius.md,
@@ -65,17 +76,8 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     userSelect: "none",
-    transition: "all 0.2s ease-in-out",
     color: theme.colors.gray[8],
-    borderColor: theme.colors.gray[4],
-    borderStyle: "solid",
-    borderWidth: "1px",
-    borderTopWidth: "0px",
-    marginTop: `-4px`,
     borderBottomLeftRadius: theme.radius.md,
     borderBottomRightRadius: theme.radius.md,
-    "&:hover": {
-      boxShadow: theme.shadows.md,
-    },
   },
 }));

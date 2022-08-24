@@ -22,7 +22,7 @@ import AuthorNoteSeparator from "../../../components/textElements/AuthorNoteSepa
 import SectionBreak from "../../../components/textElements/SectionBreak";
 import firestore from "../../../firebase/config";
 
-function Chapter({ metadata, content }) {
+export default function SingleChapter({ metadata, content }) {
   const { primaryColor } = useMantineTheme();
 
   return (
@@ -31,7 +31,7 @@ function Chapter({ metadata, content }) {
         title={`${metadata.title} | The Pilfered Diaries`}
         description={metadata.excerpt}
       />
-      <Container size="md" mt="md">
+      <Container size="md" pt="4rem">
         <Text
           sx={{
             fontSize: "2rem",
@@ -98,12 +98,10 @@ function Chapter({ metadata, content }) {
   );
 }
 
-export default Chapter;
-
 export async function getStaticPaths() {
   const paths = (await firestore.collection("stories").get()).docs.flatMap(
     (doc) => {
-      const chapterPaths = doc.data().rawChaptersList.map((chapter) => ({
+      const chapterPaths = doc.data().chapterSlugs.map((chapter) => ({
         params: {
           slug: doc.id,
           chapter,

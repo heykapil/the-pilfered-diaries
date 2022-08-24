@@ -3,10 +3,10 @@ import React from "react";
 import StoryCard from "../../components/cards/StoryCard";
 import firestore from "../../firebase/config";
 
-function Stories({ stories = [] }) {
+export default function StoriesList({ stories = [] }) {
   const { breakpoints } = useMantineTheme();
   return (
-    <Container size="lg" mt="1.5rem" sx={{ minHeight: "100vh" }}>
+    <Container size="lg" pt="4.5rem" sx={{ minHeight: "100vh" }}>
       <Text weight={500} size="xl" align="center">
         Latest Stories on
       </Text>
@@ -28,8 +28,6 @@ function Stories({ stories = [] }) {
     </Container>
   );
 }
-
-export default Stories;
 
 export async function getServerSideProps() {
   const response = await firestore

@@ -20,7 +20,7 @@ import SectionBreak from "../../../components/textElements/SectionBreak";
 import ChapterCard from "../../../components/cards/ChapterCard";
 import { NextSeo } from "next-seo";
 
-function Story({ story, chapters }) {
+export default function StoryDetails({ story, chapters }) {
   const isMobile = useMediaMatch();
   const { breakpoints } = useMantineTheme();
 
@@ -91,7 +91,22 @@ function Story({ story, chapters }) {
   );
 }
 
-export default Story;
+export async function getStaticPaths() {
+  const response = await firestore
+    .collection("stories")
+    .orderBy("published", "desc")
+    .get();
+  const paths = response.docs.map((doc) => ({
+    params: {
+      slug: doc.id,
+    },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
 
 export async function getStaticProps(ctx) {
   const { params } = ctx;
@@ -120,22 +135,5 @@ export async function getStaticProps(ctx) {
       story,
       chapters,
     },
-  };
-}
-
-export async function getStaticPaths() {
-  const response = await firestore
-    .collection("stories")
-    .orderBy("published", "desc")
-    .get();
-  const paths = response.docs.map((doc) => ({
-    params: {
-      slug: doc.id,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: false,
   };
 }

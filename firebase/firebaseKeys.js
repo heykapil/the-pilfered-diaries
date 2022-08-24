@@ -15,3 +15,13 @@ export const getServiceAccount = () => {
     client_x509_cert_url: process.env.FB_SERVICE_ACCOUNT_CLIENT_X509_CERT_URL,
   };
 };
+
+// Web app's Client Firebase SDK configuration.
+export const firebaseClientConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+};

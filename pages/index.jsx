@@ -3,64 +3,98 @@ import {
   Button,
   Container,
   createStyles,
+  Grid,
   Group,
-  SimpleGrid,
   Text,
-  useMantineTheme,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { ArrowRight, BrandInstagram } from "tabler-icons-react";
+import PostCard from "../components/cards/PostCard";
 import StoryCard from "../components/cards/StoryCard";
+import { APP_TITLE } from "../constants/app.constants";
 import firestore from "../firebase/config";
 import { useMediaMatch } from "../hooks/isMobile";
+import header from "../resources/images/header-bg.jpg";
 
 export default function Home({ stories }) {
-  const { breakpoints } = useMantineTheme();
   const isMobile = useMediaMatch();
   const { classes } = useStyles();
 
   return (
     <>
-      <Container size="lg" p="sm" pb="xl">
-        <Box
+      <Container fluid px={0} className={classes.headerBg}>
+        <Container
+          size="lg"
           className={classes.header}
-          sx={{ height: isMobile ? "75vh" : "60vh" }}>
+          sx={{ height: isMobile ? "90vh" : "82vh" }}>
           <Text className={classes.tagline}>
-            When lost words are found by a thinker, stories happen. . . .
+            When a thinker finds lost words,
+            <br />
+            Stories Happen. . . .
           </Text>
-          <Text className={classes.siteName}>The Pilfered Diaries</Text>
-          <Group spacing="sm">
-            <BrandInstagram /> /the.pilfered.diaries
+          <Text className={classes.siteName}>{APP_TITLE}</Text>
+          <Group spacing={4} mt="sm">
+            <BrandInstagram color="gray" />{" "}
+            <Text component="span" color="dimmed">
+              /the.pilfered.diaries
+            </Text>
           </Group>
-        </Box>
-        <Group position="apart" align="center">
-          <Text
-            sx={{ fontSize: "1.25rem" }}
-            color="dimmed"
-            mb={"1.5rem"}
-            mt="2rem">
-            Latest Stories
-          </Text>
-          <Button
-            size="sm"
-            component={NextLink}
-            href="/stories"
-            variant="subtle"
-            rightIcon={<ArrowRight size={16} />}>
-            All Stories
-          </Button>
-        </Group>
-        <SimpleGrid
-          cols={2}
-          spacing="md"
-          breakpoints={[
-            { maxWidth: breakpoints.md, cols: 2 },
-            { maxWidth: breakpoints.sm, cols: 1 },
-          ]}>
-          {stories.map((story) => (
-            <StoryCard key={story.slug} data={story} showChapterCount />
-          ))}
-        </SimpleGrid>
+        </Container>
+      </Container>
+      <Container size="lg" p="sm" pb="xl">
+        <Grid columns={24}>
+          <Grid.Col sm={24} md={14}>
+            <Group position="apart" align="center" my="md">
+              <Text sx={{ fontSize: "1.25rem" }} color="dimmed">
+                Stories
+              </Text>
+              <Button
+                size="sm"
+                component={NextLink}
+                href="/stories"
+                variant="outline"
+                rightIcon={<ArrowRight size={16} />}>
+                All Stories
+              </Button>
+            </Group>
+            {stories.map((story) => (
+              <StoryCard key={story.slug} data={story} showChapterCount />
+            ))}
+          </Grid.Col>
+          <Grid.Col sm={24} md={10}>
+            <Group position="apart" align="center" my="md">
+              <Text sx={{ fontSize: "1.25rem" }} color="dimmed">
+                Posts
+              </Text>
+              <Button
+                size="sm"
+                component={NextLink}
+                href="/posts"
+                variant="subtle"
+                rightIcon={<ArrowRight size={16} />}>
+                All Posts
+              </Button>
+            </Group>
+            <PostCard />
+            <PostCard />
+            <PostCard />
+            <PostCard />
+            <Text mt="md" align="center">
+              Want to get featured on {APP_TITLE}?
+            </Text>
+            <Button
+              component={NextLink}
+              rightIcon={<ArrowRight size={18} />}
+              fullWidth
+              weight={500}
+              variant="subtle"
+              mt="sm"
+              color="indigo"
+              href="/submissions">
+              Submit your content
+            </Button>
+          </Grid.Col>
+        </Grid>
       </Container>
     </>
   );
@@ -86,6 +120,12 @@ export async function getServerSideProps() {
 }
 
 const useStyles = createStyles((theme) => ({
+  headerBg: {
+    backgroundImage: `url(${header.src})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+  },
   header: {
     display: "flex",
     flexDirection: "column",
@@ -94,15 +134,15 @@ const useStyles = createStyles((theme) => ({
   tagline: {
     fontSize: "3.5rem",
     lineHeight: "1",
-    marginTop: "4rem",
     fontWeight: 700,
+    color: theme.colors.gray[1],
   },
   siteName: {
     fontSize: "1.5rem",
     lineHeight: "1",
     marginTop: "1.25rem",
     marginBottom: "0.5rem",
-    color: theme.colors.indigo[6],
+    color: theme.colors.indigo[1],
     fontWeight: 500,
   },
 }));

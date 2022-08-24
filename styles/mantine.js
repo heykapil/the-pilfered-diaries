@@ -1,38 +1,38 @@
+/** @type {import('@mantine/core').MantineTheme} */
 const overrides = {
-  emotionOptions: { key: "tpd" },
-  theme: {
-    colorScheme: "light",
-    primaryColor: "indigo",
-    transitionTimingFunction: "ease-in-out",
-  },
-  defaultProps: {
-    Modal: {
-      overlayBlur: 5,
-      overlayColor: "#111",
-      overlayOpacity: 0.5,
-      overflow: "inside",
-    },
+  colorScheme: "light",
+  primaryColor: "indigo",
+  white: "#ffffff",
+  transitionTimingFunction: "ease-in-out",
+  components: {
     Drawer: {
-      overlayBlur: 5,
-      overlayColor: "#111",
-      overlayOpacity: 0.5,
-      overflow: "inside",
+      defaultProps: {
+        overlayBlur: 10,
+        overlayColor: "#ffffff77",
+      },
     },
-    ScrollArea: {
-      type: "scroll",
-      scrollbarSize: 4,
-      scrollHideDelay: 1500,
+    Modal: {
+      defaultProps: {
+        overlayBlur: 10,
+        overlayColor: "#ffffff77",
+      },
+    },
+    ScrollAres: {
+      defaultProps: {
+        scrollbarSize: 6,
+      },
     },
     TextInput: {
-      mb: "sm",
+      defaultProps: {
+        mb: "sm",
+        inputWrapperOrder: ["label", "input", "error", "description"],
+      },
     },
-    PasswordInput: {
-      mb: "sm",
-      toggleTabIndex: 0,
-    },
-    Stepper: {
-      breakpoint: "md",
-      iconSize: 36,
+    Textarea: {
+      defaultProps: {
+        mb: "sm",
+        inputWrapperOrder: ["label", "input", "error", "description"],
+      },
     },
   },
 };

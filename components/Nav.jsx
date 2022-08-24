@@ -26,19 +26,37 @@ function Nav() {
   return (
     <>
       <Header height={60} className={classes.header}>
-        <Text component={NextLink} href="/" weight="bold" size="xl">
+        <Text
+          component={NextLink}
+          href="/"
+          weight="bold"
+          size="xl"
+          color="gray">
           {APP_TITLE}
         </Text>
         {isMobile ? (
-          <Burger opened={open} onClick={toggleDrawer} ml="auto" size="sm" />
+          <Burger
+            opened={open}
+            onClick={toggleDrawer}
+            ml="auto"
+            size="sm"
+            color="gray"
+          />
         ) : (
           <Group ml="auto">
             <Button
               component={NextLink}
               href="/stories"
-              variant={pathname === "/stories" ? "gradient" : "subtle"}
-              gradient={{ from: "orange", to: "red" }}>
+              color="indigo"
+              variant={pathname === "/stories" ? "filled" : "subtle"}>
               Stories & Narratives
+            </Button>
+            <Button
+              component={NextLink}
+              href="/submissions"
+              color="indigo"
+              variant={pathname === "/submissions" ? "filled" : "subtle"}>
+              Submit your post
             </Button>
           </Group>
         )}
@@ -61,6 +79,15 @@ function Nav() {
             gradient={{ from: "orange", to: "red" }}>
             Stories & Narratives
           </Button>
+          <Button
+            component={NextLink}
+            href="/submissions"
+            fullWidth
+            variant={pathname === "/submissions" ? "gradient" : "subtle"}
+            onClick={toggleDrawer}
+            gradient={{ from: "orange", to: "red" }}>
+            Submit your post
+          </Button>
         </Group>
       </Drawer>
     </>
@@ -72,11 +99,15 @@ export default Nav;
 const useStyles = createStyles((theme) => ({
   header: {
     display: "flex",
-    position: "sticky",
+    position: "fixed",
     top: "0",
     alignItems: "center",
     padding: theme.spacing.sm,
     flexGrow: 0,
     boxShadow: theme.shadows.sm,
+    // backgroundColor: "transparent",
+    backgroundColor: `${theme.white}0F`,
+    borderColor: "transparent",
+    backdropFilter: "blur(10px)",
   },
 }));

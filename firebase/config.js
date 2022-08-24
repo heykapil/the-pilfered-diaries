@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { getServiceAccount } from "./serviceAccount";
+import { getServiceAccount } from "./firebaseKeys";
 
 if (!admin.apps.length) {
   try {
