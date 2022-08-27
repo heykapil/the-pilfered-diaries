@@ -6,12 +6,11 @@ import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
 
-function StoryCard({ data }) {
+export default function PostCardLg({ data }) {
   const { classes } = useStyles();
   return (
     <Box className={classes.wrapper}>
       <Image
-        className={classes.coverImg}
         src={data.cover}
         width={1280}
         height={720}
@@ -25,8 +24,6 @@ function StoryCard({ data }) {
           {dayjs(data.published).format(DATE_FORMATS.date)}
           <Point size={8} style={{ margin: "0px 4px" }} />
           {data.author}
-          <Point size={8} style={{ margin: "0px 4px" }} />
-          {data.chapterCount} Chapters
         </Text>
         <Group spacing={4} my="sm">
           {data.tags.map((tag) => (
@@ -45,7 +42,7 @@ function StoryCard({ data }) {
           mr="xs"
           mt="md"
           component={NextLink}
-          href={`/stories/${data.slug}`}
+          href={`/posts/${data.slug}`}
           weight="bold"
           align="end">
           Read Now...
@@ -54,8 +51,6 @@ function StoryCard({ data }) {
     </Box>
   );
 }
-
-export default StoryCard;
 
 const useStyles = createStyles((theme) => ({
   wrapper: {

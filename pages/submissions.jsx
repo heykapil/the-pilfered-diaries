@@ -45,7 +45,7 @@ function Submissions() {
     reset,
     register,
     watch,
-    formState: { errors, dirtyFields, touchedFields },
+    formState: { errors, touchedFields },
   } = useForm({
     mode: "onBlur",
     shouldFocusError: true,
@@ -80,7 +80,7 @@ function Submissions() {
   const submitIdea = async (values) => {
     setSubmitting(true);
     try {
-      const collectionRef = collection(firestoreClient, "submissionRequests");
+      const collectionRef = collection(firestoreClient, "submissions");
       await addDoc(collectionRef, values);
       showNotification({
         title: "Submission successful",
@@ -98,7 +98,7 @@ function Submissions() {
 
   return (
     <>
-      <Container fluid pt="4.5rem" pb="2rem" px={0} sx={{ minHeight: "100vh" }}>
+      <Container fluid pt="70px" pb="2rem" px={0} sx={{ minHeight: "100vh" }}>
         <Container size="md">
           <Grid
             cols={2}
