@@ -1,4 +1,12 @@
-import { ActionIcon, Box, Center, Container, Group, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Center,
+  Container,
+  createStyles,
+  Group,
+  Text,
+} from "@mantine/core";
 import axios from "axios";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
@@ -11,17 +19,12 @@ import RenderMarkdown from "../../components/markdown/RenderMarkdown";
 import { REVALIDATION_INTERVAL } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 import { useMediaMatch } from "../../hooks/isMobile";
+import useHeaderPageStyles from "../../styles/headerPage.styles";
+import { scrollToContent } from "../../utils/utils";
 
 export default function SinglePost({ meta, content, comments }) {
   const isMobile = useMediaMatch();
-
-  const scrollToContent = () => {
-    const { offsetTop } = document.getElementById("contentBlock");
-    document.scrollingElement.scrollTo({
-      top: offsetTop - 50,
-      behavior: "smooth",
-    });
-  };
+  const { classes } = useHeaderPageStyles({ isMobile });
 
   return (
     <>
@@ -30,30 +33,12 @@ export default function SinglePost({ meta, content, comments }) {
         description={meta.excerpt}
       />
       <Center
-        px={0}
-        pb="2rem"
+        className={classes.header}
         sx={{
-          height: "100vh",
           backgroundImage: `url(${meta.cover})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          flexDirection: "column",
         }}>
-        <Box
-          p="lg"
-          sx={(theme) => ({
-            backgroundColor: `${theme.black}AA`,
-            borderRadius: theme.radius.md,
-            backdropFilter: "blur(8px)",
-          })}>
-          <Text
-            sx={(theme) => ({
-              fontSize: isMobile ? "2rem" : "4rem",
-              textAlign: "center",
-              color: theme.white,
-            })}>
-            {meta.title}
-          </Text>
+        <Box className={classes.headerContent}>
+          <Text className={classes.title}>{meta.title}</Text>
           <Group spacing={4} position="center">
             <Text size="sm">by {meta.author}</Text>
             <Point size={12} style={{ marginTop: "2px" }} />

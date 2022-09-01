@@ -1,6 +1,6 @@
 import { Container, SimpleGrid, Text } from "@mantine/core";
 import React from "react";
-import PostCardLg from "../../components/cards/PostCardLg";
+import LargeCard from "../../components/cards/LargeCard";
 import { APP_TITLE } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 
@@ -23,7 +23,7 @@ export default function PostsList({ posts }) {
             { maxWidth: "sm", cols: 1 },
           ]}>
           {posts.map((post) => (
-            <PostCardLg data={post} key={post.slug} />
+            <LargeCard data={post} variant="posts" key={post.slug} />
           ))}
         </SimpleGrid>
       </Container>

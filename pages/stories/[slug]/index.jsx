@@ -3,11 +3,12 @@ import {
   Box,
   Center,
   Container,
+  createStyles,
   Group,
   SimpleGrid,
   Text,
-  useMantineTheme,
 } from "@mantine/core";
+import { NextLink } from "@mantine/next";
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
@@ -16,7 +17,6 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import React from "react";
 import { ArrowDown, Point } from "tabler-icons-react";
-import ChapterCard from "../../../components/cards/ChapterCard";
 import Comments from "../../../components/comments/Comments";
 import LoadingContent from "../../../components/LoadingContent";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
@@ -26,19 +26,16 @@ import {
 } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
 import { useMediaMatch } from "../../../hooks/isMobile";
+import useHeaderPageStyles from "../../../styles/headerPage.styles";
+import { scrollToContent } from "../../../utils/utils";
 
 export default function StoryDetails({ story, chapters, comments = [] }) {
   const isMobile = useMediaMatch();
-  const { breakpoints } = useMantineTheme();
   const router = useRouter();
-
-  const scrollToContent = () => {
-    const { offsetTop } = document.getElementById("contentBlock");
-    document.scrollingElement.scrollTo({
-      top: offsetTop - 50,
-      behavior: "smooth",
-    });
-  };
+  const { classes } = useHeaderPageStyles({ isMobile });
+  const {
+    classes: { card: cardStyles },
+  } = useCardStyles();
 
   if (router.isFallback) {
     return <LoadingContent />;
@@ -48,30 +45,12 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
     <>
       <NextSeo title={`Story - ${story.title} | The Pilfered Diaries`} />
       <Center
-        px={0}
+        className={classes.header}
         sx={{
-          height: "100vh",
           backgroundImage: `url(${story.cover})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          flexDirection: "column",
         }}>
-        <Box
-          p="lg"
-          sx={(theme) => ({
-            backgroundColor: `${theme.black}AA`,
-            borderRadius: theme.radius.md,
-            backdropFilter: "blur(8px)",
-          })}>
-          <Text
-            weight="bold"
-            sx={(theme) => ({
-              fontSize: isMobile ? "2rem" : "4rem",
-              textAlign: "center",
-              color: theme.white,
-            })}>
-            {story.title}
-          </Text>
+        <Box className={classes.headerContent}>
+          <Text className={classes.title}>{story.title}</Text>
           <Group spacing={4} position="center">
             <Text size="sm">{story.author}</Text>
             <Point size={8} />
@@ -108,15 +87,24 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
           cols={2}
           spacing="md"
           breakpoints={[
-            { maxWidth: breakpoints.md, cols: 2 },
-            { maxWidth: breakpoints.sm, cols: 1 },
+            { maxWidth: "md", cols: 2 },
+            { maxWidth: "sm", cols: 1 },
           ]}>
           {chapters.map((chapter) => (
-            <ChapterCard
-              key={chapter.slug}
-              data={chapter}
-              storyName={story.slug}
-            />
+            <Box className={cardStyles} key={chapter.slug}>
+              <Text
+                size="lg"
+                weight="bold"
+                variant="link"
+                component={NextLink}
+                sx={(theme) => ({ color: theme.colors.gray[4] })}
+                href={`/stories/${story.slug}/${chapter.slug}`}>
+                {chapter.title}
+              </Text>
+              <Text size="sm" color="dimmed" mt="sm">
+                {chapter.excerpt}
+              </Text>
+            </Box>
           ))}
         </SimpleGrid>
         <Comments
@@ -129,6 +117,19 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
     </>
   );
 }
+
+const useCardStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor: theme.colors.gray[9],
+    padding: theme.spacing.sm,
+    borderRadius: theme.radius.md,
+    transition: "all 0.2s",
+    "&:hover, &:focus-within": {
+      backgroundColor: theme.colors.gray[8],
+      boxShadow: theme.shadows.md,
+    },
+  },
+}));
 
 export async function getStaticPaths() {
   const response = await firestore

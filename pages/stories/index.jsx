@@ -1,6 +1,6 @@
 import { Container, SimpleGrid, Text } from "@mantine/core";
 import React from "react";
-import StoryCard from "../../components/cards/StoryCard";
+import LargeCard from "../../components/cards/LargeCard";
 import { APP_TITLE } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 
@@ -22,7 +22,7 @@ export default function StoriesList({ stories = [] }) {
           { maxWidth: "sm", cols: 1 },
         ]}>
         {stories.map((story) => (
-          <StoryCard key={story.slug} data={story} />
+          <LargeCard key={story.slug} data={story} />
         ))}
       </SimpleGrid>
     </Container>

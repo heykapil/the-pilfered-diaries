@@ -217,7 +217,7 @@ export default function Comments({ comments = [], title, type, target }) {
 
 const useStyles = createStyles((theme) => ({
   commentCard: {
-    backgroundColor: theme.colors.gray[8],
+    backgroundColor: theme.colors.gray[9],
     borderRadius: theme.radius.md,
     boxShadow: theme.shadows.sm,
   },

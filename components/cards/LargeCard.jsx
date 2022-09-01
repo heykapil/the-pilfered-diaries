@@ -1,17 +1,17 @@
-import { Badge, Box, createStyles, Group, Text } from "@mantine/core";
+import { Badge, Box, Group, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import dayjs from "dayjs";
 import Image from "next/image";
 import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
+import useLargeCardStyles from "../../styles/largeCard.styles";
 
-export default function StoryCard({ data }) {
-  const { classes } = useStyles();
+export default function LargeCard({ variant = "stories", data }) {
+  const { classes } = useLargeCardStyles();
   return (
     <Box className={classes.wrapper}>
       <Image
-        className={classes.coverImg}
         src={data.cover}
         width={1280}
         height={720}
@@ -25,8 +25,10 @@ export default function StoryCard({ data }) {
           {dayjs(data.published).format(DATE_FORMATS.date)}
           <Point size={8} style={{ margin: "0px 4px" }} />
           {data.author}
-          <Point size={8} style={{ margin: "0px 4px" }} />
-          {data.chapterCount} Chapters
+          {variant === "stories" && (
+            <Point size={8} style={{ margin: "0px 4px" }} />
+          )}
+          {variant === "stories" ? `${data.chapterCount} Chapters` : ""}
         </Text>
         <Group spacing={4} my="sm">
           {data.tags.map((tag) => (
@@ -45,7 +47,7 @@ export default function StoryCard({ data }) {
           mr="xs"
           mt="md"
           component={NextLink}
-          href={`/stories/${data.slug}`}
+          href={`/${variant}/${data.slug}`}
           weight="bold"
           align="end">
           Read Now...
@@ -54,14 +56,3 @@ export default function StoryCard({ data }) {
     </Box>
   );
 }
-
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    backgroundColor: theme.colors.gray[8],
-  },
-  detailsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    userSelect: "none",
-  },
-}));

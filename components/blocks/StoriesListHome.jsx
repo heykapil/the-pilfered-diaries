@@ -12,7 +12,7 @@ import Image from "next/image";
 import React from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "tabler-icons-react";
 import artwork from "../../resources/images/submissions-artwork.svg";
-import StoryCard from "../cards/StoryCard";
+import LargeCard from "../cards/LargeCard";
 
 export default function StoriesListHome({ stories }) {
   const { classes } = useStyles();
@@ -76,7 +76,7 @@ export default function StoriesListHome({ stories }) {
         }}>
         {stories.map((story) => (
           <Carousel.Slide key={story.slug}>
-            <StoryCard data={story} showChapterCount />
+            <LargeCard data={story} />
           </Carousel.Slide>
         ))}
         <Carousel.Slide>

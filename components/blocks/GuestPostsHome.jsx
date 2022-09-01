@@ -1,12 +1,12 @@
 import { Box, Button, Group, SimpleGrid, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+import Image from "next/image";
 import React from "react";
 import { ArrowRight } from "tabler-icons-react";
-import PostCardLg from "../cards/PostCardLg";
-import noPostsArt from "../../resources/images/NoGuestPosts.svg";
-import Image from "next/image";
-import { useMediaMatch } from "../../hooks/isMobile";
 import { APP_TITLE } from "../../constants/app.constants";
+import { useMediaMatch } from "../../hooks/isMobile";
+import noPostsArt from "../../resources/images/NoGuestPosts.svg";
+import LargeCard from "../cards/LargeCard";
 
 export default function GuestPostsHome({ posts = [] }) {
   const isMobile = useMediaMatch();
@@ -41,7 +41,7 @@ export default function GuestPostsHome({ posts = [] }) {
             { maxWidth: "sm", cols: 1 },
           ]}>
           {posts.map((post) => (
-            <PostCardLg key={post.slug} data={post} />
+            <LargeCard key={post.slug} variant="posts" data={post} />
           ))}
         </SimpleGrid>
       ) : (
