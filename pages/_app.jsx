@@ -14,18 +14,11 @@ export default function App({ Component, pageProps }) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
         <NotificationsProvider position="top-center" autoClose={3000}>
-          <Box
-            sx={(theme) => ({
-              minHeight: "100vh",
-              backgroundColor:
-                theme.colorScheme === "light"
-                  ? theme.colors.gray[1]
-                  : theme.colors.gray[9],
-            })}>
+          <Box sx={{ minHeight: "100vh" }}>
             <Nav />
             <Component {...pageProps} />
           </Box>

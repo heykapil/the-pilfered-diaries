@@ -1,16 +1,15 @@
-import { Box, Button, createStyles, Group, Text } from "@mantine/core";
+import { Box, createStyles, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import React from "react";
-import { ChevronRight } from "tabler-icons-react";
 
-function ChapterCard({ data, storyName }) {
+export default function ChapterCard({ data, storyName }) {
   const { classes } = useStyles();
   return (
     <Box className={classes.card}>
       <Text
         size="lg"
         weight="bold"
-        color="indigo"
+        sx={(theme) => ({ color: theme.colors.gray[4] })}
         variant="link"
         component={NextLink}
         href={`/stories/${storyName}/${data.slug}`}>
@@ -23,20 +22,18 @@ function ChapterCard({ data, storyName }) {
   );
 }
 
-export default ChapterCard;
-
 const useStyles = createStyles((theme) => ({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.gray[8],
     padding: theme.spacing.sm,
     borderRadius: theme.radius.md,
-    boxShadow: theme.shadows.md,
     borderColor: "transparent",
     borderWidth: "1px",
     borderStyle: "solid",
     transition: "all 0.2s",
     "&:hover": {
-      borderColor: theme.colors.indigo[5],
+      borderColor: theme.colors.gray[6],
+      boxShadow: theme.shadows.md,
     },
   },
 }));

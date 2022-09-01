@@ -54,20 +54,12 @@ export default function PostCardLg({ data }) {
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    border: "1px solid transparent",
-    transition: "all 0.2s ease-in-out",
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.gray[8],
     marginLeft: "2px",
-    "&:hover": {
-      boxShadow: theme.shadows.md,
-      border: `1px solid ${theme.colors.indigo[4]}`,
-    },
   },
   detailsContainer: {
-    backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
     userSelect: "none",
-    color: theme.colors.gray[8],
   },
 }));

@@ -1,5 +1,5 @@
 import { Container, createStyles, Grid, Group, Text } from "@mantine/core";
-import Link from "next/link";
+import { NextLink } from "@mantine/next";
 import { BrandInstagram } from "tabler-icons-react";
 import GuestPostsHome from "../components/blocks/GuestPostsHome";
 import PostsListHome from "../components/blocks/PostsListHome";
@@ -25,20 +25,23 @@ export default function Home({ stories, posts }) {
           size="lg"
           px="xs"
           className={classes.header}
-          sx={{ height: isMobile ? "90vh" : "82vh" }}>
+          sx={{ height: "100vh" }}>
           <Text className={classes.tagline}>{TAGLINE}</Text>
           <Text className={classes.siteName}>{APP_TITLE}</Text>
-          <Link href={INSTA_LINK} passHref target="_blank">
-            <Group
-              mt="sm"
-              spacing={4}
-              sx={{ cursor: "pointer", width: "fit-content" }}>
-              <BrandInstagram color="gray" />{" "}
-              <Text component="span" color="dimmed" variant="link">
-                {INSTA_HANDLE}
-              </Text>
-            </Group>
-          </Link>
+          <Group
+            mt="sm"
+            spacing={4}
+            align="center"
+            sx={{ cursor: "pointer", width: "fit-content" }}>
+            <BrandInstagram color="gray" size={22} />{" "}
+            <Text
+              component={NextLink}
+              href={INSTA_LINK}
+              color="dimmed"
+              variant="link">
+              {INSTA_HANDLE}
+            </Text>
+          </Group>
         </Container>
       </Container>
       <Container size="lg" p="sm" pb="xl">

@@ -6,7 +6,7 @@ import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
 
-function StoryCard({ data }) {
+export default function StoryCard({ data }) {
   const { classes } = useStyles();
   return (
     <Box className={classes.wrapper}>
@@ -55,24 +55,13 @@ function StoryCard({ data }) {
   );
 }
 
-export default StoryCard;
-
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    border: "1px solid transparent",
-    transition: "all 0.2s ease-in-out",
-    backgroundColor: "#fff",
-    marginLeft: "2px",
-    "&:hover": {
-      boxShadow: theme.shadows.md,
-      border: `1px solid ${theme.colors.indigo[4]}`,
-    },
+    backgroundColor: theme.colors.gray[8],
   },
   detailsContainer: {
-    backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
     userSelect: "none",
-    color: theme.colors.gray[8],
   },
 }));

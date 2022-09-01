@@ -35,7 +35,7 @@ import { useMediaMatch } from "../hooks/isMobile";
 import artwork from "../resources/images/submissions-artwork.svg";
 import { showNotification } from "@mantine/notifications";
 
-function Submissions() {
+export default function Submissions() {
   const isMobile = useMediaMatch();
   const { shadows, colors } = useMantineTheme();
 
@@ -367,5 +367,3 @@ function Submissions() {
     </>
   );
 }
-
-export default Submissions;

@@ -9,31 +9,37 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { APP_TITLE } from "../constants/app.constants";
+import React, { useEffect, useMemo, useState } from "react";
+import { APP_TITLE, SMALL_THRESHOLD_ROUTES } from "../constants/app.constants";
 import { useMediaMatch } from "../hooks/isMobile";
+import logoWhite from "../resources/images/logo-white.svg";
 
 export default function Nav() {
   const { pathname } = useRouter();
-  const isMobile = useMediaMatch();
   const { classes, cx } = useStyles();
-  const { colors } = useMantineTheme();
+  const { white } = useMantineTheme();
+  const isMobile = useMediaMatch();
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const threshold = useMemo(() => {
+    return SMALL_THRESHOLD_ROUTES.includes(pathname) ? 50 : 250;
+  }, [pathname]);
 
   useEffect(() => {
     const scrollHandler = (e) => {
       const containerPosition = e.target.scrollingElement.scrollTop;
-      if (containerPosition >= 250) setScrolled(true);
+      if (containerPosition >= threshold) setScrolled(true);
       else setScrolled(false);
     };
     document.addEventListener("scroll", scrollHandler);
     return () => {
       document.removeEventListener("scroll", scrollHandler);
     };
-  }, []);
+  }, [threshold]);
 
-  const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -45,12 +51,23 @@ export default function Nav() {
           [classes.scrolled]: scrolled,
           [classes.unscrolled]: !scrolled,
         })}>
+        <Image
+          width={40}
+          height={40}
+          alt="site-logo"
+          src={logoWhite}
+          style={{
+            opacity: scrolled ? 0.5 : 1,
+            transition: "opacity 0.2s ease-in-out",
+          }}
+        />
         <Text
           component={NextLink}
           href="/"
           size="lg"
+          ml="sm"
           weight={500}
-          color={scrolled ? colors.gray[8] : colors.gray[6]}>
+          color={scrolled ? "dimmed" : white}>
           {APP_TITLE}
         </Text>
         <Burger
@@ -58,7 +75,7 @@ export default function Nav() {
           onClick={toggleDrawer}
           ml="auto"
           size="sm"
-          color="gray"
+          color={white}
         />
       </Header>
       <Drawer
@@ -80,7 +97,7 @@ export default function Nav() {
           </Button>
           <Button
             component={NextLink}
-            href="/stories"
+            href="/posts"
             fullWidth
             variant={pathname === "/posts" ? "outline" : "subtle"}
             onClick={toggleDrawer}>
@@ -108,17 +125,17 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     padding: theme.spacing.sm,
     flexGrow: 0,
-    boxShadow: theme.shadows.sm,
     borderColor: "transparent",
-    backdropFilter: "blur(10px)",
     transition: "all 0.3s ease-in-out",
   },
   scrolled: {
-    backgroundColor: `${theme.colors.gray[2]}CC`,
+    boxShadow: theme.shadows.sm,
+    backdropFilter: "blur(10px)",
+    backgroundColor: `${theme.colors.gray[8]}DF`,
     height: 50,
   },
   unscrolled: {
-    backgroundColor: `${theme.white}0F !important`,
+    backgroundColor: `transparent`,
     height: 70,
   },
 }));

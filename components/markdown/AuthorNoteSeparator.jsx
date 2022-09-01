@@ -2,7 +2,7 @@ import { Divider, Group, Text } from "@mantine/core";
 import React from "react";
 import { Separator } from "tabler-icons-react";
 
-function AuthorNoteSeparator() {
+export default function AuthorNoteSeparator() {
   return (
     <>
       <Divider
@@ -25,5 +25,3 @@ function AuthorNoteSeparator() {
     </>
   );
 }
-
-export default AuthorNoteSeparator;

@@ -111,12 +111,6 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     padding: theme.spacing.md,
-    backgroundColor: theme.white,
-    border: "1px solid transparent",
-    transition: "all 0.2s ease-in-out",
-    "&:hover": {
-      boxShadow: theme.shadows.md,
-      border: `1px solid ${theme.colors.indigo[4]}`,
-    },
+    backgroundColor: theme.colors.gray[8],
   },
 }));

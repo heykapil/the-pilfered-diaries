@@ -25,10 +25,17 @@ export default function PostCard({ data }) {
         />
       </Box>
       <Box py={8} pr={8}>
-        <Text weight="bold" color="dark" component="h3" my={0}>
+        <Text
+          weight="bold"
+          sx={(theme) => ({ color: theme.colors.gray[4] })}
+          component="h3"
+          my={0}>
           {data.title}
         </Text>
-        <Text size="xs" color="dark" lineClamp={1} sx={{ lineHeight: 1.3 }}>
+        <Text
+          size="xs"
+          sx={(theme) => ({ color: theme.colors.gray[4], lineHeight: 1.3 })}
+          lineClamp={1}>
           {data.excerpt}
         </Text>
         <Text color="dimmed" size="xs" mt={6}>
@@ -52,12 +59,8 @@ const useStyles = createStyles((theme) => ({
   wrapper: {
     marginBottom: theme.spacing.sm,
     textDecoration: "none",
-    backgroundColor: theme.white,
+    backgroundColor: theme.colors.gray[8],
     maxHeight: "100px",
     minHeight: "7rem",
-    transition: "all 0.2s ease-in-out",
-    "&:hover": {
-      boxShadow: theme.shadows.md,
-    },
   },
 }));

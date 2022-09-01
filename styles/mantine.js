@@ -1,20 +1,21 @@
 /** @type {import('@mantine/core').MantineTheme} */
 const overrides = {
-  colorScheme: "light",
+  colorScheme: "dark",
   primaryColor: "indigo",
   white: "#ffffff",
+  black: "#22221e",
   transitionTimingFunction: "ease-in-out",
   components: {
     Drawer: {
       defaultProps: {
         overlayBlur: 10,
-        overlayColor: "#ffffff77",
+        overlayColor: "#22221e77",
       },
     },
     Modal: {
       defaultProps: {
         overlayBlur: 10,
-        overlayColor: "#ffffff77",
+        overlayColor: "#22221e77",
       },
     },
     ScrollAres: {

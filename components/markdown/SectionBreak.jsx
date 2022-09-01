@@ -2,7 +2,7 @@ import { Divider, Group } from "@mantine/core";
 import React from "react";
 import { Point } from "tabler-icons-react";
 
-function SectionBreak() {
+export default function SectionBreak() {
   return (
     <Divider
       color="indigo"
@@ -20,5 +20,3 @@ function SectionBreak() {
     />
   );
 }
-
-export default SectionBreak;

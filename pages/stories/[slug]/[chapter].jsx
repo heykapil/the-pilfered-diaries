@@ -1,5 +1,4 @@
 import {
-  Blockquote,
   Box,
   Button,
   Container,
@@ -11,15 +10,13 @@ import {
 } from "@mantine/core";
 import axios from "axios";
 import grayMatter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import React from "react";
 import readingTime from "reading-time";
 import { ChevronLeft, ChevronRight, Point } from "tabler-icons-react";
-import AuthorNoteSeparator from "../../../components/textElements/AuthorNoteSeparator";
-import SectionBreak from "../../../components/textElements/SectionBreak";
+import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import firestore from "../../../firebase/config";
 
 export default function SingleChapter({ metadata, content }) {
@@ -46,17 +43,14 @@ export default function SingleChapter({ metadata, content }) {
           <Text color="dimmed" size="sm">
             by {metadata.author}
           </Text>
-          <Point size={8} color={primaryColor} style={{ marginTop: "2px" }} />
+          <Point size={10} style={{ marginTop: "2px" }} />
           <Text color="dimmed" size="sm">
             {metadata.readTime.text} ({metadata.readTime.words} words)
           </Text>
         </Group>
         <Divider variant="dashed" my="md" color={primaryColor} />
         <Box className="story-content" mt="lg">
-          <MDXRemote
-            {...content}
-            components={{ SectionBreak, AuthorNoteSeparator, Blockquote }}
-          />
+          <RenderMarkdown {...content} />
         </Box>
         <Divider variant="dashed" color="indigo" my="lg" />
         <SimpleGrid cols={2} spacing="md">

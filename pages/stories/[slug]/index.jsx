@@ -1,5 +1,7 @@
 import {
+  ActionIcon,
   Box,
+  Center,
   Container,
   Group,
   SimpleGrid,
@@ -9,17 +11,15 @@ import {
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import { Point } from "tabler-icons-react";
+import { ArrowDown, Point } from "tabler-icons-react";
 import ChapterCard from "../../../components/cards/ChapterCard";
 import Comments from "../../../components/comments/Comments";
 import LoadingContent from "../../../components/LoadingContent";
-import SectionBreak from "../../../components/textElements/SectionBreak";
+import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import {
   DATE_FORMATS,
   REVALIDATION_INTERVAL,
@@ -32,6 +32,14 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
   const { breakpoints } = useMantineTheme();
   const router = useRouter();
 
+  const scrollToContent = () => {
+    const { offsetTop } = document.getElementById("contentBlock");
+    document.scrollingElement.scrollTo({
+      top: offsetTop - 50,
+      behavior: "smooth",
+    });
+  };
+
   if (router.isFallback) {
     return <LoadingContent />;
   }
@@ -39,41 +47,59 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
   return (
     <>
       <NextSeo title={`Story - ${story.title} | The Pilfered Diaries`} />
-      <Container fluid px={0} pt="70px">
-        <Image
-          src={story.cover}
-          width={1920}
-          height={1080}
-          alt={story.slug + "-cover"}
-        />
-      </Container>
-      <Container size="md" pb="xl">
-        <Text
-          weight="bold"
-          color="indigo"
-          sx={{
-            textAlign: "center",
-            fontSize: isMobile ? "1.75rem" : "2.5rem",
-            marginTop: "1rem",
-          }}>
-          {story.title}
-        </Text>
-        <Group spacing={4} position="center">
-          <Text size="sm" color="dimmed">
-            {story.author}
+      <Center
+        px={0}
+        sx={{
+          height: "100vh",
+          backgroundImage: `url(${story.cover})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          flexDirection: "column",
+        }}>
+        <Box
+          p="lg"
+          sx={(theme) => ({
+            backgroundColor: `${theme.black}AA`,
+            borderRadius: theme.radius.md,
+            backdropFilter: "blur(8px)",
+          })}>
+          <Text
+            weight="bold"
+            sx={(theme) => ({
+              fontSize: isMobile ? "2rem" : "4rem",
+              textAlign: "center",
+              color: theme.white,
+            })}>
+            {story.title}
           </Text>
-          <Point size={8} />
-          <Text size="sm" color="dimmed">
-            {story.chapterCount} Chapters
-          </Text>
-          <Point size={8} />
-          <Text size="sm" color="dimmed">
-            {dayjs(story.published).format(DATE_FORMATS.date)}
-          </Text>
-        </Group>
-        <SectionBreak />
-        <Box my={isMobile ? "1rem" : "2.25rem"} className="story-preface">
-          <MDXRemote {...story.preface} />
+          <Group spacing={4} position="center">
+            <Text size="sm">{story.author}</Text>
+            <Point size={8} />
+            <Text size="sm">{story.chapterCount} Chapters</Text>
+            <Point size={8} />
+            <Text size="sm">
+              {dayjs(story.published).format(DATE_FORMATS.date)}
+            </Text>
+          </Group>
+          <Group position="center" align="center">
+            <ActionIcon
+              variant="subtle"
+              size="xl"
+              radius="xl"
+              mt={24}
+              onClick={scrollToContent}>
+              <ArrowDown />
+            </ActionIcon>
+          </Group>
+        </Box>
+      </Center>
+      <Container
+        size="md"
+        pb="xl"
+        id="contentBlock"
+        py={isMobile ? "1rem" : "2.25rem"}>
+        <Box className="story-preface">
+          <RenderMarkdown {...story.preface} />
         </Box>
         <Text color="dimmed" size="xl" my="lg" weight={500}>
           Chapters List

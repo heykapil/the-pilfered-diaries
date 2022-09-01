@@ -199,9 +199,7 @@ export default function Comments({ comments = [], title, type, target }) {
               mb="sm"
               key={comment.id}
               className={classes.commentCard}>
-              <Text color="indigo" weight={500}>
-                {comment.userName}
-              </Text>
+              <Text weight={500}>{comment.userName}</Text>
               <Text size="sm" mb="sm">
                 {dayjs(comment.date).format(DATE_FORMATS.dateTime)}
               </Text>
@@ -219,9 +217,8 @@ export default function Comments({ comments = [], title, type, target }) {
 
 const useStyles = createStyles((theme) => ({
   commentCard: {
-    backgroundColor: theme.white,
+    backgroundColor: theme.colors.gray[8],
     borderRadius: theme.radius.md,
-    border: `1px solid ${theme.colors.gray[4]}`,
     boxShadow: theme.shadows.sm,
   },
 }));

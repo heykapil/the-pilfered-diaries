@@ -1,76 +1,86 @@
-import {
-  Container,
-  Divider,
-  Group,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { ActionIcon, Box, Center, Container, Group, Text } from "@mantine/core";
 import axios from "axios";
 import grayMatter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import readingTime from "reading-time";
-import { Point } from "tabler-icons-react";
+import { ArrowDown, Point } from "tabler-icons-react";
 import Comments from "../../components/comments/Comments";
-import SectionBreak from "../../components/textElements/SectionBreak";
+import RenderMarkdown from "../../components/markdown/RenderMarkdown";
 import { REVALIDATION_INTERVAL } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
+import { useMediaMatch } from "../../hooks/isMobile";
 
 export default function SinglePost({ meta, content, comments }) {
-  const { primaryColor } = useMantineTheme();
+  const isMobile = useMediaMatch();
+
+  const scrollToContent = () => {
+    const { offsetTop } = document.getElementById("contentBlock");
+    document.scrollingElement.scrollTo({
+      top: offsetTop - 50,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <NextSeo
         title={`${meta.title} | The Pilfered Diaries`}
         description={meta.excerpt}
       />
-      <Container fluid pt="70px" px={0} pb="2rem">
-        <Image
-          width={1920}
-          height={1080}
-          src={meta.cover}
-          alt={meta.slug + "-cover"}
-          placeholder="empty"
+      <Center
+        px={0}
+        pb="2rem"
+        sx={{
+          height: "100vh",
+          backgroundImage: `url(${meta.cover})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          flexDirection: "column",
+        }}>
+        <Box
+          p="lg"
+          sx={(theme) => ({
+            backgroundColor: `${theme.black}AA`,
+            borderRadius: theme.radius.md,
+            backdropFilter: "blur(8px)",
+          })}>
+          <Text
+            sx={(theme) => ({
+              fontSize: isMobile ? "2rem" : "4rem",
+              textAlign: "center",
+              color: theme.white,
+            })}>
+            {meta.title}
+          </Text>
+          <Group spacing={4} position="center">
+            <Text size="sm">by {meta.author}</Text>
+            <Point size={12} style={{ marginTop: "2px" }} />
+            <Text size="sm">
+              {meta.readTime.text} ({meta.readTime.words} words)
+            </Text>
+          </Group>
+          <Group position="center" align="center">
+            <ActionIcon
+              variant="subtle"
+              size="xl"
+              radius="xl"
+              mt={24}
+              onClick={scrollToContent}>
+              <ArrowDown />
+            </ActionIcon>
+          </Group>
+        </Box>
+      </Center>
+      <Container size="md" id="contentBlock" pt={isMobile ? 16 : 36}>
+        <RenderMarkdown {...content} />
+        <Comments
+          title={meta.title}
+          type="posts"
+          comments={comments}
+          target={meta.slug}
         />
-        <Text
-          sx={{
-            fontSize: "2rem",
-            marginTop: "2rem",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-          color="indigo">
-          {meta.title}
-        </Text>
-        <Group spacing={4} position="center">
-          <Text color="dimmed" size="sm">
-            by {meta.author}
-          </Text>
-          <Point size={8} color={primaryColor} style={{ marginTop: "2px" }} />
-          <Text color="dimmed" size="sm">
-            {meta.readTime.text} ({meta.readTime.words} words)
-          </Text>
-        </Group>
-        <Container size="md">
-          <Divider variant="dashed" my="md" color={primaryColor} />
-          <MDXRemote
-            {...content}
-            components={{
-              SectionBreak,
-              Link,
-            }}
-          />
-          <Comments
-            title={meta.title}
-            type="posts"
-            comments={comments}
-            target={meta.slug}
-          />
-        </Container>
       </Container>
     </>
   );
