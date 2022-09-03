@@ -15,7 +15,7 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import React from "react";
 import readingTime from "reading-time";
-import { ChevronLeft, ChevronRight, Point } from "tabler-icons-react";
+import { ChevronLeft, ChevronRight, Home, Point } from "tabler-icons-react";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import firestore from "../../../firebase/config";
 
@@ -72,21 +72,29 @@ export default function SingleChapter({ metadata, content }) {
             )}
           </Group>
           <Group mb="lg" position="left">
-            {metadata.nextChapter && (
-              <Link
-                passHref
-                scroll
-                href={`/stories/${metadata.parent}/${metadata.nextChapter}`}>
-                <Button
-                  component="a"
-                  rightIcon={<ChevronRight size={18} />}
-                  size="sm"
-                  variant="subtle"
-                  fullWidth>
-                  Next Chapter
-                </Button>
-              </Link>
-            )}
+            <Link
+              passHref
+              scroll
+              href={
+                metadata.nextChapter
+                  ? `/stories/${metadata.parent}/${metadata.nextChapter}`
+                  : `/stories/${metadata.parent}`
+              }>
+              <Button
+                component="a"
+                rightIcon={
+                  metadata.nextChapter ? (
+                    <ChevronRight size={18} />
+                  ) : (
+                    <Home size={18} />
+                  )
+                }
+                size="sm"
+                variant="subtle"
+                fullWidth>
+                {metadata.nextChapter ? "Next Chapter" : "Story Home"}
+              </Button>
+            </Link>
           </Group>
         </SimpleGrid>
       </Container>

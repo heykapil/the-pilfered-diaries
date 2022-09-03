@@ -70,13 +70,17 @@ export default function Nav() {
           color={scrolled ? "dimmed" : white}>
           {APP_TITLE}
         </Text>
-        <Burger
-          opened={open}
-          onClick={toggleDrawer}
-          ml="auto"
-          size="sm"
-          color={white}
-        />
+        {isMobile ? (
+          <Burger
+            opened={open}
+            onClick={toggleDrawer}
+            ml="auto"
+            size="sm"
+            color={white}
+          />
+        ) : (
+          <NavGroup />
+        )}
       </Header>
       <Drawer
         position="right"
@@ -86,32 +90,7 @@ export default function Nav() {
         title={APP_TITLE}
         size={isMobile ? "md" : "xl"}
         padding="md">
-        <Group mt={"2rem"} spacing="sm" sx={{ flexDirection: "column" }}>
-          <Button
-            component={NextLink}
-            href="/stories"
-            fullWidth
-            variant={pathname === "/stories" ? "outline" : "subtle"}
-            onClick={toggleDrawer}>
-            Stories & Narratives
-          </Button>
-          <Button
-            component={NextLink}
-            href="/posts"
-            fullWidth
-            variant={pathname === "/posts" ? "outline" : "subtle"}
-            onClick={toggleDrawer}>
-            Posts
-          </Button>
-          <Button
-            component={NextLink}
-            href="/submissions"
-            fullWidth
-            variant={pathname === "/submissions" ? "outline" : "subtle"}
-            onClick={toggleDrawer}>
-            Submit your Work
-          </Button>
-        </Group>
+        <NavGroup onSelect={toggleDrawer} />
       </Drawer>
     </>
   );
@@ -139,3 +118,56 @@ const useStyles = createStyles((theme) => ({
     height: 70,
   },
 }));
+
+export function NavGroup({ onSelect = () => null }) {
+  const { pathname } = useRouter();
+  const isMobile = useMediaMatch();
+  return (
+    <Group
+      mt={isMobile ? "2rem" : 0}
+      ml={isMobile ? 0 : "auto"}
+      spacing="sm"
+      sx={{ flexDirection: isMobile ? "column" : "row" }}>
+      <Button
+        component={NextLink}
+        href="/"
+        fullWidth={isMobile}
+        variant={pathname === "/" ? "white" : "subtle"}
+        color="dark"
+        size="sm"
+        onClick={onSelect}>
+        Home
+      </Button>
+      <Button
+        component={NextLink}
+        href="/posts"
+        fullWidth={isMobile}
+        variant={pathname === "/posts" ? "white" : "subtle"}
+        color="dark"
+        size="sm"
+        onClick={onSelect}>
+        Posts
+      </Button>
+      <Button
+        component={NextLink}
+        href="/stories"
+        fullWidth={isMobile}
+        variant={pathname === "/stories" ? "white" : "subtle"}
+        color="dark"
+        size="sm"
+        onClick={onSelect}>
+        Stories & Narratives
+      </Button>
+      <Button
+        component={NextLink}
+        href="/submissions"
+        fullWidth={isMobile}
+        variant={pathname === "/submissions" ? "white" : "subtle"}
+        color="dark"
+        size="sm"
+        onClick={onSelect}>
+        Get Featured
+      </Button>
+    </Group>
+  );
+}

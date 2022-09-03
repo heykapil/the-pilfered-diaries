@@ -26,8 +26,10 @@ export default function Footer() {
   return (
     <>
       <Box className={classes.footerTop}>
-        <Copyright size={18} />
-        <Text size="xs">{APP_TITLE} 2022</Text>
+        <Text size="xs" weight={500}>
+          {APP_TITLE}
+        </Text>
+        <Text size="xs">A Blog by Amittras Pal.</Text>
         <Group ml="auto" spacing="xs">
           <Tooltip label="Instagram: Amittras Pal">
             <ActionIcon
@@ -56,7 +58,7 @@ export default function Footer() {
         </Group>
       </Box>
       <Box className={classes.footerBottom}>
-        <Text color={colors.indigo[3]} mb={3}>
+        <Text color={colors.indigo[3]} mb={3} size="xs">
           Built with
         </Text>
         <Tooltip label="Firebase">
@@ -66,23 +68,23 @@ export default function Footer() {
             target="_blank">
             <Image
               src={firebaseLogo}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt="firebase logo"
             />
           </Box>
         </Tooltip>
         <Tooltip label="Next.JS">
           <Box component={NextLink} href="https://nextjs.org/" target="_blank">
-            <Image src={nextLogo} width={24} height={24} alt="next logo" />
+            <Image src={nextLogo} width={20} height={20} alt="next logo" />
           </Box>
         </Tooltip>
         <Tooltip label="Mantine UI">
           <Box component={NextLink} href="https://mantine.dev/" target="_blank">
             <Image
               src={mantineLogo}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt="mantine logo"
             />
           </Box>

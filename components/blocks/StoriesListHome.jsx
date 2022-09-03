@@ -24,7 +24,7 @@ export default function StoriesListHome({ stories }) {
           color="dimmed"
           component="h2"
           weight={400}>
-          Stories
+          Stories & Narratives
         </Text>
         <Button
           size="xs"
@@ -92,7 +92,7 @@ export default function StoriesListHome({ stories }) {
               fullWidth
               color="indigo"
               mt="md">
-              Request Submission
+              Send in your work
             </Button>
           </Box>
         </Carousel.Slide>

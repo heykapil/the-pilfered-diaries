@@ -23,7 +23,7 @@ import { useMediaMatch } from "../hooks/isMobile";
 import header from "../resources/images/header-bg.jpg";
 import { scrollToContent } from "../utils/utils";
 
-export default function Home({ stories, posts }) {
+export default function Home({ stories, posts, guestPosts }) {
   const isMobile = useMediaMatch();
   const { classes } = useStyles();
 
@@ -54,6 +54,7 @@ export default function Home({ stories, posts }) {
             radius="md"
             mr="auto"
             size="xl"
+            fullWidth={isMobile}
             leftIcon={<ArrowDown />}
             onClick={() => scrollToContent("aboutBlock")}>
             Start Reading
@@ -70,7 +71,7 @@ export default function Home({ stories, posts }) {
             <PostsListHome posts={posts} />
           </Grid.Col>
         </Grid>
-        <GuestPostsHome posts={[]} />
+        <GuestPostsHome posts={guestPosts} />
       </Container>
     </>
   );
@@ -84,9 +85,15 @@ export async function getServerSideProps() {
     .get();
   const postsRes = await firestore
     .collection("posts")
-    .where("isGuestPost", "==", false)
+    .where("byGuest", "==", false)
     .orderBy("published", "desc")
     .limit(5)
+    .get();
+  const guestPostsRes = await firestore
+    .collection("posts")
+    .where("byGuest", "==", true)
+    .orderBy("published", "desc")
+    .limit(3)
     .get();
 
   const stories = storiesRes.docs.map((doc) => ({
@@ -100,11 +107,17 @@ export async function getServerSideProps() {
     slug: doc.id,
     published: doc.data().published.toDate().toISOString(),
   }));
+  const guestPosts = guestPostsRes.docs.map((doc) => ({
+    ...doc.data(),
+    slug: doc.id,
+    published: doc.data().published.toDate().toISOString(),
+  }));
 
   return {
     props: {
       stories,
       posts,
+      guestPosts,
     },
   };
 }

@@ -21,7 +21,7 @@ export default function GuestPostsHome({ posts = [] }) {
           weight={400}>
           Guest Posts
         </Text>
-        {posts.length > 1 && (
+        {posts.length > 0 && (
           <Button
             size="xs"
             component={NextLink}
