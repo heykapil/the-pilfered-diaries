@@ -1,4 +1,4 @@
-import { Box, Text } from "@mantine/core";
+import { Box, createStyles, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -6,11 +6,10 @@ import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
 import { useMediaMatch } from "../../hooks/isMobile";
-import useLargeCardStyles from "../../styles/largeCard.styles";
 import TagsList from "../shared/TagsList";
 
 export default function LargeCard({ variant = "stories", data }) {
-  const { classes } = useLargeCardStyles();
+  const { classes } = useStyles();
   const isMobile = useMediaMatch();
   return (
     <Box className={classes.wrapper}>
@@ -59,3 +58,31 @@ export default function LargeCard({ variant = "stories", data }) {
     </Box>
   );
 }
+
+const useStyles = createStyles((theme) => ({
+  wrapper: {
+    backgroundColor: theme.colors.gray[8],
+    borderRadius: theme.radius.md,
+  },
+  guestMarker: {
+    position: "absolute",
+    top: -18,
+    left: 0,
+    fontWeight: 500,
+    padding: `0px ${theme.spacing.xs}px`,
+    color: theme.white,
+    borderTopRightRadius: theme.radius.md,
+    borderBottomRightRadius: theme.radius.md,
+    backgroundColor: `${theme.colors.indigo[5]}EF`,
+  },
+  image: {
+    borderTopRightRadius: theme.radius.md,
+    borderTopLeftRadius: theme.radius.md,
+  },
+  detailsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    userSelect: "none",
+    position: "relative",
+  },
+}));
