@@ -16,10 +16,10 @@ export default function PostsListHome({ posts }) {
           Posts
         </Text>
         <Button
-          size="sm"
+          size="xs"
           component={NextLink}
           href="/posts"
-          variant="outline"
+          variant="light"
           rightIcon={<ArrowRight size={16} />}>
           All Posts
         </Button>

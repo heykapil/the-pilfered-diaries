@@ -66,7 +66,7 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
               size="xl"
               radius="xl"
               mt={24}
-              onClick={scrollToContent}>
+              onClick={() => scrollToContent("contentBlock")}>
               <ArrowDown />
             </ActionIcon>
           </Group>

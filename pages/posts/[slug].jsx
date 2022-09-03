@@ -34,9 +34,7 @@ export default function SinglePost({ meta, content, comments }) {
       />
       <Center
         className={classes.header}
-        sx={{
-          backgroundImage: `url(${meta.cover})`,
-        }}>
+        sx={{ backgroundImage: `url(${meta.cover})` }}>
         <Box className={classes.headerContent}>
           <Text className={classes.title}>{meta.title}</Text>
           <Group spacing={4} position="center">
@@ -52,7 +50,7 @@ export default function SinglePost({ meta, content, comments }) {
               size="xl"
               radius="xl"
               mt={24}
-              onClick={scrollToContent}>
+              onClick={() => scrollToContent("contentBlock")}>
               <ArrowDown />
             </ActionIcon>
           </Group>

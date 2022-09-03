@@ -1,6 +1,14 @@
-import { Container, createStyles, Grid, Group, Text } from "@mantine/core";
+import {
+  Button,
+  Container,
+  createStyles,
+  Grid,
+  Group,
+  Text,
+} from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import { BrandInstagram } from "tabler-icons-react";
+import { ArrowDown, BrandInstagram } from "tabler-icons-react";
+import AboutHome from "../components/blocks/AboutHome";
 import GuestPostsHome from "../components/blocks/GuestPostsHome";
 import PostsListHome from "../components/blocks/PostsListHome";
 import StoriesListHome from "../components/blocks/StoriesListHome";
@@ -13,6 +21,7 @@ import {
 import firestore from "../firebase/config";
 import { useMediaMatch } from "../hooks/isMobile";
 import header from "../resources/images/header-bg.jpg";
+import { scrollToContent } from "../utils/utils";
 
 export default function Home({ stories, posts }) {
   const isMobile = useMediaMatch();
@@ -21,11 +30,7 @@ export default function Home({ stories, posts }) {
   return (
     <>
       <Container fluid px={0} className={classes.headerBg}>
-        <Container
-          size="lg"
-          px="xs"
-          className={classes.header}
-          sx={{ height: "100vh" }}>
+        <Container size="lg" px="xs" className={classes.header}>
           <Text className={classes.tagline}>{TAGLINE}</Text>
           <Text className={classes.siteName}>{APP_TITLE}</Text>
           <Group
@@ -42,8 +47,20 @@ export default function Home({ stories, posts }) {
               {INSTA_HANDLE}
             </Text>
           </Group>
+          <Button
+            mt="lg"
+            variant="subtle"
+            color="gray"
+            radius="md"
+            mr="auto"
+            size="xl"
+            leftIcon={<ArrowDown />}
+            onClick={() => scrollToContent("aboutBlock")}>
+            Start Reading
+          </Button>
         </Container>
       </Container>
+      <AboutHome />
       <Container size="lg" p="sm" pb="xl">
         <Grid columns={24}>
           <Grid.Col sm={24} md={14}>
@@ -103,6 +120,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    height: "100vh",
   },
   tagline: {
     fontSize: "3.5rem",

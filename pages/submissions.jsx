@@ -98,7 +98,7 @@ export default function Submissions() {
 
   return (
     <>
-      <Container fluid pt="70px" pb="2rem" px={0} sx={{ minHeight: "100vh" }}>
+      <Container fluid pt="70px" pb="2rem" px={0}>
         <Container size="md">
           <Grid
             cols={2}
@@ -117,7 +117,7 @@ export default function Submissions() {
               </Text>
               <Text
                 size="lg"
-                color="gray"
+                color="dimmed"
                 mt="sm"
                 align={isMobile ? "center" : "left"}>
                 That you think suits {APP_TITLE} style.

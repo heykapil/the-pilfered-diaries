@@ -89,8 +89,8 @@ export default function Comments({ comments = [], title, type, target }) {
   };
 
   return (
-    <Box mt="lg">
-      <Text color="dimmed" size="xl" my="lg" weight={500}>
+    <Box my="lg">
+      <Text color="indigo" size="xl" my="lg" weight={500}>
         {COMMENT_HEADER} &ldquo;{title}&rdquo;
       </Text>
       {showForm && (

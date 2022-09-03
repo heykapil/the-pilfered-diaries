@@ -30,13 +30,13 @@ export default function SingleChapter({ metadata, content }) {
       />
       <Container size="md" pt="4rem">
         <Text
-          sx={{
+          sx={(theme) => ({
             fontSize: "2rem",
             marginTop: "2rem",
             fontWeight: "bold",
             textAlign: "center",
-          }}
-          color="indigo">
+            color: theme.colors.indigo[4],
+          })}>
           {metadata.title}
         </Text>
         <Group spacing={4} position="center">
@@ -64,7 +64,8 @@ export default function SingleChapter({ metadata, content }) {
                   component="a"
                   leftIcon={<ChevronLeft size={18} />}
                   size="sm"
-                  variant="subtle">
+                  variant="subtle"
+                  fullWidth>
                   Previous Chapter
                 </Button>
               </Link>
@@ -80,7 +81,8 @@ export default function SingleChapter({ metadata, content }) {
                   component="a"
                   rightIcon={<ChevronRight size={18} />}
                   size="sm"
-                  variant="subtle">
+                  variant="subtle"
+                  fullWidth>
                   Next Chapter
                 </Button>
               </Link>

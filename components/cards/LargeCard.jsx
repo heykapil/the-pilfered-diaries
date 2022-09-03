@@ -1,4 +1,4 @@
-import { Badge, Box, Group, Text } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -6,6 +6,7 @@ import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
 import useLargeCardStyles from "../../styles/largeCard.styles";
+import TagsList from "../shared/TagsList";
 
 export default function LargeCard({ variant = "stories", data }) {
   const { classes } = useLargeCardStyles();
@@ -13,6 +14,7 @@ export default function LargeCard({ variant = "stories", data }) {
     <Box className={classes.wrapper}>
       <Image
         src={data.cover}
+        className={classes.image}
         width={1280}
         height={720}
         alt={data.slug + "-cover"}
@@ -30,13 +32,7 @@ export default function LargeCard({ variant = "stories", data }) {
           )}
           {variant === "stories" ? `${data.chapterCount} Chapters` : ""}
         </Text>
-        <Group spacing={4} my="sm">
-          {data.tags.map((tag) => (
-            <Badge key={tag} color="indigo" variant="light" size="xs">
-              {tag}
-            </Badge>
-          ))}
-        </Group>
+        <TagsList tags={data.tags} />
         <Text size="sm" lineClamp={4}>
           {data.excerpt}
         </Text>

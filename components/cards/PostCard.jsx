@@ -1,10 +1,11 @@
-import { Badge, Box, createStyles, Group, Text } from "@mantine/core";
+import { Box, createStyles, Group, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import dayjs from "dayjs";
 import Image from "next/image";
 import React from "react";
 import { Point } from "tabler-icons-react";
 import { DATE_FORMATS } from "../../constants/app.constants";
+import TagsList from "../shared/TagsList";
 
 export default function PostCard({ data }) {
   const { classes } = useStyles();
@@ -18,6 +19,7 @@ export default function PostCard({ data }) {
       href={`/posts/${data.slug}`}>
       <Box sx={{ flexShrink: 0 }}>
         <Image
+          className={classes.image}
           width={112}
           height={112}
           src={data.thumbnail}
@@ -43,13 +45,7 @@ export default function PostCard({ data }) {
           <Point size={8} style={{ margin: "0px 4px" }} />
           {data.author}
         </Text>
-        <Group spacing={4} mt={8}>
-          {data.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} size="xs" color="indigo">
-              {tag}
-            </Badge>
-          ))}
-        </Group>
+        <TagsList tags={data.tags} />
       </Box>
     </Group>
   );
@@ -60,7 +56,12 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.sm,
     textDecoration: "none",
     backgroundColor: theme.colors.gray[8],
+    borderRadius: theme.radius.md,
     maxHeight: "100px",
     minHeight: "7rem",
+  },
+  image: {
+    borderTopLeftRadius: theme.radius.md,
+    borderBottomLeftRadius: theme.radius.md,
   },
 }));

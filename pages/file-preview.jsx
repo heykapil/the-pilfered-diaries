@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  createStyles,
   Group,
   Input,
   Text,
@@ -11,12 +12,14 @@ import { showNotification } from "@mantine/notifications";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import React, { useRef, useState } from "react";
+import readingTime from "reading-time";
 import { X } from "tabler-icons-react";
 import RenderMarkdown from "../components/markdown/RenderMarkdown";
 
 export default function FilePreview() {
   const [fileData, setFileData] = useState(null);
   const ref = useRef();
+  const { classes } = useStyles();
 
   const handleFile = (e) => {
     const allowedExtensions = [".md", ".mdx"];
@@ -36,7 +39,12 @@ export default function FilePreview() {
         reader.onloadend = async (e) => {
           const { content: fileContent, data } = grayMatter(e.target.result);
           const content = await serialize(fileContent);
-          setFileData({ content, data, file });
+          setFileData({
+            content,
+            data,
+            file,
+            readTime: readingTime(fileContent),
+          });
         };
         reader.readAsText(file);
       }
@@ -60,15 +68,7 @@ export default function FilePreview() {
         {fileData ? "Change File" : "Click to Open File"}
       </Button>
       {fileData && (
-        <Box
-          sx={(theme) => ({
-            marginTop: theme.spacing.xl,
-            marginBottom: theme.spacing.xl,
-            backgroundColor: theme.colors.gray[9],
-            padding: theme.spacing.sm,
-            borderRadius: theme.radius.md,
-            boxShadow: theme.shadows.md,
-          })}>
+        <Box className={classes.wrapper}>
           <Group position="apart" align="center" mb="md">
             <Text weight={500}>{fileData.file?.name}</Text>
             <ActionIcon
@@ -83,13 +83,7 @@ export default function FilePreview() {
               <X size={16} />
             </ActionIcon>
           </Group>
-          <Box
-            mb="md"
-            sx={(theme) => ({
-              padding: theme.spacing.sm,
-              borderRadius: theme.radius.sm,
-              backgroundColor: theme.colors.gray[8],
-            })}>
+          <Box className={classes.frontMatter}>
             {Object.entries(fileData.data).map(([key, value]) => (
               <Box component="div" key={key}>
                 <Text size="sm" weight="bold" component="span">
@@ -101,9 +95,31 @@ export default function FilePreview() {
               </Box>
             ))}
           </Box>
+          <Box className={classes.frontMatter}>
+            <Text align="center">
+              {fileData.readTime.text} ({fileData.readTime.words} words)
+            </Text>
+          </Box>
           <RenderMarkdown {...fileData.content} />
         </Box>
       )}
     </Container>
   );
 }
+
+const useStyles = createStyles((theme) => ({
+  wrapper: {
+    marginTop: theme.spacing.xl,
+    marginBottom: theme.spacing.xl,
+    backgroundColor: theme.colors.gray[9],
+    padding: theme.spacing.sm,
+    borderRadius: theme.radius.md,
+    boxShadow: theme.shadows.md,
+  },
+  frontMatter: {
+    padding: theme.spacing.sm,
+    borderRadius: theme.radius.sm,
+    backgroundColor: theme.colors.gray[8],
+    marginBottom: theme.spacing.md,
+  },
+}));

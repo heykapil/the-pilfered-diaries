@@ -12,7 +12,7 @@ export default function GuestPostsHome({ posts = [] }) {
   const isMobile = useMediaMatch();
 
   return (
-    <Box>
+    <>
       <Group position="apart" align="center" my="md">
         <Text
           sx={{ fontSize: "1.25rem" }}
@@ -23,10 +23,10 @@ export default function GuestPostsHome({ posts = [] }) {
         </Text>
         {posts.length > 1 && (
           <Button
-            size="sm"
+            size="xs"
             component={NextLink}
             href="/stories"
-            variant="outline"
+            variant="light"
             rightIcon={<ArrowRight size={16} />}>
             Submit Your Own
           </Button>
@@ -36,6 +36,7 @@ export default function GuestPostsHome({ posts = [] }) {
         <SimpleGrid
           cols={3}
           spacing="md"
+          my="md"
           breakpoints={[
             { maxWidth: "md", cols: 3 },
             { maxWidth: "sm", cols: 1 },
@@ -46,7 +47,7 @@ export default function GuestPostsHome({ posts = [] }) {
         </SimpleGrid>
       ) : (
         <Group
-          mt="lg"
+          my="lg"
           spacing={4}
           sx={{ flexDirection: "column" }}
           position="center"
@@ -70,6 +71,6 @@ export default function GuestPostsHome({ posts = [] }) {
           </Button>
         </Group>
       )}
-    </Box>
+    </>
   );
 }

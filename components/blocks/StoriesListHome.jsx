@@ -27,10 +27,10 @@ export default function StoriesListHome({ stories }) {
           Stories
         </Text>
         <Button
-          size="sm"
+          size="xs"
           component={NextLink}
           href="/stories"
-          variant="outline"
+          variant="light"
           rightIcon={<ArrowRight size={16} />}>
           All Stories
         </Button>
@@ -112,5 +112,6 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     padding: theme.spacing.md,
     backgroundColor: theme.colors.gray[8],
+    borderRadius: theme.radius.md,
   },
 }));

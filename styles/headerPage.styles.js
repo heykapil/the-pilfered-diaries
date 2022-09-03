@@ -13,8 +13,12 @@ const useHeaderPageStyles = createStyles((theme, params) => ({
     borderRadius: theme.radius.md,
     backdropFilter: "blur(8px)",
     padding: theme.spacing.lg,
+    maxWidth: "95%",
   },
   title: {
+    fontFamily: "'Lato', sans-serif",
+    fontStyle: "italic",
+    lineHeight: 1.25,
     fontSize: params.isMobile ? "2rem" : "4rem",
     textAlign: "center",
     color: theme.white,

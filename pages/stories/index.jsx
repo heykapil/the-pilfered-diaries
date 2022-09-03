@@ -6,7 +6,7 @@ import firestore from "../../firebase/config";
 
 export default function StoriesList({ stories = [] }) {
   return (
-    <Container size="lg" pt="70px" sx={{ minHeight: "100vh" }}>
+    <Container size="lg" pt="70px">
       <Text weight={500} size="xl" align="center">
         Latest Stories on
       </Text>
