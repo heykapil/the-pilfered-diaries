@@ -43,7 +43,28 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
 
   return (
     <>
-      <NextSeo title={`Story - ${story.title} | The Pilfered Diaries`} />
+      <NextSeo
+        title={story.title}
+        description={story.excerpt}
+        openGraph={{
+          description: story.excerpt,
+          type: "article",
+          title: story.title,
+          article: {
+            publishedTime: story.published,
+            tags: story.tags,
+            authors: [story.author],
+          },
+          images: [
+            {
+              url: story.cover,
+              width: 1280,
+              height: 720,
+              alt: story.slug + "-cover",
+            },
+          ],
+        }}
+      />
       <Center
         className={classes.header}
         sx={{

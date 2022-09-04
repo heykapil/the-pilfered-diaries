@@ -34,6 +34,7 @@ import { firestoreClient } from "../firebase/clientConfig";
 import { useMediaMatch } from "../hooks/isMobile";
 import artwork from "../resources/images/submissions-artwork.svg";
 import { showNotification } from "@mantine/notifications";
+import { NextSeo } from "next-seo";
 
 export default function Submissions() {
   const isMobile = useMediaMatch();
@@ -98,6 +99,7 @@ export default function Submissions() {
 
   return (
     <>
+      <NextSeo title="Submit your Work" />
       <Container fluid pt="70px" pb="2rem" px={0}>
         <Container size="md">
           <Grid

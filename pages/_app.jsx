@@ -1,5 +1,6 @@
 import { Box, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import { NextSeo } from "next-seo";
 import Head from "next/head";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
@@ -9,14 +10,31 @@ import theme from "../styles/mantine";
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <Head>
-        <title>{APP_TITLE}</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-        <link rel="icon" href="/favicon.svg" />
-      </Head>
+      <NextSeo
+        defaultTitle={APP_TITLE}
+        titleTemplate={`%s | ${APP_TITLE}`}
+        openGraph={{
+          type: "website",
+          locale: "en_IN",
+          url: "https://thepilfereddiaries.in",
+          title: APP_TITLE,
+          site_name: APP_TITLE,
+          description:
+            "The Pilfered Diaries is a place where I pen down the thoughts that come to my mind from all around me. I turn them to stories, sometimes little thoughts, and sometimes just a mess of words.",
+        }}
+        additionalMetaTags={[
+          {
+            name: "viewport",
+            content: "minimum-scale=1, initial-scale=1, width=device-width",
+          },
+        ]}
+        additionalLinkTags={[
+          {
+            rel: "icon",
+            href: "/favicon.svg",
+          },
+        ]}
+      />
       <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
         <NotificationsProvider position="top-center" autoClose={3000}>
           <Box sx={{ minHeight: "100vh" }}>

@@ -1,12 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Container,
-  createStyles,
-  Group,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Box, Center, Container, Group, Text } from "@mantine/core";
 import axios from "axios";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
@@ -29,8 +21,26 @@ export default function SinglePost({ meta, content, comments }) {
   return (
     <>
       <NextSeo
-        title={`${meta.title} | The Pilfered Diaries`}
+        title={meta.title}
         description={meta.excerpt}
+        openGraph={{
+          description: meta.excerpt,
+          type: "article",
+          title: meta.title,
+          article: {
+            publishedTime: meta.published,
+            tags: meta.tags,
+            authors: [meta.author],
+          },
+          images: [
+            {
+              url: meta.cover,
+              width: 1280,
+              height: 720,
+              alt: meta.slug + "-cover",
+            },
+          ],
+        }}
       />
       <Center
         className={classes.header}

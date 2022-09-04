@@ -26,6 +26,7 @@ import { useEffect } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { firestoreClient } from "../firebase/clientConfig";
 import { showNotification } from "@mantine/notifications";
+import { NextSeo } from "next-seo";
 
 export default function About() {
   const isMobile = useMediaMatch();
@@ -99,194 +100,206 @@ export default function About() {
   };
 
   return (
-    <Container size="xl" pt={70}>
-      <SimpleGrid
-        cols={2}
-        spacing="md"
-        my={isMobile ? "0.25rem" : "2.25rem"}
-        breakpoints={[
-          { maxWidth: "md", cols: 2 },
-          { maxWidth: "sm", cols: 1 },
-        ]}>
-        <Box>
-          <Image
-            src={profilePic}
-            width={512}
-            height={512}
-            blurDataURL={profilePic.blurDataURL}
-            alt="amittras-pal-profile-image"
-          />
-        </Box>
-        <Box p="sm">
-          <Text align="end" color="dimmed" component="p" mt={0}>
-            Hi! I am{" "}
-            <Text component="span" weight="bold" color={colors.indigo[3]}>
-              Amittras
-            </Text>
-            , and this is
-          </Text>
-          <Text
-            component="h1"
-            sx={{ fontSize: "3rem", lineHeight: 1 }}
-            align="end"
-            weight="bold"
-            variant="gradient"
-            mt={0}
-            gradient={{
-              from: colors.green[5],
-              to: colors.yellow[5],
-              deg: 90,
-            }}>
-            {APP_TITLE}
-          </Text>
-          <Text align="end" component="p" mt={0}>
-            A blog/showcase of my adventures in the literary space.{" "}
-            <Text component="span" weight={700}>
-              Ideas, that are pilfered from what many call the
-              &ldquo;muse&rdquo; and I call the reticent witch.{" "}
-            </Text>{" "}
-            I write stuff, read a lot more, and sometimes just explore little
-            thoughts that run through my head at the most random hours of the
-            day.
-          </Text>
-          <Text align="end" component="p" mt={0}>
-            <Text component="span" weight={700}>
-              Dark, Twisted, Relatable, and sometimes outright crazy,
-            </Text>{" "}
-            this blog, {APP_TITLE} is an experiment, a journal, a way for me to
-            collaborate with people who are like me.{" "}
-            <Text italic component="span">
-              More often than not, you will find in here something that might
-              make you think.
-            </Text>
-          </Text>
-          <Text align="end" component="p" mt={0}>
-            Come along with me, on a journey that has a lot of chill breaks,
-            wild thoughts, and scenes that make you question the sanity of the
-            writer...
-          </Text>
-          <Text
-            align="end"
-            component="p"
-            mt={0}
-            color={colors.indigo[3]}
-            italic>
-            Oh, by the way,{" "}
-            <Text component="span" weight="bold">
-              Cats are better than dogs,
-            </Text>{" "}
-            change my mind!...
-          </Text>
-        </Box>
-        <Group
-          sx={{ flexDirection: "column" }}
-          px={isMobile ? 0 : "md"}
-          mt="lg"
-          spacing="sm"
-          align="start">
-          <Text size="lg" color="dimmed">
-            Things to do around here!
-          </Text>
-          <Box
-            className={classes.actionTile}
-            component={NextLink}
-            href="/stories">
-            <Text size="lg" component="h2" className={classes.h2}>
-              Explore Stories
-            </Text>
-            <Text component="p" color="dimmed" my={0} size="sm">
-              I am no accomplished writer, but like many others, I like to cook
-              up scenarios in my head and pen them down sometimes.{" "}
-            </Text>
-          </Box>
-          <Box
-            className={classes.actionTile}
-            component={NextLink}
-            href="/posts">
-            <Text size="lg" component="h2" className={classes.h2}>
-              Explore Short Posts
-            </Text>
-            <Text component="p" color="dimmed" my={0} size="sm">
-              Little thoughts, ideas and incidents, that I keep track of, and
-              try to compile into coherent scenarios.
-            </Text>
-          </Box>
-          <Box
-            className={classes.actionTile}
-            component={NextLink}
-            href="submissions">
-            <Text size="lg" component="h2" className={classes.h2}>
-              Get Featured
-            </Text>
-            <Text component="p" color="dimmed" my={0} size="sm">
-              You can send your work to {APP_TITLE}. Let&apos;s collborate and
-              build a story that originates with you, and showcases here...
-            </Text>
-          </Box>
-        </Group>
-        {sentAMessage ? (
+    <>
+      <NextSeo
+        title="About"
+        description="About this blog and a little bit about me!"
+        openGraph={{
+          url: "https://thepilfereddiaries.in/about",
+        }}
+      />
+      <Container size="xl" pt={70}>
+        <SimpleGrid
+          cols={2}
+          spacing="md"
+          my={isMobile ? "0.25rem" : "2.25rem"}
+          breakpoints={[
+            { maxWidth: "md", cols: 2 },
+            { maxWidth: "sm", cols: 1 },
+          ]}>
           <Box>
-            <Text size="lg" color="dimmed" mt="lg">
-              Contact
-            </Text>
-            <Alert
-              title="Thank you for your message!"
-              color="indigo"
-              variant="light"
-              icon={<Checks />}
-              mb="auto"
-              mt="xs">
-              <Text color="dimmed">
-                Your message was sent successfully. I&apos;ll read it soon. And
-                I&apos;ll get back to you on the email you provided if I need to
-                talk more. 😀😀
-              </Text>
-            </Alert>
+            <Image
+              src={profilePic}
+              width={512}
+              height={512}
+              blurDataURL={profilePic.blurDataURL}
+              alt="amittras-pal-profile-image"
+            />
           </Box>
-        ) : (
-          <Box component="form" noValidate onSubmit={handleSubmit(sendMessage)}>
-            <Text mt="lg" size="lg" weight={500} component="p">
-              Have something to ask? Or have a suggestion? Is there an issue
-              with the website?{" "}
-              <Text component="span" color={colors.indigo[4]}>
-                Write to me...
+          <Box p="sm">
+            <Text align="end" color="dimmed" component="p" mt={0}>
+              Hi! I am{" "}
+              <Text component="span" weight="bold" color={colors.indigo[3]}>
+                Amittras
+              </Text>
+              , and this is
+            </Text>
+            <Text
+              component="h1"
+              sx={{ fontSize: "3rem", lineHeight: 1 }}
+              align="end"
+              weight="bold"
+              variant="gradient"
+              mt={0}
+              gradient={{
+                from: colors.green[5],
+                to: colors.yellow[5],
+                deg: 90,
+              }}>
+              {APP_TITLE}
+            </Text>
+            <Text align="end" component="p" mt={0}>
+              A blog/showcase of my adventures in the literary space.{" "}
+              <Text component="span" weight={700}>
+                Ideas, that are pilfered from what many call the
+                &ldquo;muse&rdquo; and I call the reticent witch.{" "}
+              </Text>{" "}
+              I write stuff, read a lot more, and sometimes just explore little
+              thoughts that run through my head at the most random hours of the
+              day.
+            </Text>
+            <Text align="end" component="p" mt={0}>
+              <Text component="span" weight={700}>
+                Dark, Twisted, Relatable, and sometimes outright crazy,
+              </Text>{" "}
+              this blog, {APP_TITLE} is an experiment, a journal, a way for me
+              to collaborate with people who are like me.{" "}
+              <Text italic component="span">
+                More often than not, you will find in here something that might
+                make you think.
               </Text>
             </Text>
-            <TextInput
-              placeholder="Your Name (required)"
-              {...register("name")}
-              error={errors.name ? errors.name.message : ""}
-            />
-            <TextInput
-              placeholder="Email Address (required)"
-              {...register("email")}
-              error={errors.email ? errors.email.message : ""}
-            />
-            <Textarea
-              {...register("message")}
-              error={errors.message ? errors.message.message : ""}
-              placeholder="Question or suggestion..."
-              minRows={5}
-              description={
-                <Group position="right" mt={4}>
-                  <Text size="xs" color="dimmed">
-                    {watch("message").length}/1024 characters
-                  </Text>
-                </Group>
-              }
-            />
-            <Button
-              size="sm"
-              fullWidth={isMobile}
-              rightIcon={<Send size={18} />}
-              type="submit"
-              loading={sending}>
-              Send Message
-            </Button>
+            <Text align="end" component="p" mt={0}>
+              Come along with me, on a journey that has a lot of chill breaks,
+              wild thoughts, and scenes that make you question the sanity of the
+              writer...
+            </Text>
+            <Text
+              align="end"
+              component="p"
+              mt={0}
+              color={colors.indigo[3]}
+              italic>
+              Oh, by the way,{" "}
+              <Text component="span" weight="bold">
+                Cats are better than dogs,
+              </Text>{" "}
+              change my mind!...
+            </Text>
           </Box>
-        )}
-      </SimpleGrid>
-    </Container>
+          <Group
+            sx={{ flexDirection: "column" }}
+            px={isMobile ? 0 : "md"}
+            mt="lg"
+            spacing="sm"
+            align="start">
+            <Text size="lg" color="dimmed">
+              Things to do around here!
+            </Text>
+            <Box
+              className={classes.actionTile}
+              component={NextLink}
+              href="/stories">
+              <Text size="lg" component="h2" className={classes.h2}>
+                Explore Stories
+              </Text>
+              <Text component="p" color="dimmed" my={0} size="sm">
+                I am no accomplished writer, but like many others, I like to
+                cook up scenarios in my head and pen them down sometimes.{" "}
+              </Text>
+            </Box>
+            <Box
+              className={classes.actionTile}
+              component={NextLink}
+              href="/posts">
+              <Text size="lg" component="h2" className={classes.h2}>
+                Explore Short Posts
+              </Text>
+              <Text component="p" color="dimmed" my={0} size="sm">
+                Little thoughts, ideas and incidents, that I keep track of, and
+                try to compile into coherent scenarios.
+              </Text>
+            </Box>
+            <Box
+              className={classes.actionTile}
+              component={NextLink}
+              href="submissions">
+              <Text size="lg" component="h2" className={classes.h2}>
+                Get Featured
+              </Text>
+              <Text component="p" color="dimmed" my={0} size="sm">
+                You can send your work to {APP_TITLE}. Let&apos;s collborate and
+                build a story that originates with you, and showcases here...
+              </Text>
+            </Box>
+          </Group>
+          {sentAMessage ? (
+            <Box>
+              <Text size="lg" color="dimmed" mt="lg">
+                Contact
+              </Text>
+              <Alert
+                title="Thank you for your message!"
+                color="indigo"
+                variant="light"
+                icon={<Checks />}
+                mb="auto"
+                mt="xs">
+                <Text color="dimmed">
+                  Your message was sent successfully. I&apos;ll read it soon.
+                  And I&apos;ll get back to you on the email you provided if I
+                  need to talk more. 😀😀
+                </Text>
+              </Alert>
+            </Box>
+          ) : (
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(sendMessage)}>
+              <Text mt="lg" size="lg" weight={500} component="p">
+                Have something to ask? Or have a suggestion? Is there an issue
+                with the website?{" "}
+                <Text component="span" color={colors.indigo[4]}>
+                  Write to me...
+                </Text>
+              </Text>
+              <TextInput
+                placeholder="Your Name (required)"
+                {...register("name")}
+                error={errors.name ? errors.name.message : ""}
+              />
+              <TextInput
+                placeholder="Email Address (required)"
+                {...register("email")}
+                error={errors.email ? errors.email.message : ""}
+              />
+              <Textarea
+                {...register("message")}
+                error={errors.message ? errors.message.message : ""}
+                placeholder="Question or suggestion..."
+                minRows={5}
+                description={
+                  <Group position="right" mt={4}>
+                    <Text size="xs" color="dimmed">
+                      {watch("message").length}/1024 characters
+                    </Text>
+                  </Group>
+                }
+              />
+              <Button
+                size="sm"
+                fullWidth={isMobile}
+                rightIcon={<Send size={18} />}
+                type="submit"
+                loading={sending}>
+                Send Message
+              </Button>
+            </Box>
+          )}
+        </SimpleGrid>
+      </Container>
+    </>
   );
 }
 

@@ -25,8 +25,18 @@ export default function SingleChapter({ metadata, content }) {
   return (
     <>
       <NextSeo
-        title={`${metadata.title} | The Pilfered Diaries`}
+        title={metadata.title}
         description={metadata.excerpt}
+        openGraph={{
+          description: metadata.excerpt,
+          type: "article",
+          title: metadata.title,
+          article: {
+            publishedTime: metadata.published,
+            tags: metadata.tags,
+            authors: [metadata.author],
+          },
+        }}
       />
       <Container size="md" pt="4rem">
         <Text
