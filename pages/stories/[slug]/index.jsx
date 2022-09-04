@@ -72,7 +72,7 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
         }}>
         <Box className={classes.headerContent}>
           <Text className={classes.title}>{story.title}</Text>
-          <Group spacing={4} position="center">
+          <Group spacing={4} position="center" mt="xs">
             <Text size="sm">{story.author}</Text>
             <Point size={8} />
             <Text size="sm">{story.chapterCount} Chapters</Text>
@@ -81,6 +81,15 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
               {dayjs(story.published).format(DATE_FORMATS.date)}
             </Text>
           </Group>
+          <Text
+            align="center"
+            my="md"
+            italic
+            color="dimmed"
+            size="sm"
+            sx={{ maxWidth: "350px" }}>
+            {story.excerpt}
+          </Text>
           <Group position="center" align="center">
             <ActionIcon
               variant="subtle"

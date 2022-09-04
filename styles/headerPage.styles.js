@@ -10,11 +10,15 @@ const useHeaderPageStyles = createStyles((theme, params) => ({
     padding: 0,
   },
   headerContent: {
-    backgroundColor: `${theme.black}AA`,
-    borderRadius: theme.radius.md,
-    backdropFilter: "blur(8px)",
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: `${theme.colors.dark[9]}BB`,
+    backdropFilter: "blur(3px)",
     padding: theme.spacing.lg,
-    maxWidth: "95%",
   },
   title: {
     fontFamily: "'Lato', sans-serif",
@@ -24,6 +28,7 @@ const useHeaderPageStyles = createStyles((theme, params) => ({
     textAlign: "center",
     color: theme.white,
     fontWeight: "bold",
+    maxWidth: "600px",
   },
 }));
 
