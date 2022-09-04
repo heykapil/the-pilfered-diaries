@@ -20,7 +20,7 @@ import * as yup from "yup";
 import { APP_TITLE } from "../../constants/app.constants";
 import { firestoreClient } from "../../firebase/clientConfig";
 import { useMediaMatch } from "../../hooks/isMobile";
-import about from "../../resources/images/about-1.png";
+import profilePic from "../../resources/images/about-1.png";
 
 export default function AboutHome() {
   const { colors } = useMantineTheme();
@@ -29,10 +29,7 @@ export default function AboutHome() {
   const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("subscribed")) {
-      console.log("this ran");
-      setSubscribed(true);
-    }
+    if (sessionStorage.getItem("subscribed")) setSubscribed(true);
   }, []);
 
   const {
@@ -102,7 +99,7 @@ export default function AboutHome() {
         ]}>
         <Box px="0.75rem" sx={{ order: isMobile ? 2 : 1 }}>
           <Image
-            src={about}
+            src={profilePic}
             width={512}
             height={512}
             alt="amittras-pal-profile-image"

@@ -61,7 +61,7 @@ export default function LargeCard({ variant = "stories", data }) {
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    backgroundColor: theme.colors.gray[8],
+    backgroundColor: theme.colors.dark[6],
     borderRadius: theme.radius.md,
   },
   guestMarker: {

@@ -120,12 +120,13 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
 
 const useCardStyles = createStyles((theme) => ({
   card: {
-    backgroundColor: theme.colors.gray[9],
+    backgroundColor: theme.colors.dark[8],
     padding: theme.spacing.sm,
     borderRadius: theme.radius.md,
+    border: `1px solid ${theme.colors.dark[6]}`,
     transition: "all 0.2s",
     "&:hover, &:focus-within": {
-      backgroundColor: theme.colors.gray[8],
+      backgroundColor: theme.colors.dark[6],
       boxShadow: theme.shadows.md,
     },
   },

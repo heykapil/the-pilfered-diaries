@@ -140,6 +140,16 @@ export function NavGroup({ onSelect = () => null }) {
       </Button>
       <Button
         component={NextLink}
+        href="/about"
+        fullWidth={isMobile}
+        variant={pathname === "/about" ? "white" : "subtle"}
+        color="dark"
+        size="sm"
+        onClick={onSelect}>
+        About
+      </Button>
+      <Button
+        component={NextLink}
         href="/posts"
         fullWidth={isMobile}
         variant={pathname === "/posts" ? "white" : "subtle"}

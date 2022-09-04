@@ -78,7 +78,7 @@ export default function Comments({ comments = [], title, type, target }) {
       });
     } catch (error) {
       showNotification({
-        title: "Failed to submit notification",
+        title: "Failed to submit comment",
         icon: <X />,
         message: "Please try again!",
         color: "red",

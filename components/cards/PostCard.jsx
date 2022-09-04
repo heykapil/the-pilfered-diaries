@@ -55,7 +55,7 @@ const useStyles = createStyles((theme) => ({
   wrapper: {
     marginBottom: theme.spacing.sm,
     textDecoration: "none",
-    backgroundColor: theme.colors.gray[8],
+    backgroundColor: theme.colors.dark[6],
     borderRadius: theme.radius.md,
     maxHeight: "100px",
     minHeight: "7rem",

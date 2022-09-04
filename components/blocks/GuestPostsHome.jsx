@@ -67,7 +67,7 @@ export default function GuestPostsHome({ posts = [] }) {
             fullWidth={isMobile}
             component={NextLink}
             href="/submissions">
-            Send a Submission
+            Submit your Work
           </Button>
         </Group>
       )}

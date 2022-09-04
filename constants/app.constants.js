@@ -15,6 +15,7 @@ export const SMALL_THRESHOLD_ROUTES = [
   "/stories/[slug]/[chapter]",
   "/submissions",
   "/file-preview",
+  "/about",
 ];
 
 export const TAGLINE = (

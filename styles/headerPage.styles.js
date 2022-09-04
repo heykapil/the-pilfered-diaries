@@ -5,6 +5,7 @@ const useHeaderPageStyles = createStyles((theme, params) => ({
     height: "100vh",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
+    backgroundSize: "cover",
     flexDirection: "column",
     padding: 0,
   },
