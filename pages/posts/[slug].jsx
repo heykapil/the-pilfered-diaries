@@ -47,13 +47,22 @@ export default function SinglePost({ meta, content, comments }) {
         sx={{ backgroundImage: `url(${meta.cover})` }}>
         <Box className={classes.headerContent}>
           <Text className={classes.title}>{meta.title}</Text>
-          <Group spacing={4} position="center">
+          <Group spacing={4} position="center" mt="xs">
             <Text size="sm">by {meta.author}</Text>
             <Point size={12} style={{ marginTop: "2px" }} />
             <Text size="sm">
               {meta.readTime.text} ({meta.readTime.words} words)
             </Text>
           </Group>
+          <Text
+            align="center"
+            my="md"
+            italic
+            color="dimmed"
+            size="sm"
+            sx={{ maxWidth: "350px" }}>
+            {meta.excerpt}
+          </Text>
           <Group position="center" align="center">
             <ActionIcon
               variant="subtle"
