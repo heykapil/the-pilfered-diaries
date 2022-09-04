@@ -1,10 +1,9 @@
 import { Box, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { NextSeo } from "next-seo";
-import Head from "next/head";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
-import { APP_TITLE } from "../constants/app.constants";
+import { APP_TITLE, SITE_URL } from "../constants/app.constants";
 import theme from "../styles/mantine";
 
 export default function App({ Component, pageProps }) {
@@ -16,7 +15,7 @@ export default function App({ Component, pageProps }) {
         openGraph={{
           type: "website",
           locale: "en_IN",
-          url: "https://thepilfereddiaries.in",
+          url: SITE_URL,
           title: APP_TITLE,
           site_name: APP_TITLE,
           description:

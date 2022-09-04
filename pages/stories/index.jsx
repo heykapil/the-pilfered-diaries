@@ -2,7 +2,7 @@ import { Container, SimpleGrid, Text } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import React from "react";
 import LargeCard from "../../components/cards/LargeCard";
-import { APP_TITLE } from "../../constants/app.constants";
+import { APP_TITLE, SITE_URL } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 
 export default function StoriesList({ stories = [] }) {
@@ -13,7 +13,7 @@ export default function StoriesList({ stories = [] }) {
         description={`Latest stories on ${APP_TITLE}`}
         openGraph={{
           type: "page",
-          url: "https://thepilfereddiaries.in/stories",
+          url: SITE_URL + "/stories",
         }}
       />
       <Container size="lg" pt="70px">

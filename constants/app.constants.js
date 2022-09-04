@@ -1,6 +1,7 @@
 export const APP_TITLE = "The Pilfered Diaries";
 export const INSTA_HANDLE = "/the.pilfered.diaries";
 export const INSTA_LINK = `https://instagram.com${INSTA_HANDLE}`;
+export const SITE_URL = "https://thepilfereddiaries.in";
 export const COMMENT_HEADER = "What people think of";
 export const REVALIDATION_INTERVAL = 3600; // revalidate every hour.
 export const COMMENT_NOTICE =

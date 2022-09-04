@@ -13,20 +13,18 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+import { showNotification } from "@mantine/notifications";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Check, Checks, Send, X } from "tabler-icons-react";
-import { APP_TITLE } from "../constants/app.constants";
+import * as yup from "yup";
+import { APP_TITLE, SITE_URL } from "../constants/app.constants";
+import { firestoreClient } from "../firebase/clientConfig";
 import { useMediaMatch } from "../hooks/isMobile";
 import profilePic from "../resources/images/about-2.png";
-import * as yup from "yup";
-import { useState } from "react";
-import { useEffect } from "react";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { firestoreClient } from "../firebase/clientConfig";
-import { showNotification } from "@mantine/notifications";
-import { NextSeo } from "next-seo";
 
 export default function About() {
   const isMobile = useMediaMatch();
@@ -105,7 +103,7 @@ export default function About() {
         title="About"
         description="About this blog and a little bit about me!"
         openGraph={{
-          url: "https://thepilfereddiaries.in/about",
+          url: SITE_URL + "/about",
         }}
       />
       <Container size="xl" pt={70}>
