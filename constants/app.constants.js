@@ -3,7 +3,7 @@ export const INSTA_HANDLE = "/the.pilfered.diaries";
 export const INSTA_LINK = `https://instagram.com${INSTA_HANDLE}`;
 export const SITE_URL = "https://thepilfereddiaries.in";
 export const COMMENT_HEADER = "What people think of";
-export const REVALIDATION_INTERVAL = 3600; // revalidate every hour.
+export const ISR_INTERVAL = 3600;
 export const COMMENT_NOTICE =
   "NOTE: Your comment will be sent for review & moderation. Please refrain from using profanity or slangs. Also make sure to enter a short title, and use the body for longer thoughts. Everything else is just fine. 😊😊";
 
@@ -11,13 +11,6 @@ export const DATE_FORMATS = {
   date: "MMM DD, YYYY",
   dateTime: "MMM DD, YYYY, HH:MM A",
 };
-
-export const SMALL_THRESHOLD_ROUTES = [
-  "/stories/[slug]/[chapter]",
-  "/submissions",
-  "/file-preview",
-  "/about",
-];
 
 export const TAGLINE = (
   <>

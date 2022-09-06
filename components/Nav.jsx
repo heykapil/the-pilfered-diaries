@@ -12,7 +12,11 @@ import { NextLink } from "@mantine/next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
-import { APP_TITLE, SMALL_THRESHOLD_ROUTES } from "../constants/app.constants";
+import { APP_TITLE } from "../constants/app.constants";
+import {
+  QUICK_COLLAPSE_NAV_ROUTES,
+  ROUTES,
+} from "../constants/route.constants";
 import { useMediaMatch } from "../hooks/isMobile";
 import logoWhite from "../resources/images/logo-white.svg";
 
@@ -25,7 +29,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   const threshold = useMemo(() => {
-    return SMALL_THRESHOLD_ROUTES.includes(pathname) ? 50 : 250;
+    return QUICK_COLLAPSE_NAV_ROUTES.includes(pathname) ? 50 : 250;
   }, [pathname]);
 
   useEffect(() => {
@@ -122,62 +126,26 @@ const useStyles = createStyles((theme) => ({
 export function NavGroup({ onSelect = () => null }) {
   const { pathname } = useRouter();
   const isMobile = useMediaMatch();
+
   return (
     <Group
       mt={isMobile ? "2rem" : 0}
       ml={isMobile ? 0 : "auto"}
       spacing="sm"
       sx={{ flexDirection: isMobile ? "column" : "row" }}>
-      <Button
-        component={NextLink}
-        href="/"
-        fullWidth={isMobile}
-        variant={pathname === "/" ? "white" : "subtle"}
-        color="dark"
-        size="sm"
-        onClick={onSelect}>
-        Home
-      </Button>
-      <Button
-        component={NextLink}
-        href="/about"
-        fullWidth={isMobile}
-        variant={pathname === "/about" ? "white" : "subtle"}
-        color="dark"
-        size="sm"
-        onClick={onSelect}>
-        About
-      </Button>
-      <Button
-        component={NextLink}
-        href="/posts"
-        fullWidth={isMobile}
-        variant={pathname === "/posts" ? "white" : "subtle"}
-        color="dark"
-        size="sm"
-        onClick={onSelect}>
-        Posts
-      </Button>
-      <Button
-        component={NextLink}
-        href="/stories"
-        fullWidth={isMobile}
-        variant={pathname === "/stories" ? "white" : "subtle"}
-        color="dark"
-        size="sm"
-        onClick={onSelect}>
-        Stories & Narratives
-      </Button>
-      <Button
-        component={NextLink}
-        href="/submissions"
-        fullWidth={isMobile}
-        variant={pathname === "/submissions" ? "white" : "subtle"}
-        color="dark"
-        size="sm"
-        onClick={onSelect}>
-        Get Featured
-      </Button>
+      {ROUTES.map((route) => (
+        <Button
+          component={NextLink}
+          href={route.path}
+          key={route.path}
+          fullWidth={isMobile}
+          variant={route.matchers.includes(pathname) ? "white" : "subtle"}
+          color="dark"
+          size="sm"
+          onClick={onSelect}>
+          {route.label}
+        </Button>
+      ))}
     </Group>
   );
 }
