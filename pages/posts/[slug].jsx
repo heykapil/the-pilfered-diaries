@@ -8,7 +8,7 @@ import readingTime from "reading-time";
 import { ArrowDown, Point } from "tabler-icons-react";
 import Comments from "../../components/comments/Comments";
 import RenderMarkdown from "../../components/markdown/RenderMarkdown";
-import { REVALIDATION_INTERVAL } from "../../constants/app.constants";
+import { ISR_INTERVAL } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 import { useMediaMatch } from "../../hooks/isMobile";
 import useHeaderPageStyles from "../../styles/headerPage.styles";
@@ -88,8 +88,12 @@ export default function SinglePost({ meta, content, comments }) {
   );
 }
 
+/** @type {import('next').GetStaticPaths} */
 export async function getStaticPaths() {
-  const response = await firestore.collection("posts").get();
+  const response = await firestore
+    .collection("posts")
+    .where("draft", "==", false)
+    .get();
   const paths = response.docs.map((doc) => ({
     params: {
       slug: doc.id,
@@ -102,6 +106,7 @@ export async function getStaticPaths() {
   };
 }
 
+/** @type {import('next').GetStaticProps} */
 export async function getStaticProps(ctx) {
   const { params } = ctx;
   const response = await firestore.doc(`posts/${params.slug}`).get();
@@ -134,6 +139,6 @@ export async function getStaticProps(ctx) {
             }))
           : [],
     },
-    revalidate: REVALIDATION_INTERVAL,
+    revalidate: ISR_INTERVAL,
   };
 }

@@ -2,8 +2,12 @@ import { Container, SimpleGrid, Text } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import React from "react";
 import LargeCard from "../../components/cards/LargeCard";
-import { APP_TITLE, SITE_URL } from "../../constants/app.constants";
-import firestore from "../../firebase/config";
+import {
+  APP_TITLE,
+  ISR_INTERVAL,
+  SITE_URL,
+} from "../../constants/app.constants";
+import { postsList } from "../../services/serverData.promises";
 
 export default function PostsList({ posts }) {
   return (
@@ -42,12 +46,9 @@ export default function PostsList({ posts }) {
   );
 }
 
-export async function getServerSideProps() {
-  const response = await firestore
-    .collection("posts")
-    .orderBy("published", "desc")
-    .limit(25)
-    .get();
+/** @type {import('next').GetStaticProps} */
+export async function getStaticProps() {
+  const response = await postsList("all", 25);
   const posts = response.docs.map((doc) => ({
     ...doc.data(),
     slug: doc.id,
@@ -58,5 +59,6 @@ export async function getServerSideProps() {
     props: {
       posts,
     },
+    revalidate: ISR_INTERVAL,
   };
 }

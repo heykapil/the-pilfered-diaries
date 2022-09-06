@@ -20,10 +20,7 @@ import { ArrowDown, Point } from "tabler-icons-react";
 import Comments from "../../../components/comments/Comments";
 import LoadingContent from "../../../components/LoadingContent";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import {
-  DATE_FORMATS,
-  REVALIDATION_INTERVAL,
-} from "../../../constants/app.constants";
+import { DATE_FORMATS, ISR_INTERVAL } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
 import { useMediaMatch } from "../../../hooks/isMobile";
 import useHeaderPageStyles from "../../../styles/headerPage.styles";
@@ -162,9 +159,11 @@ const useCardStyles = createStyles((theme) => ({
   },
 }));
 
+/** @type {import('next').GetStaticPaths} */
 export async function getStaticPaths() {
   const response = await firestore
     .collection("stories")
+    .where("draft", "==", false)
     .orderBy("published", "desc")
     .get();
   const paths = response.docs.map((doc) => ({
@@ -179,6 +178,7 @@ export async function getStaticPaths() {
   };
 }
 
+/** @type {import('next').GetStaticProps} */
 export async function getStaticProps(ctx) {
   const { params } = ctx;
 
@@ -218,6 +218,6 @@ export async function getStaticProps(ctx) {
         date: doc.data().date.toDate().toISOString(),
       })),
     },
-    revalidate: REVALIDATION_INTERVAL,
+    revalidate: ISR_INTERVAL,
   };
 }

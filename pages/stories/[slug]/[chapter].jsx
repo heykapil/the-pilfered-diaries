@@ -112,18 +112,19 @@ export default function SingleChapter({ metadata, content }) {
   );
 }
 
+/** @type {import('next').GetStaticPaths} */
 export async function getStaticPaths() {
-  const paths = (await firestore.collection("stories").get()).docs.flatMap(
-    (doc) => {
-      const chapterPaths = doc.data().chapterSlugs.map((chapter) => ({
-        params: {
-          slug: doc.id,
-          chapter,
-        },
-      }));
-      return chapterPaths;
-    }
-  );
+  const paths = (
+    await firestore.collection("stories").where("draft", "==", false).get()
+  ).docs.flatMap((doc) => {
+    const chapterPaths = doc.data().chapterSlugs.map((chapter) => ({
+      params: {
+        slug: doc.id,
+        chapter,
+      },
+    }));
+    return chapterPaths;
+  });
 
   return {
     paths,
@@ -131,6 +132,7 @@ export async function getStaticPaths() {
   };
 }
 
+/** @type {import('next').GetStaticProps} */
 export async function getStaticProps(ctx) {
   const { params } = ctx;
   const filePath = (

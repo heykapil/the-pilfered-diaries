@@ -2,8 +2,12 @@ import { Container, SimpleGrid, Text } from "@mantine/core";
 import { NextSeo } from "next-seo";
 import React from "react";
 import LargeCard from "../../components/cards/LargeCard";
-import { APP_TITLE, SITE_URL } from "../../constants/app.constants";
-import firestore from "../../firebase/config";
+import {
+  APP_TITLE,
+  ISR_INTERVAL,
+  SITE_URL,
+} from "../../constants/app.constants";
+import { storiesList } from "../../services/serverData.promises";
 
 export default function StoriesList({ stories = [] }) {
   return (
@@ -40,12 +44,9 @@ export default function StoriesList({ stories = [] }) {
   );
 }
 
-export async function getServerSideProps() {
-  const response = await firestore
-    .collection("stories")
-    .orderBy("published", "desc")
-    .limit(25)
-    .get();
+/** @type {import('next').GetStaticProps} */
+export async function getStaticProps() {
+  const response = await storiesList(25);
   const stories = response.docs.map((doc) => ({
     ...doc.data(),
     slug: doc.id,
@@ -56,5 +57,6 @@ export async function getServerSideProps() {
     props: {
       stories,
     },
+    revalidate: ISR_INTERVAL,
   };
 }

@@ -16,11 +16,12 @@ import {
   APP_TITLE,
   INSTA_HANDLE,
   INSTA_LINK,
+  ISR_INTERVAL,
   TAGLINE,
 } from "../constants/app.constants";
-import firestore from "../firebase/config";
 import { useMediaMatch } from "../hooks/isMobile";
 import header from "../resources/images/header-bg.jpg";
+import { postsList, storiesList } from "../services/serverData.promises";
 import { scrollToContent } from "../utils/utils";
 
 export default function Home({ stories, posts, guestPosts }) {
@@ -77,24 +78,13 @@ export default function Home({ stories, posts, guestPosts }) {
   );
 }
 
-export async function getServerSideProps() {
-  const storiesRes = await firestore
-    .collection("stories")
-    .orderBy("published", "desc")
-    .limit(5)
-    .get();
-  const postsRes = await firestore
-    .collection("posts")
-    .where("byGuest", "==", false)
-    .orderBy("published", "desc")
-    .limit(5)
-    .get();
-  const guestPostsRes = await firestore
-    .collection("posts")
-    .where("byGuest", "==", true)
-    .orderBy("published", "desc")
-    .limit(3)
-    .get();
+/** @type {import('next').GetStaticProps} */
+export async function getStaticProps() {
+  const [storiesRes, postsRes, guestPostsRes] = await Promise.all([
+    storiesList(5),
+    postsList("owned", 5),
+    postsList("guest", 3),
+  ]);
 
   const stories = storiesRes.docs.map((doc) => ({
     ...doc.data(),
@@ -119,6 +109,7 @@ export async function getServerSideProps() {
       posts,
       guestPosts,
     },
+    revalidate: ISR_INTERVAL,
   };
 }
 
