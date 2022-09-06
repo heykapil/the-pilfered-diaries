@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
       marginTop: 0,
     },
     p: {
-      marginBottom: "1.25rem",
+      marginBottom: theme.spacing.md,
     },
     a: {
       textDecoration: "none",
@@ -43,6 +43,12 @@ const useStyles = createStyles((theme) => ({
         fontWeight: 500,
         textDecoration: "underline",
       },
+    },
+    img: {
+      width: "100%",
+      height: "auto",
+      borderRadius: theme.radius.md,
+      marginBottom: theme.spacing.md,
     },
   },
 }));
