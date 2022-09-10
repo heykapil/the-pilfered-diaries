@@ -15,6 +15,7 @@ import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
 import { X } from "tabler-icons-react";
 import RenderMarkdown from "../components/markdown/RenderMarkdown";
+import { AVG_READING_SPEED } from "../constants/app.constants";
 
 export default function FilePreview() {
   const [fileData, setFileData] = useState(null);
@@ -43,7 +44,9 @@ export default function FilePreview() {
             content,
             data,
             file,
-            readTime: readingTime(fileContent),
+            readTime: readingTime(fileContent, {
+              wordsPerMinute: AVG_READING_SPEED,
+            }),
           });
         };
         reader.readAsText(file);
