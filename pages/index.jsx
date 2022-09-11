@@ -21,17 +21,21 @@ import {
   TAGLINE,
 } from "../constants/app.constants";
 import { useMediaMatch } from "../hooks/isMobile";
-import header from "../resources/images/header-bg.jpg";
 import { postsList, storiesList } from "../services/serverData.promises";
 import { scrollToContent } from "../utils/utils";
+import firestore from "../firebase/config";
 
-export default function Home({ stories, posts, guestPosts }) {
+export default function Home({ stories, posts, guestPosts, siteCover }) {
   const isMobile = useMediaMatch();
   const { classes } = useStyles();
 
   return (
     <>
-      <Container fluid px={0} className={classes.headerBg}>
+      <Container
+        fluid
+        px={0}
+        className={classes.headerBg}
+        sx={{ backgroundImage: `url(${siteCover})` }}>
         <Container size="lg" px="xs" className={classes.header}>
           <Text className={classes.tagline} weight={600}>
             {TAGLINE}
@@ -60,7 +64,7 @@ export default function Home({ stories, posts, guestPosts }) {
             color="gray"
             radius="md"
             mr="auto"
-            size="xl"
+            size={isMobile ? "md" : "xl"}
             fullWidth
             leftIcon={<ArrowDown />}
             onClick={() => scrollToContent("aboutBlock")}>
@@ -92,6 +96,12 @@ export async function getStaticProps() {
     postsList("guest", 3),
   ]);
 
+  const headerId = (await firestore.doc("siteContent/site-config").get()).data()
+    .headerImg;
+  const siteCover = (
+    await firestore.doc(`siteContent/site-config/headers/${headerId}`).get()
+  ).data().url;
+
   const stories = storiesRes.docs.map((doc) => ({
     ...doc.data(),
     slug: doc.id,
@@ -114,6 +124,7 @@ export async function getStaticProps() {
       stories,
       posts,
       guestPosts,
+      siteCover,
     },
     revalidate: ISR_INTERVAL,
   };
@@ -121,7 +132,6 @@ export async function getStaticProps() {
 
 const useStyles = createStyles((theme) => ({
   headerBg: {
-    backgroundImage: `url(${header.src})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",

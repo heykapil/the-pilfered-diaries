@@ -10,7 +10,7 @@ import {
 import { NextLink } from "@mantine/next";
 import Image from "next/image";
 import React from "react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "tabler-icons-react";
+import { ArrowLeft, ArrowRight } from "tabler-icons-react";
 import artwork from "../../resources/images/submissions-artwork.svg";
 import LargeCard from "../cards/LargeCard";
 
@@ -39,7 +39,6 @@ export default function StoriesListHome({ stories }) {
         align="center"
         height="100%"
         slideGap={4}
-        slideSize="93%"
         controlSize={25}
         sx={{ maxWidth: "100%" }}
         nextControlIcon={
@@ -51,7 +50,7 @@ export default function StoriesListHome({ stories }) {
             sx={(theme) => ({
               boxShadow: theme.shadows.md,
             })}>
-            <ChevronRight size={18} />
+            <ArrowRight size={18} />
           </ThemeIcon>
         }
         previousControlIcon={
@@ -63,7 +62,7 @@ export default function StoriesListHome({ stories }) {
             sx={(theme) => ({
               boxShadow: theme.shadows.md,
             })}>
-            <ChevronLeft size={18} />
+            <ArrowLeft size={18} />
           </ThemeIcon>
         }
         styles={{
