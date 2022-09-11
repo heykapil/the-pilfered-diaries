@@ -17,6 +17,7 @@ import React from "react";
 import readingTime from "reading-time";
 import { ChevronLeft, ChevronRight, Home, Point } from "tabler-icons-react";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
+import { AVG_READING_SPEED } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
 
 export default function SingleChapter({ metadata, content }) {
@@ -143,7 +144,7 @@ export async function getStaticProps(ctx) {
 
   const storyFile = await axios.get(filePath);
   const { data: metadata, content: source } = grayMatter(storyFile.data);
-  const time = readingTime(source);
+  const time = readingTime(source, { wordsPerMinute: AVG_READING_SPEED });
   metadata["readTime"] = time;
   const content = await serialize(source);
 

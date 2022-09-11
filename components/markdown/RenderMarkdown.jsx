@@ -1,25 +1,14 @@
-import { Blockquote, Box, createStyles, Text } from "@mantine/core";
+import { Box, createStyles } from "@mantine/core";
 import { MDXRemote } from "next-mdx-remote";
-import Link from "next/link";
 import React from "react";
-import AuthorNoteSeparator from "./AuthorNoteSeparator";
-import SectionBreak from "./SectionBreak";
+import { mdCompoents } from "./mdComponents";
 
 export default function RenderMarkdown(props) {
   const { classes } = useStyles();
 
   return (
     <Box className={classes.markdownContent}>
-      <MDXRemote
-        {...props}
-        components={{
-          SectionBreak,
-          AuthorNoteSeparator,
-          Blockquote,
-          Link,
-          Text,
-        }}
-      />
+      <MDXRemote {...props} components={mdCompoents} />
     </Box>
   );
 }

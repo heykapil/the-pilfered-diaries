@@ -8,7 +8,7 @@ import readingTime from "reading-time";
 import { ArrowDown, Point } from "tabler-icons-react";
 import Comments from "../../components/comments/Comments";
 import RenderMarkdown from "../../components/markdown/RenderMarkdown";
-import { ISR_INTERVAL } from "../../constants/app.constants";
+import { AVG_READING_SPEED, ISR_INTERVAL } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
 import { useMediaMatch } from "../../hooks/isMobile";
 import useHeaderPageStyles from "../../styles/headerPage.styles";
@@ -126,7 +126,7 @@ export async function getStaticProps(ctx) {
       content: await serialize(content),
       meta: {
         ...response.data(),
-        readTime: readingTime(content),
+        readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
         published: response.data().published.toDate().toISOString(),
         slug: params.slug,
       },
