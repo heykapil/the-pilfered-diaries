@@ -35,7 +35,7 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
         fluid
         px={0}
         className={classes.headerBg}
-        sx={{ backgroundImage: `url(${siteCover})` }}>
+        sx={{ backgroundImage: `url(${siteCover.url})` }}>
         <Container size="lg" px="xs" className={classes.header}>
           <Text className={classes.tagline} weight={600}>
             {TAGLINE}
@@ -71,6 +71,16 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
             Start Reading
           </Button>
         </Container>
+        <Text
+          size={isMobile ? "xs" : "sm"}
+          color="dimmed"
+          component="p"
+          className={classes.creditText}>
+          Photo By:{" "}
+          <Text component="span" weight={600}>
+            {siteCover.photoCredit}
+          </Text>
+        </Text>
       </Container>
       <AboutHome />
       <Container size="lg" p="sm" pb="xl">
@@ -96,11 +106,14 @@ export async function getStaticProps() {
     postsList("guest", 3),
   ]);
 
-  const headerId = (await firestore.doc("siteContent/site-config").get()).data()
-    .headerImg;
+  const headerId = (
+    await firestore.doc("siteContent/site-config").get()
+  ).data();
   const siteCover = (
-    await firestore.doc(`siteContent/site-config/headers/${headerId}`).get()
-  ).data().url;
+    await firestore
+      .doc(`siteContent/site-config/headers/${headerId.headerImg}`)
+      .get()
+  ).data();
 
   const stories = storiesRes.docs.map((doc) => ({
     ...doc.data(),
@@ -135,6 +148,15 @@ const useStyles = createStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
+    position: "relative",
+  },
+  creditText: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    width: "fit-content",
+    textAlign: "end",
+    margin: 0,
   },
   header: {
     display: "flex",
