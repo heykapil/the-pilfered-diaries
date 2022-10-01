@@ -18,7 +18,7 @@ import {
   ROUTES,
 } from "../constants/route.constants";
 import { useMediaMatch } from "../hooks/isMobile";
-import logoWhite from "../resources/images/logo-white.svg";
+import logoWhite from "../resources/images/tpd-logo-w.svg";
 
 export default function Nav() {
   const { pathname } = useRouter();
@@ -38,9 +38,9 @@ export default function Nav() {
       if (containerPosition >= threshold) setScrolled(true);
       else setScrolled(false);
     };
-    document.addEventListener("scroll", scrollHandler);
+    document.addEventListener("scroll", scrollHandler, { passive: true });
     return () => {
-      document.removeEventListener("scroll", scrollHandler);
+      document.removeEventListener("scroll", scrollHandler, { passive: true });
     };
   }, [threshold]);
 
