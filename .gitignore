@@ -35,5 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# cli program
-/python
+/public/robots.txt
+/public/*.xml

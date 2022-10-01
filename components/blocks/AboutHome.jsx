@@ -26,10 +26,11 @@ export default function AboutHome() {
   const { colors } = useMantineTheme();
   const isMobile = useMediaMatch();
   const [subscribing, setSubscribing] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const [subscribed, setSubscribed] = useState(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem("subscribed")) setSubscribed(true);
+    if (sessionStorage.getItem("subscribed"))
+      setSubscribed(sessionStorage.getItem("subscribed"));
   }, []);
 
   const {
@@ -78,10 +79,11 @@ export default function AboutHome() {
           icon: <Check size={18} />,
         });
         reset();
-        setSubscribed(true);
-        sessionStorage.setItem("subscribed", true);
+        setSubscribed(email);
+        sessionStorage.setItem("subscribed", email);
       }
     } catch (error) {
+      console.log(error);
     } finally {
       setSubscribing(false);
     }
@@ -138,7 +140,9 @@ export default function AboutHome() {
           </Text>
           {subscribed ? (
             <Alert icon={<Checks size={16} />} title="Subscribed" color="green">
-              <Text color="dimmed">You are subscribed to {APP_TITLE}</Text>
+              <Text color="dimmed">
+                Your email {subscribed} is subscribed to {APP_TITLE}
+              </Text>
             </Alert>
           ) : (
             <Grid columns={12}>
