@@ -1,99 +1,59 @@
-import {
-  Button,
-  Container,
-  createStyles,
-  Grid,
-  Group,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
-import { NextLink } from "@mantine/next";
-import { ArrowDown, BrandInstagram } from "tabler-icons-react";
+import { NextSeo } from "next-seo";
 import AboutHome from "../components/blocks/AboutHome";
 import GuestPostsHome from "../components/blocks/GuestPostsHome";
-import PostsListHome from "../components/blocks/PostsListHome";
-import StoriesListHome from "../components/blocks/StoriesListHome";
-import {
-  APP_TITLE,
-  INSTA_HANDLE,
-  INSTA_LINK,
-  ISR_INTERVAL,
-  TAGLINE,
-} from "../constants/app.constants";
-import { useMediaMatch } from "../hooks/isMobile";
-import { postsList, storiesList } from "../services/serverData.promises";
-import { scrollToContent } from "../utils/utils";
+import HeaderHome from "../components/blocks/HeaderHome";
+import PostsHome from "../components/blocks/PostsHome";
+import StoriesHome from "../components/blocks/StoriesHome";
+import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "../constants/app.constants";
 import firestore from "../firebase/config";
+import { postsList, storiesList } from "../services/serverData.promises";
+import styles from "../styles/Home.module.scss";
 
 export default function Home({ stories, posts, guestPosts, siteCover }) {
-  const isMobile = useMediaMatch();
-  const { classes } = useStyles();
-
   return (
     <>
-      <Container
-        fluid
-        px={0}
-        className={classes.headerBg}
-        sx={{ backgroundImage: `url(${siteCover.url})` }}>
-        <Container size="lg" px="xs" className={classes.header}>
-          <Text className={classes.tagline} weight={600}>
-            {TAGLINE}
-          </Text>
-          <Text className={classes.siteName}>{APP_TITLE}</Text>
-          <Group
-            mt="sm"
-            spacing={4}
-            align="center"
-            position="center"
-            sx={{ cursor: "pointer" }}>
-            <ThemeIcon mr={4} color="indigo" variant="light" radius="xl">
-              <BrandInstagram size={18} />
-            </ThemeIcon>
-            <Text
-              component={NextLink}
-              href={INSTA_LINK}
-              sx={(theme) => ({ color: theme.colors.indigo[3] })}
-              variant="link">
-              {INSTA_HANDLE}
-            </Text>
-          </Group>
-          <Button
-            mt="lg"
-            variant="subtle"
-            color="gray"
-            radius="md"
-            mr="auto"
-            size={isMobile ? "md" : "xl"}
-            fullWidth
-            leftIcon={<ArrowDown />}
-            onClick={() => scrollToContent("aboutBlock")}>
-            Start Reading
-          </Button>
-        </Container>
-        <Text
-          size={isMobile ? "xs" : "sm"}
-          color="dimmed"
-          component="p"
-          className={classes.creditText}>
-          Photo By:{" "}
-          <Text component="span" weight={600}>
-            {siteCover.photoCredit}
-          </Text>
-        </Text>
-      </Container>
-      <AboutHome />
-      <Container size="lg" p="sm" pb="xl">
-        <Grid columns={24}>
-          <Grid.Col sm={24} md={14}>
-            <StoriesListHome stories={stories} />
-          </Grid.Col>
-          <Grid.Col sm={24} md={10} px={isMobile ? 8 : "sm"}>
-            <PostsListHome posts={posts} />
-          </Grid.Col>
-        </Grid>
+      <NextSeo
+        defaultTitle={APP_TITLE}
+        titleTemplate={`%s | ${APP_TITLE}`}
+        openGraph={{
+          type: "website",
+          locale: "en_IN",
+          url: SITE_URL,
+          title: APP_TITLE,
+          site_name: APP_TITLE,
+          description:
+            "The Pilfered Diaries is a place where I pen down the thoughts that come to my mind from all around me. I turn them to stories, sometimes little thoughts, and sometimes just a mess of words.",
+        }}
+        additionalMetaTags={[
+          {
+            name: "viewport",
+            content: "minimum-scale=1, initial-scale=1, width=device-width",
+          },
+        ]}
+        additionalLinkTags={[
+          {
+            rel: "icon",
+            href: "/favicon.svg",
+          },
+        ]}
+      />
+      <div className={styles["tpd-home"]}>
+        <HeaderHome siteCover={siteCover} />
+        <AboutHome />
+        <div className="container-fluid py-2">
+          <div className="container px-0 mt-4">
+            <div className="row">
+              <div className="col-md-7 mb-3 mb-md-0">
+                <StoriesHome stories={stories} />
+              </div>
+              <div className="col-md-5">
+                <PostsHome posts={posts} />
+              </div>
+            </div>
+          </div>
+        </div>
         <GuestPostsHome posts={guestPosts} />
-      </Container>
+      </div>
     </>
   );
 }
@@ -103,7 +63,7 @@ export async function getStaticProps() {
   const [storiesRes, postsRes, guestPostsRes] = await Promise.all([
     storiesList(5),
     postsList("owned", 5),
-    postsList("guest", 3),
+    postsList("guest", 5),
   ]);
 
   const headerId = (
@@ -142,41 +102,3 @@ export async function getStaticProps() {
     revalidate: ISR_INTERVAL,
   };
 }
-
-const useStyles = createStyles((theme) => ({
-  headerBg: {
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    position: "relative",
-  },
-  creditText: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    width: "fit-content",
-    textAlign: "end",
-    margin: 0,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  tagline: {
-    fontSize: "3.5rem",
-    lineHeight: "1",
-    color: theme.colors.gray[1],
-    textAlign: "center",
-  },
-  siteName: {
-    fontSize: "1.5rem",
-    lineHeight: "1",
-    marginTop: "1.25rem",
-    marginBottom: "0.5rem",
-    color: theme.colors.indigo[1],
-    fontWeight: 500,
-    textAlign: "center",
-  },
-}));

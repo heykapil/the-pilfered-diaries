@@ -1,13 +1,9 @@
 import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Group,
-  SimpleGrid,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+  IconArrowLeft,
+  IconArrowRight,
+  IconHome,
+  IconPoint,
+} from "@tabler/icons";
 import axios from "axios";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
@@ -15,14 +11,12 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import React from "react";
 import readingTime from "reading-time";
-import { ChevronLeft, ChevronRight, Home, Point } from "tabler-icons-react";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import { AVG_READING_SPEED } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
+import styles from "../../../styles/SingleChapter.module.scss";
 
 export default function SingleChapter({ metadata, content }) {
-  const { primaryColor } = useMantineTheme();
-
   return (
     <>
       <NextSeo
@@ -39,76 +33,49 @@ export default function SingleChapter({ metadata, content }) {
           },
         }}
       />
-      <Container size="md" pt="4rem">
-        <Text
-          sx={(theme) => ({
-            fontSize: "2rem",
-            marginTop: "2rem",
-            fontWeight: "bold",
-            textAlign: "center",
-            color: theme.colors.indigo[4],
-          })}>
-          {metadata.title}
-        </Text>
-        <Group spacing={4} position="center">
-          <Text color="dimmed" size="sm">
+      <div className={`container-fluid ${styles["single-story"]}`}>
+        <div className={`container px-0 ${styles["single-story__header"]}`}>
+          <h1 className="display-3">{metadata.title}</h1>
+          <p className="small text-warning mb-0">
             by {metadata.author}
-          </Text>
-          <Point size={10} style={{ marginTop: "2px" }} />
-          <Text color="dimmed" size="sm">
+            <span className="mx-2">
+              <IconPoint size={12} />
+            </span>
             {metadata.readTime.text} ({metadata.readTime.words} words)
-          </Text>
-        </Group>
-        <Divider variant="dashed" my="md" color={primaryColor} />
-        <Box className="story-content" mt="lg">
+          </p>
+        </div>
+        <div className="container px-2">
           <RenderMarkdown {...content} />
-        </Box>
-        <Divider variant="dashed" color="indigo" my="lg" />
-        <SimpleGrid cols={2} spacing="md">
-          <Group mb="lg" position="right">
-            {metadata.previousChapter && (
-              <Link
-                passHref
-                scroll
-                href={`/stories/${metadata.parent}/${metadata.previousChapter}`}>
-                <Button
-                  component="a"
-                  leftIcon={<ChevronLeft size={18} />}
-                  size="sm"
-                  variant="subtle"
-                  fullWidth>
+          <div className="row mb-3">
+            <div className="col-6 px-0">
+              {metadata.previousChapter && (
+                <Link
+                  className={styles["chapter-toggle"]}
+                  href={`/stories/${metadata.parent}/${metadata.previousChapter}`}>
+                  <IconArrowLeft size={24} />
                   Previous Chapter
-                </Button>
-              </Link>
-            )}
-          </Group>
-          <Group mb="lg" position="left">
-            <Link
-              passHref
-              scroll
-              href={
-                metadata.nextChapter
-                  ? `/stories/${metadata.parent}/${metadata.nextChapter}`
-                  : `/stories/${metadata.parent}`
-              }>
-              <Button
-                component="a"
-                rightIcon={
-                  metadata.nextChapter ? (
-                    <ChevronRight size={18} />
-                  ) : (
-                    <Home size={18} />
-                  )
-                }
-                size="sm"
-                variant="subtle"
-                fullWidth>
+                </Link>
+              )}
+            </div>
+            <div className="col-6 px-0">
+              <Link
+                className={styles["chapter-toggle"]}
+                href={
+                  metadata.nextChapter
+                    ? `/stories/${metadata.parent}/${metadata.nextChapter}`
+                    : `/stories/${metadata.parent}`
+                }>
                 {metadata.nextChapter ? "Next Chapter" : "Story Home"}
-              </Button>
-            </Link>
-          </Group>
-        </SimpleGrid>
-      </Container>
+                {metadata.nextChapter ? (
+                  <IconArrowRight size={24} />
+                ) : (
+                  <IconHome size={20} />
+                )}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

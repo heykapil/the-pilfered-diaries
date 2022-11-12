@@ -1,46 +1,47 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  Accordion,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Group,
-  List,
-  Modal,
-  Text,
-  Textarea,
-  TextInput,
-  ThemeIcon,
-  useMantineTheme,
-} from "@mantine/core";
-import { NextLink } from "@mantine/next";
+  IconCheck,
+  IconChecks,
+  IconMailFast,
+  IconSend,
+  IconX,
+} from "@tabler/icons";
 import { addDoc, collection } from "firebase/firestore";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ArrowRight,
-  At,
-  Check,
-  Checks,
-  Send,
-  User,
-  X,
-} from "tabler-icons-react";
 import * as yup from "yup";
 import { APP_TITLE } from "../constants/app.constants";
 import { firestoreClient } from "../firebase/clientConfig";
-import { useMediaMatch } from "../hooks/isMobile";
-import artwork from "../resources/images/submissions-artwork.svg";
-import { showNotification } from "@mantine/notifications";
-import { NextSeo } from "next-seo";
+import { useMediaQuery } from "../hooks/media-query";
+import { useNotifications } from "../hooks/notifications";
+import submitWork from "../resources/images/submissions-artwork.svg";
+import styles from "../styles/Submissions.module.scss";
 
 export default function Submissions() {
-  const isMobile = useMediaMatch();
-  const { shadows, colors } = useMantineTheme();
+  const { showNotification } = useNotifications();
+  const isLargeScreen = useMediaQuery("md");
+  const modalRef = useRef();
+  const [submitting, setSubmitting] = useState(false);
 
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const focusFirstInput = (e) => {
+      e.target.querySelector(".form-control").focus();
+    };
+    if (modalRef.current)
+      modalRef.current.addEventListener("shown.bs.modal", focusFirstInput);
+  }, []);
+
+  const showSubmissionForm = () => {
+    const { Modal } = require("bootstrap");
+    const formModal = new Modal(modalRef.current, {
+      backdrop: "static",
+      focus: true,
+    });
+    formModal.show();
+  };
+
   const {
     handleSubmit,
     reset,
@@ -77,7 +78,13 @@ export default function Submissions() {
     ),
   });
 
-  const [submitting, setSubmitting] = useState(false);
+  const closeForm = () => {
+    const { Modal } = require("bootstrap");
+    const formModal = Modal.getInstance(modalRef.current);
+    formModal.hide();
+    reset();
+  };
+
   const submitIdea = async (values) => {
     setSubmitting(true);
     try {
@@ -85,287 +92,356 @@ export default function Submissions() {
       await addDoc(collectionRef, values);
       showNotification({
         title: "Submission successful",
-        message:
-          "Your submission was successful, we'll get back to you within 24 hours.",
-        icon: <Check size={18} />,
-        color: "green",
+        body: "Your submission was successful, we'll get back to you within 24 hours.",
+        icon: <IconCheck size={18} />,
+        classNames: "bg-success text-dark",
       });
-      setOpen(false);
     } catch (error) {
+      showNotification({
+        title: "Submission failed",
+        body: "The submission failed, please try again or send me a message through the about page about the issue.",
+        icon: <IconCheck size={18} />,
+        classNames: "bg-danger text-dark",
+      });
     } finally {
       setSubmitting(false);
+      closeForm();
     }
   };
 
   return (
     <>
-      <NextSeo title="Submit your Work" />
-      <Container fluid pt="70px" pb="2rem" px={0}>
-        <Container size="md">
-          <Grid
-            cols={2}
-            align="center"
-            sx={{ flexDirection: isMobile ? "column-reverse" : "row" }}>
-            <Grid.Col sm={12} md={6}>
-              <Text
-                weight="bold"
-                color="indigo"
-                sx={{
-                  fontSize: "2.5rem",
-                  lineHeight: 1,
-                  textAlign: isMobile ? "center" : "left",
-                }}>
-                Have a Great Idea?
-              </Text>
-              <Text
-                size="lg"
-                color="dimmed"
-                mt="sm"
-                align={isMobile ? "center" : "left"}>
-                That you think suits {APP_TITLE} style.
-              </Text>
-              <Button
-                mt="lg"
-                size={isMobile ? "lg" : "xl"}
-                fullWidth={isMobile}
-                rightIcon={<ArrowRight />}
-                onClick={() => setOpen(!open)}>
-                Share it with us
-              </Button>
-            </Grid.Col>
-            <Grid.Col sm={12} md={6}>
-              <Image src={artwork} alt="artwork" />
-            </Grid.Col>
-          </Grid>
-          <Text mt="lg" mb="sm" weight={500} color="dimmed">
-            Submissions FAQs
-          </Text>
-          <Accordion variant="separated">
-            <Accordion.Item value="steps" sx={{ boxShadow: shadows.sm }}>
-              <Accordion.Control>
-                <Text size="lg" weight="bold" color="dimmed">
-                  How do I submit content to {APP_TITLE}?
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <List spacing="sm">
-                  <List.Item
-                    icon={
-                      <ThemeIcon color="green" variant="light" radius="xl">
-                        <Checks size={16} />
-                      </ThemeIcon>
-                    }>
-                    Simply click the Share it with us button above
-                  </List.Item>
-                  <List.Item
-                    icon={
-                      <ThemeIcon color="green" variant="light" radius="xl">
-                        <Checks size={16} />
-                      </ThemeIcon>
-                    }>
-                    Fill out little information about you and your idea. Make
-                    sure to provide a valid email address.
-                  </List.Item>
-                  <List.Item
-                    icon={
-                      <ThemeIcon color="green" variant="light" radius="xl">
-                        <Checks size={16} />
-                      </ThemeIcon>
-                    }>
-                    We will reach out to you on the mail, requesting the
-                    complete content and few other details relating to your
-                    composition.
-                  </List.Item>
-                  <List.Item
-                    icon={
-                      <ThemeIcon color="green" variant="light" radius="xl">
-                        <Checks size={16} />
-                      </ThemeIcon>
-                    }>
-                    And that&rsquo;s it. Your post is ready to be published on{" "}
-                    {APP_TITLE}
-                  </List.Item>
-                </List>
-              </Accordion.Panel>
-            </Accordion.Item>
-            <Accordion.Item value="basics" sx={{ boxShadow: shadows.sm }}>
-              <Accordion.Control>
-                <Text size="lg" weight="bold" color="dimmed">
-                  What kind of submissions does {APP_TITLE} accept?
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Text component="p">
-                  <Text component="span">
-                    We accept all sorts of thoughts relating to life for single
-                    posts,{" "}
-                  </Text>
-                  <Text component="span" weight="bold">
-                    Thoughtful Ideas, Short Stories, Poems, Non-fiction,{" "}
-                  </Text>
-                  <Text component="span">
-                    or if you have something else in mind and you would like to
-                    talk more,{" "}
-                  </Text>
-                  <Text
-                    component={NextLink}
-                    href="/contact"
-                    color="indigo"
-                    variant="link">
-                    let&rsquo;s talk...
-                  </Text>
-                </Text>
-                <Text component="p">
-                  <Text component="span">
-                    {APP_TITLE} publishes content of a specific type, and we go
-                    through all submissions carefully before posting. Hence we
-                    encourage contributors to go through our current content and
-                    get a taste of the type of content we post before submitting
-                    your work.
-                  </Text>
-                </Text>
-                <Text component="p">
-                  <Text component="span" weight="bold" color="red">
-                    NOTE:{" "}
-                  </Text>
-                  <Text component="span" color="red">
-                    We highly encourage original submissions, and expect our
-                    contributors to submit content that they own completely.
-                  </Text>
-                </Text>
-              </Accordion.Panel>
-            </Accordion.Item>
+      <NextSeo title={`Submit your Work to ${APP_TITLE}`} />
+      <div className={styles.submissions}>
+        <div
+          className={`container-fluid shadow pb-4 bg-secondary ${styles["submissions__header"]}`}>
+          <div className="container px-0">
+            <div className="row align-items-center">
+              <div className="col-md-6 py-5 py-md-0">
+                <h1 className="display-2">
+                  Do you have an interesting thought?
+                </h1>
+                <h4 className="mb-4">
+                  That you would like to share on {APP_TITLE}...
+                </h4>
+                <button
+                  className="btn btn-lg btn-primary shadow icon-right"
+                  onClick={showSubmissionForm}>
+                  Share it with us
+                  <IconMailFast size={32} />
+                </button>
+                <p className="small text-dark mt-3 ms-3 d-block d-md-none">
+                  Check out FAQ&apos;s below
+                </p>
+              </div>
+              <div className="col-md-6 d-flex flex-column align-items-center">
+                <Image
+                  src={submitWork}
+                  width={isLargeScreen ? 512 : 330}
+                  blurDataURL={submitWork.blurDataURL}
+                  alt="submit-work-artwork"
+                  className="mb-3"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* FAQs */}
+        <div className={`container-fluid py-4 ${styles["submissions__faq"]}`}>
+          <div className="container px-0">
+            <h2 className="text-primary">FAQs for submitting content</h2>
+            <div
+              className={`accordion ${styles["tpd-accordion"]}`}
+              id="submissionsFAQ">
+              <div
+                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+                <h4
+                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  id="headingOne">
+                  <button
+                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne">
+                    How do I submit content to {APP_TITLE}?
+                  </button>
+                </h4>
+                <div
+                  id="collapseOne"
+                  className="accordion-collapse collapse show"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#submissionsFAQ">
+                  <div className="accordion-body">
+                    <div className="list-group list-group-flush">
+                      <div className={`list-group-item ${styles["list-item"]}`}>
+                        <span className="text-success me-3">
+                          <IconChecks size={18} />
+                        </span>
+                        <span>
+                          Simply click the{" "}
+                          <span className="text-primary">Share it with us</span>{" "}
+                          button above
+                        </span>
+                      </div>
+                      <div className={`list-group-item ${styles["list-item"]}`}>
+                        <span className="text-success me-3">
+                          <IconChecks size={18} />
+                        </span>
+                        <span>
+                          Fill out little information about you and your idea.
+                          Make sure to provide a valid email address.
+                        </span>
+                      </div>
+                      <div className={`list-group-item ${styles["list-item"]}`}>
+                        <span className="text-success me-3">
+                          <IconChecks size={18} />
+                        </span>
+                        <span>
+                          We will reach out to you on the mail, requesting the
+                          complete content and few other details relating to
+                          your composition.
+                        </span>
+                      </div>
+                      <div className={`list-group-item ${styles["list-item"]}`}>
+                        <span className="text-success me-3">
+                          <IconChecks size={18} />
+                        </span>
+                        <span>
+                          And that&rsquo;s it. Your post is ready to be
+                          published on {APP_TITLE}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+                <h4
+                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  id="heading2">
+                  <button
+                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse2"
+                    aria-controls="collapse2">
+                    What kind of submissions does {APP_TITLE} accept?
+                  </button>
+                </h4>
+                <div
+                  id="collapse2"
+                  className="accordion-collapse collapse"
+                  aria-labelledby="heading2"
+                  data-bs-parent="#submissionsFAQ">
+                  <div className="accordion-body">
+                    <p>
+                      We accept all sorts of thoughts relating to life for
+                      single posts,{" "}
+                      <span className="fw-bold">
+                        Thoughtful Ideas, Short Stories, Poems, Non-fiction,
+                      </span>
+                      or if you have something else in mind and you would like
+                      to talk more,{" "}
+                      {/* <Link className="text-decoration-none" href="/about"> */}
+                      let&rsquo;s talk...
+                      {/* </Link> */}
+                    </p>
+                    <p>
+                      {APP_TITLE} publishes content of a specific type, and we
+                      go through all submissions carefully before posting. Hence
+                      we encourage contributors to go through our current
+                      content and get a taste of the type of content we post
+                      before submitting your work.
+                    </p>
+                    <p className="mb-0">
+                      <span className="text-danger fw-bold">NOTE: </span>
+                      We highly encourage original submissions, and expect our
+                      contributors to submit content that they own completely.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+                <h4
+                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  id="heading3">
+                  <button
+                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse3"
+                    aria-controls="collapse3">
+                    Do you accept submissions in any language or format?
+                  </button>
+                </h4>
+                <div
+                  id="collapse3"
+                  className="accordion-collapse collapse"
+                  aria-labelledby="heading3"
+                  data-bs-parent="#submissionsFAQ">
+                  <div className="accordion-body">
+                    <p>
+                      {APP_TITLE} is intended to be primarily in English, but we
+                      will definitely not skip something just because it is in a
+                      diffent language. Send in your content, irrespective of
+                      the language, and we will look it over definitely. As for
+                      formats, any supported text format is fine if it can be
+                      read on a digital media. I will try to respect the source
+                      formatting as closely as possible, and will get a review
+                      from you before actually publishing it.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+                <h4
+                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  id="heading4">
+                  <button
+                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse4"
+                    aria-controls="collapse4">
+                    What is in it for me if I post something to {APP_TITLE}?
+                  </button>
+                </h4>
+                <div
+                  id="collapse4"
+                  className="accordion-collapse collapse "
+                  aria-labelledby="heading4"
+                  data-bs-parent="#submissionsFAQ">
+                  <div className="accordion-body">
+                    <p>
+                      <span className="fw-bold">
+                        {APP_TITLE} is a privately owned non-profit blog.
+                      </span>
+                      As such, as of today, we do not promise any rewards or
+                      compensations for submitting to our platform. However, if{" "}
+                      {APP_TITLE} becomes profitable sometime in the future, we
+                      will not forget our contributors.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <Accordion.Item value="lang" sx={{ boxShadow: shadows.sm }}>
-              <Accordion.Control>
-                <Text size="lg" weight="bold" color="dimmed">
-                  Do you accept submissions in any language or format?
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Text component="span">
-                  {APP_TITLE} is intended to be primarily in English, but we
-                  will definitely not skip something just because it is in a
-                  diffent language.{" "}
-                </Text>
-                <Text component="span" weight="bold">
-                  Send in your content, irrespective of the language, and we
-                  will look it over definitely.{" "}
-                </Text>
-                <Text component="span">
-                  As for formats, any supported text format is fine if it can be
-                  read on a digital media. {APP_TITLE} admin will try to respect
-                  the source formatting as closely as possible.
-                </Text>
-              </Accordion.Panel>
-            </Accordion.Item>
-
-            <Accordion.Item value="rewards" sx={{ boxShadow: shadows.sm }}>
-              <Accordion.Control>
-                <Text size="lg" weight="bold" color="dimmed">
-                  What is in it for me if I post something to {APP_TITLE}?
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Text weight={500}>
-                  {APP_TITLE} is a privately owned non-profit blog.
-                </Text>
-                <Text component="p">
-                  <Text component="span">As such, </Text>
-                  <Text component="span" weight="bold">
-                    as of today, we do not promise any rewards or compensations
-                    for submitting to our platform.{" "}
-                  </Text>
-                  <Text component="span">
-                    However, if {APP_TITLE} becomes profitable sometime in the
-                    future, we will not forget our contributors.
-                  </Text>
-                </Text>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-        </Container>
-      </Container>
-      <Modal
-        centered
-        withCloseButton
-        overflow="outside"
-        size="lg"
-        sx={{ border: `1px solid ${colors.gray[4]}` }}
-        opened={open}
-        title="Submit your content"
-        onClose={() => setOpen(!open)}
-        closeOnClickOutside={false}>
-        <Box component="form" noValidate onSubmit={handleSubmit(submitIdea)}>
-          <TextInput
-            label="Full Name"
-            required
-            data-autofocus
-            placeholder="Name is required"
-            icon={<User size={18} />}
-            {...register("userName")}
-            error={touchedFields.userName ? errors.userName?.message : ""}
-          />
-          <TextInput
-            label="Email Address"
-            required
-            placeholder="Email is required"
-            icon={<At size={18} />}
-            description="We will reach out to you on the provided e-mail for next steps.
-            Please make sure you are able to receive mails on this address."
-            {...register("emailId")}
-            error={touchedFields.emailId ? errors.emailId?.message : ""}
-          />
-          <TextInput
-            label="Title of your idea"
-            required
-            placeholder="A short title is always better"
-            {...register("ideaTitle")}
-            error={touchedFields.ideaTitle ? errors.ideaTitle?.message : ""}
-          />
-          <Textarea
-            minRows={6}
-            maxRows={6}
-            label="Brief Description"
-            placeholder="Describe your idea or story in about 120-1000 characters"
-            required
-            {...register("ideaDescription")}
-            description={
-              <Group position="right" mt={4}>
-                <Text size="xs" color="dimmed">
+      {/* Modal */}
+      <div
+        className="modal fade"
+        ref={modalRef}
+        tabIndex="-1"
+        aria-labelledby="ideaFormLabel"
+        aria-hidden="true">
+        <div className="modal-dialog modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
+          <form
+            noValidate
+            className="modal-content"
+            onSubmit={handleSubmit(submitIdea)}>
+            <div className="modal-header">
+              <h5 className="modal-title" id="ideaFormLabel">
+                Submit Your Idea
+              </h5>
+            </div>
+            <div className="modal-body">
+              <div className="form-floating mb-3">
+                <input
+                  type="text"
+                  className={`form-control ${
+                    errors.userName ? "is-invalid" : ""
+                  }`}
+                  {...register("userName")}
+                  placeholder="Full Name"
+                />
+                <label htmlFor="commentTitle">Full Name</label>
+                {errors.userName && (
+                  <div className="invalid-feedback">
+                    {errors.userName.message}
+                  </div>
+                )}
+              </div>
+              <div className="form-floating mb-3">
+                <input
+                  type="text"
+                  className={`form-control ${
+                    errors.emailId ? "is-invalid" : ""
+                  }`}
+                  {...register(".emailId")}
+                  placeholder="Email Address"
+                />
+                <label htmlFor="commentTitle">Email Address</label>
+                {errors.emailId && (
+                  <div className="invalid-feedback">
+                    {errors.emailId.message}
+                  </div>
+                )}
+              </div>
+              <div className="form-floating mb-3">
+                <input
+                  type="text"
+                  className={`form-control ${
+                    errors.ideaTitle ? "is-invalid" : ""
+                  }`}
+                  {...register(".ideaTitle")}
+                  placeholder="Title of your Idea"
+                />
+                <label htmlFor="commentTitle">Title of your Idea</label>
+                {errors.ideaTitle && (
+                  <div className="invalid-feedback">
+                    {errors.ideaTitle.message}
+                  </div>
+                )}
+              </div>
+              <div className="form-floating">
+                <textarea
+                  className={`form-control ${
+                    errors.ideaDescription ? "is-invalid" : ""
+                  }`}
+                  {...register("ideaDescription")}
+                  placeholder="Brief Ddescription"
+                  style={{ height: "220px" }}></textarea>
+                <label htmlFor="commentBody">Brief Ddescription</label>
+                {errors.ideaDescription && (
+                  <div className="invalid-feedback">
+                    {errors.ideaDescription.message}
+                  </div>
+                )}
+                <div className="form-text small fst-italic text-end">
                   {watch("ideaDescription").length}/1000 characters
-                </Text>
-              </Group>
-            }
-            error={
-              touchedFields.ideaDescription
-                ? errors.ideaDescription?.message
-                : ""
-            }
-          />
-          <Group position="right">
-            <Button
-              size="sm"
-              variant="subtle"
-              color="red"
-              leftIcon={<X size={16} />}
-              type="reset"
-              onClick={() => {
-                reset();
-                setOpen(!open);
-              }}>
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              rightIcon={<Send size={16} />}
-              type="submit"
-              loading={submitting}>
-              Submit
-            </Button>
-          </Group>
-        </Box>
-      </Modal>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-outline-primary icon-left"
+                onClick={closeForm}>
+                <IconX size={18} />
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`btn btn-primary icon-right ${
+                  submitting ? "loading" : ""
+                }`}>
+                <div className="spinner-border text-dark" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                Submit
+                <IconSend size={18} />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </>
   );
 }

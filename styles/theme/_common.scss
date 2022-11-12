@@ -1,0 +1,160 @@
+@import "./palette";
+
+main.page-content {
+  min-height: calc(100vh - 60px);
+}
+
+.btn {
+  position: relative;
+  border-radius: 50px;
+  align-items: center;
+  font-family: "Belleza", sans-serif;
+  .spinner-border {
+    height: 18px;
+    width: 18px;
+    margin-bottom: -2px;
+    display: none;
+  }
+
+  &.loading {
+    .spinner-border {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+    svg {
+      display: none;
+    }
+  }
+  &.icon-left svg {
+    margin-right: 0.5rem;
+  }
+  &.icon-right svg {
+    margin-left: 0.5rem;
+  }
+  svg {
+    margin-top: -4px;
+    opacity: 0.85;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(3px, -50%);
+    z-index: -1;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    filter: blur(6px);
+  }
+  &.btn-sm::after {
+    width: 36px;
+    height: 36px;
+  }
+
+  &.btn-primary {
+    color: $white;
+  }
+
+  &-primary::after {
+    background-color: darken($color: $primary, $amount: 20);
+  }
+  &-secondary::after {
+    background-color: darken($color: $secondary, $amount: 20);
+  }
+  &-success::after {
+    background-color: darken($color: $success, $amount: 20);
+  }
+  &-danger::after {
+    background-color: darken($color: $danger, $amount: 20);
+  }
+  &-info::after {
+    background-color: darken($color: $info, $amount: 20);
+  }
+  &-primary::after {
+    background-color: darken($color: $primary, $amount: 20);
+  }
+  &-light::after {
+    background-color: darken($color: $light, $amount: 20);
+  }
+}
+
+.icon-btn {
+  border: none;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $light;
+  text-decoration: none;
+  font-family: "Belleza", sans-serif;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  &__lg {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+  }
+  border: 1px solid darken($color: $light, $amount: 20);
+  transition: all 0.15s ease-in-out;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    border-color: lighten($color: $primary, $amount: 10);
+    background-color: rgba($color: $primary, $alpha: 0.1);
+    color: $primary;
+  }
+  &:disabled {
+    color: $light;
+    border: 1px solid darken($color: $light, $amount: 20);
+    background-color: transparent;
+    opacity: 0.3;
+  }
+}
+
+.badge.post-tag {
+  background-color: rgba($color: $primary, $alpha: 0.075);
+  color: lighten($color: $primary, $amount: 10);
+  text-transform: uppercase;
+  font-family: "Belleza", sans-serif;
+  border-radius: 0.25rem;
+}
+
+.form-control {
+  background-color: transparent;
+  color: $light;
+  border-color: darken($color: $light, $amount: 50);
+  border-radius: 0;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  &:focus {
+    color: $primary;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom-width: 2px;
+    border-bottom-color: $primary;
+  }
+  &.is-invalid {
+    color: $danger;
+    &:focus {
+      border-bottom-color: $danger;
+      box-shadow: none;
+    }
+  }
+  &::placeholder {
+    color: rgba($color: $light, $alpha: 0.25);
+  }
+}
+
+.offcanvas-backdrop.show,
+.modal-backdrop.show {
+  opacity: 1;
+  background-color: rgba(
+    $color: darken($color: $dark, $amount: 50),
+    $alpha: 0.75
+  );
+  backdrop-filter: blur(4px);
+}

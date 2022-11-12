@@ -1,0 +1,40 @@
+@import "../../styles/theme/palette";
+
+.tpd-navbar {
+  position: sticky;
+  top: 18px;
+  z-index: 500;
+  transition: all 0.2s ease-in-out;
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba($color: $light, $alpha: 0.2);
+    background-color: rgba($color: $dark, $alpha: 0.4);
+    backdrop-filter: blur(5px);
+    &--scrolled {
+      background-color: rgba($color: $dark, $alpha: 0.9);
+      padding: 0.5rem 1.25rem;
+      border-radius: 0px;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+  }
+  &--scrolled {
+    top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  &_menu-toggler {
+    border: none;
+    background-color: transparent;
+    color: $light;
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      color: $primary;
+    }
+  }
+}

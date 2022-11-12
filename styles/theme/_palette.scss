@@ -1,0 +1,61 @@
+$primary: #9775fa;
+$secondary: #4c6793;
+$success: #53bf9d;
+$danger: #f94c66;
+$info: #37e2d5;
+// $warning: #ffc54d;
+
+$black: #000000;
+$white: #ffffff;
+$dark: #202027;
+$light: #f1f1f1;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  // "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+  "white": $white,
+  "black": $black,
+);
+
+// For the sidebar menu
+$offcanvas-bg-color: rgba(
+  $color:
+    lighten(
+      $color: $dark,
+      $amount: 5,
+    ),
+  $alpha: 1,
+);
+$offcanvas-horizontal-width: 320px;
+
+// Global bootstrap variable overrides
+$headings-font-family: "Belleza", sans-serif;
+$tooltip-color: $dark;
+$tooltip-bg: $light;
+
+// Bootstrap Configs.
+$enable-negative-margins: true;
+
+$form-floating-label-opacity: 0.45;
+$form-floating-padding-x: 0px;
+$form-floating-label-transform: scale(0.8) translateY(-0.7rem) translateX(0rem);
+
+$accordion-icon-color: $light;
+$accordion-icon-active-color: $primary;
+
+$modal-fade-transform: scale(0.8);
+$modal-content-bg: $dark;
+$modal-content-border-width: 0;
+
+// Brand colors
+$instagram: #833ab4;
+$linkedin: #00a0dc;
+$github: #6cc644;
+$bootstrap: rgb(112.520718, 44.062154, 249.437846);
+$firebase: #ffa000;

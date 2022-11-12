@@ -1,0 +1,13 @@
+@import "./theme/palette";
+
+.listing-page {
+  margin-top: -60px;
+  &__header {
+    background-color: lighten($color: $dark, $amount: 3);
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

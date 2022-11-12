@@ -1,42 +1,22 @@
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Container,
-  createStyles,
-  Group,
-  SimpleGrid,
-  Text,
-} from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import { IconArrowDown, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
-import { ArrowDown, Point } from "tabler-icons-react";
-import Comments from "../../../components/comments/Comments";
-import LoadingContent from "../../../components/LoadingContent";
+import CommentsList from "../../../components/commentsList/CommentsList";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import { DATE_FORMATS, ISR_INTERVAL } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
-import { useMediaMatch } from "../../../hooks/isMobile";
-import useHeaderPageStyles from "../../../styles/headerPage.styles";
+import styles from "../../../styles/SingleStory.module.scss";
 import { scrollToContent } from "../../../utils/utils";
 
 export default function StoryDetails({ story, chapters, comments = [] }) {
-  const isMobile = useMediaMatch();
   const router = useRouter();
-  const { classes } = useHeaderPageStyles({ isMobile });
-  const {
-    classes: { card: cardStyles },
-  } = useCardStyles();
-
-  if (router.isFallback) {
-    return <LoadingContent />;
-  }
+  // TODO: Create a loading component
+  if (router.isFallback) return "Loading...";
 
   return (
     <>
@@ -62,102 +42,62 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
           ],
         }}
       />
-      <Center
-        className={classes.header}
-        sx={{
-          backgroundImage: `url(${story.cover})`,
-        }}>
-        <Box className={classes.headerContent}>
-          <Text className={classes.title}>{story.title}</Text>
-          <Group spacing={4} position="center" mt="xs">
-            <Text size="sm">{story.author}</Text>
-            <Point size={8} />
-            <Text size="sm">{story.chapterCount} Chapters</Text>
-            <Point size={8} />
-            <Text size="sm">
+      <div className={styles["single-story"]}>
+        <div
+          className={`container-fluid shadow ${styles["single-story__header"]}`}
+          style={{ backgroundImage: `url(${story.cover})` }}>
+          <h1 className="display-1">{story.title}</h1>
+          <p className="my-3">
+            <span className="me-1">{story.author}</span>
+            <span className="mx-1 text-primary">
+              <IconPoint size={16} />
+            </span>
+            <span className="mx-1">{story.chapterCount} Chapters</span>
+            <span className="mx-1 text-primary">
+              <IconPoint size={16} />
+            </span>
+            <span className="ms-1">
               {dayjs(story.published).format(DATE_FORMATS.date)}
-            </Text>
-          </Group>
-          <Text
-            align="center"
-            my="md"
-            italic
-            color="dimmed"
-            size="sm"
-            sx={{ maxWidth: "350px" }}>
-            {story.excerpt}
-          </Text>
-          <Group position="center" align="center">
-            <ActionIcon
-              variant="subtle"
-              size="xl"
-              radius="xl"
-              mt={24}
-              onClick={() => scrollToContent("contentBlock")}>
-              <ArrowDown />
-            </ActionIcon>
-          </Group>
-        </Box>
-      </Center>
-      <Container
-        size="md"
-        pb="xl"
-        id="contentBlock"
-        py={isMobile ? "1rem" : "2.25rem"}>
-        <Box className="story-preface">
+            </span>
+          </p>
+          <p className={styles["story-excerpt"]}>{story.excerpt}</p>
+          <button
+            className="icon-btn icon-btn__lg mt-3"
+            data-bs-toggle="tooltip"
+            data-bs-offset="0,5"
+            data-bs-placement="bottom"
+            title="Scroll To Content"
+            onClick={() => scrollToContent("contentBlock")}>
+            <IconArrowDown size={36} />
+          </button>
+        </div>
+        <div className="container my-4 py-3" id="contentBlock">
+          <h2 className="text-primary">Preface</h2>
           <RenderMarkdown {...story.preface} />
-        </Box>
-        <Text color="dimmed" size="xl" my="lg" weight={500}>
-          Chapters List
-        </Text>
-        <SimpleGrid
-          cols={2}
-          spacing="md"
-          breakpoints={[
-            { maxWidth: "md", cols: 2 },
-            { maxWidth: "sm", cols: 1 },
-          ]}>
-          {chapters.map((chapter) => (
-            <Box className={cardStyles} key={chapter.slug}>
-              <Text
-                size="lg"
-                weight="bold"
-                variant="link"
-                component={NextLink}
-                sx={(theme) => ({ color: theme.colors.gray[4] })}
-                href={`/stories/${story.slug}/${chapter.slug}`}>
-                {chapter.title}
-              </Text>
-              <Text size="sm" color="dimmed" mt="sm">
-                {chapter.excerpt}
-              </Text>
-            </Box>
-          ))}
-        </SimpleGrid>
-        <Comments
-          title={story.title}
-          comments={comments}
-          type="stories"
-          target={story.slug}
-        />
-      </Container>
+          <h2 className="text-primary mt-4">Chapters</h2>
+          <div className="row mt-3 mt-md-4">
+            {chapters.map((ch) => (
+              <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
+                <Link
+                  href={`/stories/${story.slug}/${ch.slug}`}
+                  className={`shadow ${styles["chapter-card"]}`}>
+                  <h4 className="mb-2">{ch.title}</h4>
+                  <p className="small mb-0">{ch.excerpt}</p>
+                </Link>
+              </div>
+            ))}
+          </div>
+          <CommentsList
+            type="stories"
+            title={story.title}
+            comments={comments}
+            target={story.slug}
+          />
+        </div>
+      </div>
     </>
   );
 }
-
-const useCardStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor: theme.colors.dark[8],
-    padding: theme.spacing.sm,
-    borderRadius: theme.radius.md,
-    border: `1px solid ${theme.colors.dark[6]}`,
-    transition: "all 0.2s",
-    "&:hover, &:focus-within": {
-      backgroundColor: theme.colors.dark[6],
-      boxShadow: theme.shadows.md,
-    },
-  },
-}));
 
 /** @type {import('next').GetStaticPaths} */
 export async function getStaticPaths() {

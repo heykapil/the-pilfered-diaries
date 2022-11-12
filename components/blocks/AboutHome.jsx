@@ -1,30 +1,25 @@
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { APP_TITLE } from "../../constants/app.constants";
+import { useMediaQuery } from "../../hooks/media-query";
+import profilePic from "../../resources/images/about-1.png";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { firestoreClient } from "../../firebase/clientConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Grid,
-  SimpleGrid,
-  Text,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { ArrowRight, Check, Checks, InfoCircle } from "tabler-icons-react";
-import * as yup from "yup";
-import { APP_TITLE } from "../../constants/app.constants";
-import { firestoreClient } from "../../firebase/clientConfig";
-import { useMediaMatch } from "../../hooks/isMobile";
-import profilePic from "../../resources/images/about-1.png";
+  IconArrowRight,
+  IconCheck,
+  IconCircleCheck,
+  IconInfoCircle,
+} from "@tabler/icons";
+import { useNotifications } from "../../hooks/notifications";
+import Alert from "../alert/Alert";
 
 export default function AboutHome() {
-  const { colors } = useMantineTheme();
-  const isMobile = useMediaMatch();
+  const isLargeScreen = useMediaQuery("md");
+  const { showNotification } = useNotifications();
   const [subscribing, setSubscribing] = useState(false);
   const [subscribed, setSubscribed] = useState(null);
 
@@ -66,120 +61,113 @@ export default function AboutHome() {
       if (sub.docs.length > 0) {
         showNotification({
           title: "Already Subscribed",
-          message: `You are already subscribed to ${APP_TITLE}`,
-          color: "blue",
-          icon: <InfoCircle size={18} />,
+          body: `You are already subscribed to ${APP_TITLE}`,
+          classNames: "bg-info text-dark",
+          icon: <IconInfoCircle size={18} />,
         });
       } else {
         await addDoc(subscriptions, { email });
         showNotification({
           title: "Subscribed",
-          message: `You are successfully subscribed to ${APP_TITLE}`,
-          color: "green",
-          icon: <Check size={18} />,
+          body: `You are successfully subscribed to ${APP_TITLE}`,
+          classNames: "bg-success text-dark",
+          icon: <IconCheck size={18} />,
         });
         reset();
         setSubscribed(email);
         sessionStorage.setItem("subscribed", email);
       }
     } catch (error) {
-      console.log(error);
+      showNotification({
+        title: "Failed to subscribe",
+        body: "Your subscription failed, please try again, or sedn me a message from the about page.",
+        classNames: "bg-danger text-dark",
+        icon: <IconCheck size={18} />,
+      });
     } finally {
       setSubscribing(false);
     }
   };
 
   return (
-    <Container size="xl" id="aboutBlock" p={0}>
-      <SimpleGrid
-        cols={2}
-        spacing="md"
-        my={isMobile ? "0.25rem" : "2.25rem"}
-        breakpoints={[
-          { maxWidth: "md", cols: 2 },
-          { maxWidth: "sm", cols: 1 },
-        ]}>
-        <Box px="0.75rem" sx={{ order: isMobile ? 2 : 1 }}>
-          <Image
-            src={profilePic}
-            width={512}
-            height={512}
-            alt="amittras-pal-profile-image"
-          />
-        </Box>
-        <Box
-          sx={{ order: isMobile ? 1 : 2 }}
-          p="sm"
-          component="form"
-          noValidate
-          onSubmit={handleSubmit(subscribe)}>
-          <Text
-            component="h1"
-            sx={{ fontSize: "3rem", lineHeight: 1 }}
-            align="end"
-            weight="bold"
-            variant="gradient"
-            gradient={{
-              from: colors.orange[5],
-              to: colors.indigo[5],
-              deg: 90,
-            }}>
-            Hi, I&rsquo;m Amittras.
-          </Text>
-          <Text component="p" align="end">
-            {APP_TITLE} is a place where I pen down the thoughts that come to my
-            mind from all around me. I turn them to stories, sometimes little
-            thoughts, and sometimes just a mess of words.
-          </Text>
-          <Text component="p" align="end">
-            Come along if you too want to sneak a peek into the dark, sometimes
-            funny, mostly twisted thinking process of my mind...
-          </Text>
-          <Text color={colors.indigo[3]} component="p" align="end">
-            Find Stories down below....
-          </Text>
-          {subscribed ? (
-            <Alert icon={<Checks size={16} />} title="Subscribed" color="green">
-              <Text color="dimmed">
-                Your email {subscribed} is subscribed to {APP_TITLE}
-              </Text>
-            </Alert>
-          ) : (
-            <Grid columns={12}>
-              <Grid.Col sm={12} md={9}>
-                <TextInput
-                  size="sm"
-                  mb={0}
-                  placeholder="Subscribe to the monthly newsletter."
-                  {...register("email")}
-                  error={errors.email?.message}
-                />
-              </Grid.Col>
-              <Grid.Col sm={12} md={3} sx={{ flexGrow: 1 }}>
-                <Button
-                  size="sm"
-                  fullWidth
-                  variant="gradient"
-                  type="submit"
-                  rightIcon={<ArrowRight size={16} />}
-                  loading={subscribing}
-                  gradient={{
-                    from: colors.orange[5],
-                    to: colors.indigo[5],
-                    deg: 90,
-                  }}>
-                  Subscribe
-                </Button>
-              </Grid.Col>
-            </Grid>
-          )}
-          {!errors.email && !subscribed && (
-            <Text size="xs" color="dimmed" mt={8} ml={isMobile ? 0 : "sm"}>
+    <div className="container-fluid py-3 shadow">
+      <div className="container px-0">
+        <div className="row">
+          <div className="col-md-6 d-flex justify-content-center">
+            <Image
+              src={profilePic}
+              width={isLargeScreen ? 512 : 330}
+              blurDataURL={profilePic.blurDataURL}
+              alt="Amittras' Profile Image"
+            />
+          </div>
+          <div className="col-md-6 d-flex flex-column justify-content-center">
+            <h1 className="display-3 text-primary">Hi! I Am Amittras.</h1>
+            <p>
+              {APP_TITLE} is a place where I pen down the thoughts that come to
+              my mind from all around me. I turn them to stories, sometimes
+              little thoughts, and sometimes just a mess of words.
+            </p>
+            <p>
+              Come along if you too want to sneak a peek into the dark,
+              sometimes funny, mostly twisted thinking process of my mind...
+            </p>
+            <p>Find Stories down below....</p>
+            {subscribed ? (
+              <Alert variant="info">
+                <span className="me-2">
+                  <IconCircleCheck size={24} />
+                </span>
+                <span className="mb-0">Your email </span>
+                <span className="fw-bold mb-0">
+                  &lsquo;{subscribed}&rsquo;{" "}
+                </span>
+                <span className="mb-0"> is subscribed to {APP_TITLE}</span>
+              </Alert>
+            ) : (
+              <form
+                className="row mt-3 align-items-center mb-3 mb-md-0"
+                noValidate
+                onSubmit={handleSubmit(subscribe)}>
+                <div className="col-md-9">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="text"
+                      {...register("email")}
+                      className={`form-control ${
+                        errors.email ? "is-invalid" : ""
+                      }`}
+                      placeholder="Email Address *"
+                    />
+                    <label htmlFor="email">Email Address *</label>
+                    {errors.email && (
+                      <div className="invalid-feedback">
+                        {errors.email.message}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <button
+                    className={`btn btn-primary rounded w-100 icon-right ${
+                      subscribing ? "loading" : ""
+                    }`}
+                    type="submit">
+                    <div className="spinner-border text-dark" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    Subscribe
+                    <IconArrowRight size={18} />
+                  </button>
+                </div>
+              </form>
+            )}
+            <p className="small text-muted fst-italic mb-3 mb-md-0">
               You will be notified of new posts once a month via this email.
-            </Text>
-          )}
-        </Box>
-      </SimpleGrid>
-    </Container>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
