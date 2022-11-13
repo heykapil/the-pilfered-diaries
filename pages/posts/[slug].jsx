@@ -1,22 +1,27 @@
-import { ActionIcon, Box, Center, Container, Group, Text } from "@mantine/core";
+import { IconArrowDown, IconPoint } from "@tabler/icons";
 import axios from "axios";
+import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
-import { ArrowDown, Point } from "tabler-icons-react";
-import Comments from "../../components/comments/Comments";
 import RenderMarkdown from "../../components/markdown/RenderMarkdown";
-import { AVG_READING_SPEED, ISR_INTERVAL } from "../../constants/app.constants";
+import {
+  AVG_READING_SPEED,
+  DATE_FORMATS,
+  ISR_INTERVAL,
+} from "../../constants/app.constants";
 import firestore from "../../firebase/config";
-import { useMediaMatch } from "../../hooks/isMobile";
-import useHeaderPageStyles from "../../styles/headerPage.styles";
+import styles from "../../styles/SinglePost.module.scss";
 import { scrollToContent } from "../../utils/utils";
+import CommentsList from "../../components/commentsList/CommentsList";
 
 export default function SinglePost({ meta, content, comments }) {
-  const isMobile = useMediaMatch();
-  const { classes } = useHeaderPageStyles({ isMobile });
+  const router = useRouter();
+  // TODO: Create a loading component
+  if (router.isFallback) return "Loading...";
 
   return (
     <>
@@ -42,48 +47,47 @@ export default function SinglePost({ meta, content, comments }) {
           ],
         }}
       />
-      <Center
-        className={classes.header}
-        sx={{ backgroundImage: `url(${meta.cover})` }}>
-        <Box className={classes.headerContent}>
-          <Text className={classes.title}>{meta.title}</Text>
-          <Group spacing={4} position="center" mt="xs">
-            <Text size="sm">by {meta.author}</Text>
-            <Point size={12} style={{ marginTop: "2px" }} />
-            <Text size="sm">
+      <div className={styles["single-post"]}>
+        <div
+          className={`container-fluid shadow ${styles["single-post__header"]}`}
+          style={{ backgroundImage: `url(${meta.cover})` }}>
+          <h1 className="display-1">{meta.title}</h1>
+          <p className="my-3">
+            <span className="me-1">{meta.author}</span>
+            <span className="mx-1 text-primary">
+              <IconPoint size={16} />
+            </span>
+            <span className="mx-1">
               {meta.readTime.text} ({meta.readTime.words} words)
-            </Text>
-          </Group>
-          <Text
-            align="center"
-            my="md"
-            italic
-            color="dimmed"
-            size="sm"
-            sx={{ maxWidth: "350px" }}>
-            {meta.excerpt}
-          </Text>
-          <Group position="center" align="center">
-            <ActionIcon
-              variant="subtle"
-              size="xl"
-              radius="xl"
-              mt={24}
-              onClick={() => scrollToContent("contentBlock")}>
-              <ArrowDown />
-            </ActionIcon>
-          </Group>
-        </Box>
-      </Center>
-      <Container size="md" id="contentBlock" pt={isMobile ? 16 : 36}>
-        <RenderMarkdown {...content} />
-        <Comments
-          title={meta.title}
-          type="posts"
-          comments={comments}
-          target={meta.slug}
-        />
-      </Container>
+            </span>
+            <span className="mx-1 text-primary">
+              <IconPoint size={16} />
+            </span>
+            <span className="ms-1">
+              {dayjs(meta.published).format(DATE_FORMATS.date)}
+            </span>
+          </p>
+          <p className={styles["meta-excerpt"]}>{meta.excerpt}</p>
+          <button
+            className="icon-btn icon-btn__lg mt-3"
+            data-bs-toggle="tooltip"
+            data-bs-offset="0,5"
+            data-bs-placement="bottom"
+            title="Scroll To Content"
+            onClick={() => scrollToContent("contentBlock")}>
+            <IconArrowDown size={36} />
+          </button>
+        </div>
+        <div className="container my-4 py-3" id="contentBlock">
+          <RenderMarkdown {...content} />
+          <CommentsList
+            type="posts"
+            title={meta.title}
+            comments={comments}
+            target={meta.slug}
+          />
+        </div>
+      </div>
     </>
   );
 }

@@ -1,0 +1,34 @@
+@import "../../styles/theme/variables";
+
+.tpd-footer {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 0.75rem;
+  border-top: 1px solid rgba($color: $light, $alpha: 0.15);
+  .footer-link {
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      color: $light;
+    }
+    &__instagram {
+      color: $instagram;
+    }
+    &__linkedin {
+      color: $linkedin;
+    }
+    &__github {
+      color: $github;
+    }
+    &__bootstrap {
+      color: $bootstrap;
+    }
+    &__nextjs {
+      color: $white;
+    }
+    &__firebase {
+      color: $firebase;
+    }
+  }
+}

@@ -1,76 +1,66 @@
-import { Box, Button, Group, SimpleGrid, Text } from "@mantine/core";
-import { NextLink } from "@mantine/next";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import { ArrowRight } from "tabler-icons-react";
 import { APP_TITLE } from "../../constants/app.constants";
-import { useMediaMatch } from "../../hooks/isMobile";
+import { useMediaQuery } from "../../hooks/media-query";
 import noPostsArt from "../../resources/images/NoGuestPosts.svg";
-import LargeCard from "../cards/LargeCard";
+import submitWork from "../../resources/images/submissions-artwork.svg";
+import PostSmall from "../contentCards/PostSmall";
 
-export default function GuestPostsHome({ posts = [] }) {
-  const isMobile = useMediaMatch();
-
+export default function GuestPostsHome({ posts }) {
+  const isLargeScreen = useMediaQuery("md");
   return (
-    <>
-      <Group position="apart" align="center" my="md">
-        <Text
-          sx={{ fontSize: "1.25rem" }}
-          color="dimmed"
-          component="h2"
-          weight={400}>
-          Guest Posts
-        </Text>
-        {posts.length > 0 && (
-          <Button
-            size="xs"
-            component={NextLink}
-            href="/stories"
-            variant="light"
-            rightIcon={<ArrowRight size={16} />}>
-            Submit Your Own
-          </Button>
-        )}
-      </Group>
-      {posts.length > 0 ? (
-        <SimpleGrid
-          cols={3}
-          spacing="md"
-          my="md"
-          breakpoints={[
-            { maxWidth: "md", cols: 3 },
-            { maxWidth: "sm", cols: 1 },
-          ]}>
-          {posts.map((post) => (
-            <LargeCard key={post.slug} variant="posts" data={post} />
-          ))}
-        </SimpleGrid>
-      ) : (
-        <Group
-          my="lg"
-          spacing={4}
-          sx={{ flexDirection: "column" }}
-          position="center"
-          align="center">
-          <Image
-            src={noPostsArt}
-            width={isMobile ? 300 : 500}
-            alt="no-guest-posts-artwork"
-          />
-          <Text align="center" mt="md">
-            Publish the first guest post on {isMobile && <br />} {APP_TITLE}
-          </Text>
-          <Button
-            variant="subtle"
-            color="indigo"
-            size="sm"
-            fullWidth={isMobile}
-            component={NextLink}
-            href="/submissions">
-            Submit your Work
-          </Button>
-        </Group>
-      )}
-    </>
+    <div className="container-fluid pt-2 pb-4 bg-primary text-dark">
+      <div className="container px-0">
+        <h3 className="display-3">Guest Posts</h3>
+        <div
+          className={`row flex-md-row-reverse ${
+            posts.length === 0 ? "align-items-center" : ""
+          }`}>
+          <div
+            className={`col-md-6 mb-5 mb-md-0 pt-4 pt-md-0 ${
+              posts.length === 0 ? "d-flex flex-column align-items-center" : ""
+            }`}>
+            {posts.length > 0 ? (
+              posts.map((post) => <PostSmall post={post} key={post.slug} />)
+            ) : (
+              <>
+                <Image
+                  src={noPostsArt}
+                  width={isLargeScreen ? 512 : 330}
+                  blurDataURL={noPostsArt.blurDataURL}
+                  alt="no-guest-posts"
+                  className="mb-3"
+                />
+                <p className="text-center fs-5">
+                  No Guest Posts yet! Be the first to post on {APP_TITLE} as a
+                  guest.
+                </p>
+                <Link className="btn btn-dark" href="/submissions">
+                  Submit your work
+                </Link>
+              </>
+            )}
+          </div>
+          <div className="col-md-6 d-flex flex-column align-items-center">
+            <Image
+              src={submitWork}
+              width={isLargeScreen ? 512 : 330}
+              blurDataURL={submitWork.blurDataURL}
+              alt="submit-work-artwork"
+              className="mb-3"
+            />
+            <p className="text-center fs-5">
+              {APP_TITLE} is a collaborative platform and you are welcome to
+              send in your work for showcasing here. <br />{" "}
+              <span className="fw-bold">No Strings Attached! Promise</span>
+            </p>
+            <Link className="btn btn-dark" href="/submissions">
+              Learn More
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

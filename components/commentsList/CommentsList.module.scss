@@ -1,0 +1,14 @@
+@import "../../styles/theme/variables";
+
+.comment-card {
+  padding: 0.75rem;
+  border: 1px solid lighten($color: $dark, $amount: 10);
+  border-radius: 0.75rem;
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.comment-form {
+  margin-bottom: 1.25rem;
+}

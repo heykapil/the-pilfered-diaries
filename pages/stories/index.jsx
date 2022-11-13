@@ -1,15 +1,15 @@
-import { Container, SimpleGrid, Text } from "@mantine/core";
-import { NextSeo } from "next-seo";
 import React from "react";
-import LargeCard from "../../components/cards/LargeCard";
+import styles from "../../styles/ListingPage.module.scss";
+import { NextSeo } from "next-seo";
 import {
   APP_TITLE,
   ISR_INTERVAL,
   SITE_URL,
 } from "../../constants/app.constants";
 import { storiesList } from "../../services/serverData.promises";
+import ContentCardLarge from "../../components/contentCards/ContentCardLarge";
 
-export default function StoriesList({ stories = [] }) {
+export default function StoriesList({ stories }) {
   return (
     <>
       <NextSeo
@@ -20,26 +20,26 @@ export default function StoriesList({ stories = [] }) {
           url: SITE_URL + "/stories",
         }}
       />
-      <Container size="lg" pt="70px">
-        <Text weight={500} size="xl" align="center">
-          Latest Stories on
-        </Text>
-        <Text weight={500} size="2rem" align="center" mb="2rem" color="indigo">
-          {APP_TITLE}
-        </Text>
-        <SimpleGrid
-          cols={2}
-          spacing="md"
-          mb="2rem"
-          breakpoints={[
-            { maxWidth: "md", cols: 2 },
-            { maxWidth: "sm", cols: 1 },
-          ]}>
-          {stories.map((story) => (
-            <LargeCard key={story.slug} data={story} />
-          ))}
-        </SimpleGrid>
-      </Container>
+      <div className={styles["listing-page"]}>
+        <div
+          className={`container-fluid shadow ${styles["listing-page__header"]}`}>
+          <div className="container px-0 text-center py-5">
+            <h1 className="text-center">Latest Stories on</h1>
+            <h1 className="display-3 text-primary">{APP_TITLE}</h1>
+          </div>
+        </div>
+        <div className="container-fluid pt-4 pt-md-5 pb-3">
+          <div className="container px-0">
+            <div className="row">
+              {stories.map((story) => (
+                <div className="col-md-6 mb-3" key={story.slug}>
+                  <ContentCardLarge data={story} variant="stories" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
