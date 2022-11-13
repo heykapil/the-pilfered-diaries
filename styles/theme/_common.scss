@@ -1,4 +1,4 @@
-@import "./palette";
+@import "./variables";
 
 main.page-content {
   min-height: calc(100vh - 60px);
@@ -8,7 +8,7 @@ main.page-content {
   position: relative;
   border-radius: 50px;
   align-items: center;
-  font-family: "Belleza", sans-serif;
+  font-family: $theme-font-headings;
   .spinner-border {
     height: 18px;
     width: 18px;
@@ -87,7 +87,7 @@ main.page-content {
   align-items: center;
   color: $light;
   text-decoration: none;
-  font-family: "Belleza", sans-serif;
+  font-family: $theme-font-headings;
   width: 36px;
   height: 36px;
   border-radius: 18px;
@@ -118,7 +118,7 @@ main.page-content {
   background-color: rgba($color: $primary, $alpha: 0.075);
   color: lighten($color: $primary, $amount: 10);
   text-transform: uppercase;
-  font-family: "Belleza", sans-serif;
+  font-family: $theme-font-headings;
   border-radius: 0.25rem;
 }
 

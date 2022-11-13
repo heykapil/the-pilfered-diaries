@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Belleza&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200;0,7..72,300;0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;0,7..72,800;0,7..72,900;1,7..72,200;1,7..72,300;1,7..72,400;1,7..72,500;1,7..72,600;1,7..72,700;1,7..72,800;1,7..72,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;0,600;0,800;1,200;1,400;1,600;1,800&display=swap");
 
-@import "./theme/palette";
+@import "./theme/variables";
 @import "~bootstrap/scss/bootstrap.scss";
 
 @import "./theme/common";
@@ -9,6 +9,8 @@
 body {
   color: $light;
   background: $dark;
-  font-family: "Literata", serif;
-  font-weight: 300;
+  font-family: $theme-font-body;
+  p {
+    font-size: 18px;
+  }
 }

@@ -23,6 +23,9 @@ $theme-colors: (
   "black": $black,
 );
 
+$theme-font-headings: "Belleza", sans-serif;
+$theme-font-body: "Crimson Pro", serif;
+
 // For the sidebar menu
 $offcanvas-bg-color: rgba(
   $color:
@@ -35,7 +38,7 @@ $offcanvas-bg-color: rgba(
 $offcanvas-horizontal-width: 320px;
 
 // Global bootstrap variable overrides
-$headings-font-family: "Belleza", sans-serif;
+$headings-font-family: $theme-font-headings;
 $tooltip-color: $dark;
 $tooltip-bg: $light;
 
@@ -53,7 +56,7 @@ $modal-fade-transform: scale(0.8);
 $modal-content-bg: $dark;
 $modal-content-border-width: 0;
 
-// Brand colors
+// Third Party Brand colors
 $instagram: #833ab4;
 $linkedin: #00a0dc;
 $github: #6cc644;

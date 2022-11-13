@@ -1,4 +1,4 @@
-@import "./theme/palette";
+@import "./theme/variables";
 
 .listing-page {
   margin-top: -60px;
@@ -9,5 +9,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url("../resources/images/Halftone.svg");
+    background-size: cover;
+    background-position: 50% 34%;
+    background-repeat: no-repeat;
   }
 }

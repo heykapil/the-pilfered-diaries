@@ -1,7 +1,7 @@
-@import "../../styles/theme/palette";
+@import "../../styles/theme/variables";
 
 .tpd-alert {
-  font-family: "Belleza", sans-serif;
+  font-family: $theme-font-headings;
   letter-spacing: 1px;
   &.alert-success {
     background-color: rgba($color: $success, $alpha: 0.1);

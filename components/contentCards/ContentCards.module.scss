@@ -1,4 +1,4 @@
-@import "../../styles/theme/palette";
+@import "../../styles/theme/variables";
 
 .post-card-small {
   display: flex;
@@ -58,7 +58,7 @@
     padding: 0.25rem 0.75rem;
     background-color: $primary;
     border-radius: 0.75rem 0rem 0rem 0.75rem;
-    font-family: "Belleza", sans-serif;
+    font-family: $theme-font-headings;
     font-size: 18px;
     color: $white;
   }

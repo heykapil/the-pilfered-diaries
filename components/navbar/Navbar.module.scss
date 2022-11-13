@@ -1,4 +1,4 @@
-@import "../../styles/theme/palette";
+@import "../../styles/theme/variables";
 
 .tpd-navbar {
   position: sticky;
@@ -37,4 +37,11 @@
       color: $primary;
     }
   }
+}
+
+.tpd-sidebar {
+  background-image: url("../../resources/images/Halftone.svg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
