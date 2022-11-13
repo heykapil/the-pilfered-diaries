@@ -87,7 +87,7 @@ export default function About() {
   return (
     <>
       <NextSeo
-        title="About"
+        title="About the Blog"
         description="About this blog and a little bit about me!"
         openGraph={{
           url: SITE_URL + "/about",
@@ -206,7 +206,6 @@ export default function About() {
                     <div className="form-floating mb-3">
                       <input
                         type="text"
-                        autoFocus
                         {...register("email")}
                         className={`form-control ${
                           errors.email ? "is-invalid" : ""

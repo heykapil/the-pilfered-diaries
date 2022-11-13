@@ -111,7 +111,7 @@ export default function Submissions() {
 
   return (
     <>
-      <NextSeo title={`Submit your Work to ${APP_TITLE}`} />
+      <NextSeo title="Submit your Work" />
       <div className={styles.submissions}>
         <div
           className={`container-fluid shadow pb-4 bg-secondary ${styles["submissions__header"]}`}>

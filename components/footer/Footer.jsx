@@ -16,15 +16,16 @@ import {
   IconBrandBootstrap,
 } from "@tabler/icons";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 export default function Footer() {
   return (
     <div className={styles["tpd-footer"]}>
       <p className="small m-0">
         <span className="me-2">
-          <IconCopyright size={20} />
+          <IconCopyright size={18} />
         </span>
-        {APP_TITLE}
+        {APP_TITLE} {dayjs().format("YYYY")}
       </p>
       <div className="d-flex gap-1">
         <Link

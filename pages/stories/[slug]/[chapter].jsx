@@ -44,7 +44,7 @@ export default function SingleChapter({ metadata, content }) {
             {metadata.readTime.text} ({metadata.readTime.words} words)
           </p>
         </div>
-        <div className="container px-2">
+        <div className="container px-1">
           <RenderMarkdown {...content} />
           <div className="row mb-3">
             <div className="col-6 px-0">

@@ -1,4 +1,4 @@
-import { IconMenu2, IconX } from "@tabler/icons";
+import { IconMenu2, IconX, IconChevronLeft } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -78,7 +78,7 @@ function Navbar() {
       </nav>
 
       <div
-        className="offcanvas offcanvas-end tpd-sidebar"
+        className={`offcanvas offcanvas-end ${styles["tpd-sidebar"]}`}
         tabIndex="-1"
         ref={sidebarRef}
         aria-labelledby="tpdSidebarLabel">
@@ -99,12 +99,15 @@ function Navbar() {
             {ROUTES.map((route) => (
               <Link
                 key={route.path}
-                className={`btn w-100 d-flex justify-content-start ${
+                className={`btn w-100 d-flex ${
                   route.matchers.includes(pathname)
-                    ? "btn-primary"
-                    : "text-primary"
+                    ? "btn-primary justify-content-between"
+                    : "btn-outline-light justify-content-end"
                 }`}
                 href={route.path}>
+                {route.matchers.includes(pathname) && (
+                  <IconChevronLeft size={18} style={{ marginBottom: "-4px" }} />
+                )}
                 {route.label.toUpperCase()}
               </Link>
             ))}
