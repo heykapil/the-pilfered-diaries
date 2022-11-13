@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { DATE_FORMATS } from "../../constants/app.constants";
+import TagsList from "../tagsList/TagsList";
 import styles from "./ContentCards.module.scss";
 
 export default function ContentCardLarge({ data, variant }) {
@@ -43,16 +44,7 @@ export default function ContentCardLarge({ data, variant }) {
             </>
           )}
         </p>
-        <p className="mb-2 d-flex flex-wrap gap-1">
-          {data.tags.slice(0, 4).map((tag) => (
-            <span className="badge post-tag" key={tag}>
-              {tag}
-            </span>
-          ))}
-          {data.tags.length > 4 && (
-            <span className="badge post-tag">+ {data.tags.length - 4}</span>
-          )}
-        </p>
+        <TagsList tags={data.tags} showCount={4} />
         <p className="text-muted small mb-0">{data.excerpt}</p>
       </div>
     </Link>

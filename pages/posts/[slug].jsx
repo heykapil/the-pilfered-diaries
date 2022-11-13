@@ -17,6 +17,7 @@ import firestore from "../../firebase/config";
 import styles from "../../styles/SinglePost.module.scss";
 import { scrollToContent } from "../../utils/utils";
 import CommentsList from "../../components/commentsList/CommentsList";
+import TagsList from "../../components/tagsList/TagsList";
 
 export default function SinglePost({ meta, content, comments }) {
   const router = useRouter();
@@ -80,6 +81,9 @@ export default function SinglePost({ meta, content, comments }) {
         </div>
         <div className="container my-4 py-3" id="contentBlock">
           <RenderMarkdown {...content} />
+          <div className="my-2">
+            <TagsList tags={meta.tags} />
+          </div>
           <CommentsList
             type="posts"
             title={meta.title}
