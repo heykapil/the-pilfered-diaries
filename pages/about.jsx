@@ -187,7 +187,6 @@ export default function About() {
                     <div className="form-floating mb-3">
                       <input
                         type="text"
-                        autoFocus
                         {...register("name")}
                         className={`form-control ${
                           errors.name ? "is-invalid" : ""
