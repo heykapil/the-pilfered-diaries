@@ -44,7 +44,7 @@
     align-items: center;
   }
   &__img {
-    object-fit: cover;
+    object-fit: contain;
     object-position: 50% 50%;
   }
   &__content {

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import CommentsList from "../../../components/commentsList/CommentsList";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
+import TagsList from "../../../components/tagsList/TagsList";
 import { DATE_FORMATS, ISR_INTERVAL } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
 import styles from "../../../styles/SingleStory.module.scss";
@@ -73,6 +74,9 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
         </div>
         <div className="container my-4 py-3" id="contentBlock">
           <h2 className="text-primary">Preface</h2>
+          <div className="my-2">
+            <TagsList tags={story.tags} />
+          </div>
           <RenderMarkdown {...story.preface} />
           <h2 className="text-primary mt-4">Chapters</h2>
           <div className="row mt-3 mt-md-4">

@@ -10,6 +10,7 @@ import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { DATE_FORMATS } from "../../constants/app.constants";
 import styles from "../../styles/Home.module.scss";
+import TagsList from "../tagsList/TagsList";
 
 export default function StoriesHome({ stories }) {
   const coverCarouselRef = useRef();
@@ -105,20 +106,9 @@ export default function StoriesHome({ stories }) {
                 className={`h3 mb-1 ${styles["story-title"]}`}>
                 {story.title}
               </Link>
-              <p className="text-light mb-3">{story.excerpt}</p>
-              <p className="mb-1 d-flex flex-wrap gap-1">
-                {story.tags.slice(0, 4).map((tag) => (
-                  <span className="badge post-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-                {story.tags.length > 4 && (
-                  <span className="badge post-tag">
-                    + {story.tags.length - 4}
-                  </span>
-                )}
-              </p>
-              <p className="text-muted small">
+              <p className="text-light mb-2">{story.excerpt}</p>
+              <TagsList tags={story.tags} showCount={4} />
+              <p className="text-muted small mt-2">
                 {dayjs(story.published).format(DATE_FORMATS.date)}
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
                 {story.author}
