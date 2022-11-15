@@ -3,7 +3,10 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { DATE_FORMATS } from "../../constants/app.constants";
+import {
+  DATE_FORMATS,
+  GUEST_POST_MARKER_TEXT,
+} from "../../constants/app.constants";
 import TagsList from "../tagsList/TagsList";
 import styles from "./ContentCards.module.scss";
 
@@ -15,7 +18,7 @@ export default function ContentCardLarge({ data, variant }) {
       {data.byGuest && (
         <div
           className={`shadow-md ${styles["content-card-large__guest-marker"]}`}>
-          <p className="mb-0 small">Submitted By Guest</p>
+          <p className="mb-0 small">{GUEST_POST_MARKER_TEXT}</p>
         </div>
       )}
       <div className={styles["content-card-large__img-container"]}>
@@ -44,7 +47,9 @@ export default function ContentCardLarge({ data, variant }) {
             </>
           )}
         </p>
-        <TagsList tags={data.tags} showCount={4} />
+        <div className="mb-2">
+          <TagsList tags={data.tags} showCount={4} />
+        </div>
         <p className="text-muted small mb-0">{data.excerpt}</p>
       </div>
     </Link>
