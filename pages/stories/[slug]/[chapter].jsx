@@ -11,6 +11,7 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import React from "react";
 import readingTime from "reading-time";
+import CommentsList from "../../../components/commentsList/CommentsList";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import { AVG_READING_SPEED } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
@@ -75,6 +76,15 @@ export default function SingleChapter({ metadata, content }) {
             </div>
           </div>
         </div>
+        {!metadata.nextChapter && (
+          <div className="container my-2">
+            <CommentsList
+              target={metadata.parent}
+              type="stories"
+              fetchOnClient
+            />
+          </div>
+        )}
       </div>
     </>
   );

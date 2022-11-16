@@ -7,9 +7,17 @@ import {
   IconX,
 } from "@tabler/icons";
 import dayjs from "dayjs";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -20,17 +28,35 @@ import {
 import { firestoreClient } from "../../firebase/clientConfig";
 import { useNotifications } from "../../hooks/notifications";
 import noComments from "../../resources/images/NoComments.svg";
+import { commentsList } from "../../services/clientData.promises";
 import styles from "./CommentsList.module.scss";
 
-export default function CommentsList({ comments = [], title, type, target }) {
+export default function CommentsList({
+  title,
+  type,
+  target,
+  comments = [],
+  fetchOnClient = false,
+}) {
   const { showNotification } = useNotifications();
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [fetchedComments, setFetchedComments] = useState([]);
+
+  useEffect(() => {
+    if (fetchOnClient) {
+      (async () => {
+        const list = await commentsList(type, target);
+        setFetchedComments(list);
+      })();
+    }
+  }, [fetchOnClient, target, type]);
+
   const {
     handleSubmit,
     reset,
     register,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm({
     mode: "onBlur",
     shouldFocusError: true,
@@ -90,7 +116,7 @@ export default function CommentsList({ comments = [], title, type, target }) {
   return (
     <>
       <h2 className="text-primary my-4">
-        {COMMENT_HEADER} &ldquo;{title}&rdquo;
+        {COMMENT_HEADER} {title ? <>&ldquo;{title}&rdquo;</> : "this story"}
       </h2>
       {showForm && (
         <form
@@ -186,7 +212,7 @@ export default function CommentsList({ comments = [], title, type, target }) {
           </div>
         </form>
       )}
-      {comments.length === 0 ? (
+      {(fetchOnClient ? fetchedComments : comments).length === 0 ? (
         <>
           {!showForm ? (
             <div className="d-flex justify-content-center align-items-center flex-column py-4">
@@ -197,7 +223,8 @@ export default function CommentsList({ comments = [], title, type, target }) {
                 className="mb-n4 mb-md-3 w-100"
               />
               <p className="h5 text-center">
-                Add the first comment to &ldquo;{title}&rdquo;
+                Add the first comment to{" "}
+                {title ? <>&ldquo;{title}&rdquo;</> : "this story"}
               </p>
               <button
                 className="btn btn-sm btn-primary icon-right mt-3"
@@ -211,7 +238,7 @@ export default function CommentsList({ comments = [], title, type, target }) {
       ) : (
         <>
           {!showForm && (
-            <div className="d-flex justify-content-end py-4">
+            <div className="d-flex justify-content-end pb-3">
               <button
                 className="btn btn-sm btn-primary icon-right"
                 onClick={() => setShowForm(!showForm)}>
@@ -220,7 +247,7 @@ export default function CommentsList({ comments = [], title, type, target }) {
               </button>
             </div>
           )}
-          {comments.map((comment) => (
+          {(fetchOnClient ? fetchedComments : comments).map((comment) => (
             <div className={styles["comment-card"]} key={comment.id}>
               <h5 className="text-light">{comment.userName}</h5>
               <p className="text-muted small fst-italic mb-1">

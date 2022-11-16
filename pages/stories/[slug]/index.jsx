@@ -11,6 +11,7 @@ import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import TagsList from "../../../components/tagsList/TagsList";
 import { DATE_FORMATS, ISR_INTERVAL } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
+import { commentsList } from "../../../services/serverData.promises";
 import styles from "../../../styles/SingleStory.module.scss";
 import { scrollToContent } from "../../../utils/utils";
 
@@ -128,19 +129,13 @@ export async function getStaticProps(ctx) {
 
   const storeRes = await firestore.doc(`stories/${params.slug}`).get();
   const prefaceRes = await axios.get(storeRes.data().content);
-  const commentsRes = await firestore
-    .collection("comments")
-    .where("type", "==", "stories")
-    .where("target", "==", params.slug)
-    .where("approved", "==", true)
-    .orderBy("date", "desc")
-    .get();
+  const commentsRes = await commentsList("stories", params.slug);
   const chapterRes = await firestore
     .collection(`stories/${params.slug}/chapters`)
     .orderBy("order", "asc")
     .get();
-  const { content: prefaceRaw } = grayMatter(prefaceRes.data);
 
+  const { content: prefaceRaw } = grayMatter(prefaceRes.data);
   const story = {
     ...storeRes.data(),
     slug: storeRes.id,

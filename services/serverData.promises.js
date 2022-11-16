@@ -35,3 +35,18 @@ export function postsList(type, limit) {
       .limit(limit)
       .get();
 }
+
+/**
+ * Retrieve a list of approved comments for a specific content
+ * @param {'stories' | 'posts'} type The content type [stories/posts]
+ * @param {String} target the parent document.
+ */
+export function commentsList(type, target) {
+  return firestore
+    .collection("comments")
+    .where("type", "==", type)
+    .where("target", "==", target)
+    .where("approved", "==", true)
+    .orderBy("date", "desc")
+    .get();
+}

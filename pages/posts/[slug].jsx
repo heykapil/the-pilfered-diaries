@@ -7,17 +7,18 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
+import CommentsList from "../../components/commentsList/CommentsList";
 import RenderMarkdown from "../../components/markdown/RenderMarkdown";
+import TagsList from "../../components/tagsList/TagsList";
 import {
   AVG_READING_SPEED,
   DATE_FORMATS,
   ISR_INTERVAL,
 } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
+import { commentsList } from "../../services/serverData.promises";
 import styles from "../../styles/SinglePost.module.scss";
 import { scrollToContent } from "../../utils/utils";
-import CommentsList from "../../components/commentsList/CommentsList";
-import TagsList from "../../components/tagsList/TagsList";
 
 export default function SinglePost({ meta, content, comments }) {
   const router = useRouter();
@@ -118,15 +119,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx) {
   const { params } = ctx;
   const response = await firestore.doc(`posts/${params.slug}`).get();
-  const commentsRes = await firestore
-    .collection("comments")
-    .orderBy("date", "desc")
-    .where("type", "==", "posts")
-    .where("target", "==", params.slug)
-    .where("approved", "==", true)
-    .get();
-
+  const commentsRes = await commentsList("posts", params.slug);
   const file = await axios.get(response.data().content);
+
   const { content } = grayMatter(file.data);
 
   return {
