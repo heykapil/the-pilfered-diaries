@@ -14,10 +14,12 @@ export default function ContentCardLarge({ data, variant }) {
   return (
     <Link
       href={`/${variant}/${data.slug}`}
-      className={`shadow card ${styles["content-card-large"]}`}>
+      className={`shadow card ${styles["content-card-large"]}`}
+    >
       {data.byGuest && (
         <div
-          className={`shadow-md ${styles["content-card-large__guest-marker"]}`}>
+          className={`shadow-md ${styles["content-card-large__guest-marker"]}`}
+        >
           <p className="mb-0 small">{GUEST_POST_MARKER_TEXT}</p>
         </div>
       )}

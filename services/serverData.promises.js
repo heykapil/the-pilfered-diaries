@@ -50,3 +50,32 @@ export function commentsList(type, target) {
     .orderBy("date", "desc")
     .get();
 }
+
+/**
+ * Retrieve a list related posts for a given post-slug & tags list
+ * @param {String} slug The content type [stories/posts]
+ * @param {Array.<String>} tags the parent document.
+ */
+export function relatedPosts(slug, tags) {
+  return firestore
+    .collection("posts")
+    .where("__name__", "!=", slug)
+    .where("tags", "array-contains-any", tags)
+    .limit(4)
+    .get();
+}
+
+// TODO: Unused
+/**
+ * Retrieve a list related stories for a given slug & tags list
+ * @param {String} slug The content type [stories/posts]
+ * @param {Array.<String>} tags the parent document.
+ */
+export function relatedStories(slug, tags) {
+  return firestore
+    .collection("stories")
+    .where("__name__", "!=", slug)
+    .where("tags", "array-contains-any", tags)
+    .limit(4)
+    .get();
+}

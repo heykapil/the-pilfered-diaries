@@ -12,7 +12,7 @@ export default function GuestPostsHome({ posts }) {
   return (
     <div className="container-fluid pt-2 pb-4 bg-primary text-dark">
       <div className="container px-0">
-        <h3 className="display-3">Guest Posts</h3>
+        <h3 className="display-5">Thoughts from the guests</h3>
         <div
           className={`row flex-md-row-reverse ${
             posts.length === 0 ? "align-items-center" : ""
