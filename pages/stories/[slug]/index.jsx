@@ -29,7 +29,6 @@ export default function StoryDetails({
   comments = [],
   relatedStories = [],
 }) {
-  console.log(relatedStories);
   const router = useRouter();
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
