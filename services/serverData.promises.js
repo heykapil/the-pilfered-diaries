@@ -56,7 +56,7 @@ export function commentsList(type, target) {
  * @param {String} slug The content type [stories/posts]
  * @param {Array.<String>} tags the parent document.
  */
-export function relatedPosts(slug, tags) {
+export function getRelatedPosts(slug, tags) {
   return firestore
     .collection("posts")
     .where("__name__", "!=", slug)
@@ -65,13 +65,12 @@ export function relatedPosts(slug, tags) {
     .get();
 }
 
-// TODO: Unused
 /**
  * Retrieve a list related stories for a given slug & tags list
  * @param {String} slug The content type [stories/posts]
  * @param {Array.<String>} tags the parent document.
  */
-export function relatedStories(slug, tags) {
+export function getRelatedStories(slug, tags) {
   return firestore
     .collection("stories")
     .where("__name__", "!=", slug)

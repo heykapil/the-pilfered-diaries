@@ -1,4 +1,4 @@
-import { IconArrowDown, IconPoint } from "@tabler/icons";
+import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
@@ -7,15 +7,29 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import CommentsList from "../../../components/commentsList/CommentsList";
+import ContentCardLarge from "../../../components/contentCards/ContentCardLarge";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
 import TagsList from "../../../components/tagsList/TagsList";
-import { DATE_FORMATS, ISR_INTERVAL } from "../../../constants/app.constants";
+import {
+  APP_TITLE,
+  DATE_FORMATS,
+  ISR_INTERVAL,
+} from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
-import { commentsList } from "../../../services/serverData.promises";
+import {
+  commentsList,
+  getRelatedStories,
+} from "../../../services/serverData.promises";
 import styles from "../../../styles/SingleStory.module.scss";
 import { scrollToContent } from "../../../utils/utils";
 
-export default function StoryDetails({ story, chapters, comments = [] }) {
+export default function StoryDetails({
+  story,
+  chapters,
+  comments = [],
+  relatedStories = [],
+}) {
+  console.log(relatedStories);
   const router = useRouter();
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
@@ -47,7 +61,8 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
       <div className={styles["single-story"]}>
         <div
           className={`container-fluid shadow ${styles["single-story__header"]}`}
-          style={{ backgroundImage: `url(${story.cover})` }}>
+          style={{ backgroundImage: `url(${story.cover})` }}
+        >
           <h1 className="display-1">{story.title}</h1>
           <p className="my-3">
             <span className="me-1">{story.author}</span>
@@ -69,7 +84,8 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}>
+            onClick={() => scrollToContent("contentBlock")}
+          >
             <IconArrowDown size={36} />
           </button>
         </div>
@@ -85,7 +101,8 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
               <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
                 <Link
                   href={`/stories/${story.slug}/${ch.slug}`}
-                  className={`shadow ${styles["chapter-card"]}`}>
+                  className={`shadow ${styles["chapter-card"]}`}
+                >
                   <h4 className="mb-2">{ch.title}</h4>
                   <p className="small mb-0">{ch.excerpt}</p>
                 </Link>
@@ -98,6 +115,25 @@ export default function StoryDetails({ story, chapters, comments = [] }) {
             comments={comments}
             target={story.slug}
           />
+          <p className="h3 mb-1 text-primary">
+            More Like this on {APP_TITLE}...
+          </p>
+          {relatedStories.length > 0 ? (
+            <div className="row mt-3">
+              {relatedStories.map((story) => (
+                <div className="col-md-6 mb-3" key={story.slug}>
+                  <ContentCardLarge data={story} variant="stories" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="d-flex justify-content-center my-3">
+              <Link className="btn btn-primary" href="/posts">
+                <span className="me-1">View All Stories</span>
+                <IconArrowRight size={18} />
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -127,19 +163,23 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx) {
   const { params } = ctx;
 
-  const storeRes = await firestore.doc(`stories/${params.slug}`).get();
-  const prefaceRes = await axios.get(storeRes.data().content);
+  const storyRes = await firestore.doc(`stories/${params.slug}`).get();
+  const prefaceRes = await axios.get(storyRes.data().content);
   const commentsRes = await commentsList("stories", params.slug);
   const chapterRes = await firestore
     .collection(`stories/${params.slug}/chapters`)
     .orderBy("order", "asc")
     .get();
+  const relatedStoriesRes = await getRelatedStories(
+    params.slug,
+    storyRes.data().tags
+  );
 
   const { content: prefaceRaw } = grayMatter(prefaceRes.data);
   const story = {
-    ...storeRes.data(),
-    slug: storeRes.id,
-    published: storeRes.data().published.toDate().toISOString(),
+    ...storyRes.data(),
+    slug: storyRes.id,
+    published: storyRes.data().published.toDate().toISOString(),
     preface: await serialize(prefaceRaw),
   };
   const chapters = chapterRes.docs.map((doc) => ({
@@ -155,6 +195,11 @@ export async function getStaticProps(ctx) {
         ...doc.data(),
         id: doc.id,
         date: doc.data().date.toDate().toISOString(),
+      })),
+      relatedStories: relatedStoriesRes.docs.map((doc) => ({
+        ...doc.data(),
+        slug: doc.id,
+        published: doc.data().published.toDate().toISOString(),
       })),
     },
     revalidate: ISR_INTERVAL,
