@@ -1,25 +1,37 @@
-import { IconArrowDown, IconPoint } from "@tabler/icons";
+import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
+import CommentsList from "../../components/commentsList/CommentsList";
+import ContentCardLarge from "../../components/contentCards/ContentCardLarge";
 import RenderMarkdown from "../../components/markdown/RenderMarkdown";
+import TagsList from "../../components/tagsList/TagsList";
 import {
+  APP_TITLE,
   AVG_READING_SPEED,
   DATE_FORMATS,
   ISR_INTERVAL,
 } from "../../constants/app.constants";
 import firestore from "../../firebase/config";
+import {
+  commentsList,
+  getRelatedPosts,
+} from "../../services/serverData.promises";
 import styles from "../../styles/SinglePost.module.scss";
 import { scrollToContent } from "../../utils/utils";
-import CommentsList from "../../components/commentsList/CommentsList";
-import TagsList from "../../components/tagsList/TagsList";
 
-export default function SinglePost({ meta, content, comments }) {
+export default function SinglePost({
+  meta,
+  content,
+  comments = [],
+  relatedPosts = [],
+}) {
   const router = useRouter();
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
@@ -51,7 +63,8 @@ export default function SinglePost({ meta, content, comments }) {
       <div className={styles["single-post"]}>
         <div
           className={`container-fluid shadow ${styles["single-post__header"]}`}
-          style={{ backgroundImage: `url(${meta.cover})` }}>
+          style={{ backgroundImage: `url(${meta.cover})` }}
+        >
           <h1 className="display-1">{meta.title}</h1>
           <p className="my-3">
             <span className="me-1">{meta.author}</span>
@@ -75,7 +88,8 @@ export default function SinglePost({ meta, content, comments }) {
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}>
+            onClick={() => scrollToContent("contentBlock")}
+          >
             <IconArrowDown size={36} />
           </button>
         </div>
@@ -90,6 +104,25 @@ export default function SinglePost({ meta, content, comments }) {
             comments={comments}
             target={meta.slug}
           />
+          <p className="h3 mb-1 text-primary">
+            More Like this on {APP_TITLE}...
+          </p>
+          {relatedPosts.length > 0 ? (
+            <div className="row mt-3">
+              {relatedPosts.map((post) => (
+                <div className="col-md-6 mb-3" key={post.slug}>
+                  <ContentCardLarge data={post} variant="posts" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="d-flex justify-content-center my-3">
+              <Link className="btn btn-primary" href="/posts">
+                <span className="me-1">View All Posts</span>
+                <IconArrowRight size={18} />
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -117,25 +150,23 @@ export async function getStaticPaths() {
 /** @type {import('next').GetStaticProps} */
 export async function getStaticProps(ctx) {
   const { params } = ctx;
-  const response = await firestore.doc(`posts/${params.slug}`).get();
-  const commentsRes = await firestore
-    .collection("comments")
-    .orderBy("date", "desc")
-    .where("type", "==", "posts")
-    .where("target", "==", params.slug)
-    .where("approved", "==", true)
-    .get();
+  const postRes = await firestore.doc(`posts/${params.slug}`).get();
+  const commentsRes = await commentsList("posts", params.slug);
+  const relatedPostsRes = await getRelatedPosts(
+    params.slug,
+    postRes.data().tags
+  );
+  const file = await axios.get(postRes.data().content);
 
-  const file = await axios.get(response.data().content);
   const { content } = grayMatter(file.data);
 
   return {
     props: {
       content: await serialize(content),
       meta: {
-        ...response.data(),
+        ...postRes.data(),
         readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
-        published: response.data().published.toDate().toISOString(),
+        published: postRes.data().published.toDate().toISOString(),
         slug: params.slug,
       },
       comments:
@@ -146,6 +177,11 @@ export async function getStaticProps(ctx) {
               id: doc.id,
             }))
           : [],
+      relatedPosts: relatedPostsRes.docs.map((doc) => ({
+        ...doc.data(),
+        slug: doc.id,
+        published: doc.data().published.toDate().toISOString(),
+      })),
     },
     revalidate: ISR_INTERVAL,
   };

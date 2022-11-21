@@ -8,7 +8,7 @@ if (!admin.apps.length) {
       credential: admin.credential.cert(accountCreds),
     });
   } catch (error) {
-    console.log("Failed to initialize firebase admin", error.stack);
+    console.error("Failed to initialize firebase admin", error.stack);
   }
 }
 
