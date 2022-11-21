@@ -127,7 +127,7 @@ export default function StoryDetails({
             </div>
           ) : (
             <div className="d-flex justify-content-center my-3">
-              <Link className="btn btn-primary" href="/posts">
+              <Link className="btn btn-primary" href="/stories">
                 <span className="me-1">View All Stories</span>
                 <IconArrowRight size={18} />
               </Link>
