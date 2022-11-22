@@ -89,7 +89,7 @@ export default function StoryDetails({
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container my-4 py-3" id="contentBlock">
+        <div className="container mt-4 py-3" id="contentBlock">
           <h2 className="text-primary">Preface</h2>
           <div className="my-2">
             <TagsList tags={story.tags} />
@@ -135,6 +135,15 @@ export default function StoryDetails({
             </div>
           )}
           <SubscriptionForm />
+          <div className="d-flex justify-content-center mt-3">
+            <Link
+              className="btn btn-outline-primary icon-right"
+              href="/submissions"
+            >
+              Submit your work to {APP_TITLE}
+              <IconArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </div>
     </>

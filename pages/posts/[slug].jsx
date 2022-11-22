@@ -94,7 +94,7 @@ export default function SinglePost({
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container my-4 py-3" id="contentBlock">
+        <div className="container mt-4 py-3" id="contentBlock">
           <RenderMarkdown {...content} />
           <div className="my-2">
             <TagsList tags={meta.tags} />
@@ -125,6 +125,15 @@ export default function SinglePost({
             </div>
           )}
           <SubscriptionForm />
+          <div className="d-flex justify-content-center mt-3">
+            <Link
+              className="btn btn-outline-primary btn-sm icon-right"
+              href="/submissions"
+            >
+              Submit your work to {APP_TITLE}
+              <IconArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </div>
     </>

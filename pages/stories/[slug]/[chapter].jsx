@@ -13,7 +13,7 @@ import React from "react";
 import readingTime from "reading-time";
 import CommentsList from "../../../components/commentsList/CommentsList";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import { AVG_READING_SPEED } from "../../../constants/app.constants";
+import { APP_TITLE, AVG_READING_SPEED } from "../../../constants/app.constants";
 import firestore from "../../../firebase/config";
 import styles from "../../../styles/SingleChapter.module.scss";
 
@@ -52,7 +52,8 @@ export default function SingleChapter({ metadata, content }) {
               {metadata.previousChapter && (
                 <Link
                   className={styles["chapter-toggle"]}
-                  href={`/stories/${metadata.parent}/${metadata.previousChapter}`}>
+                  href={`/stories/${metadata.parent}/${metadata.previousChapter}`}
+                >
                   <IconArrowLeft size={24} />
                   Previous Chapter
                 </Link>
@@ -65,7 +66,8 @@ export default function SingleChapter({ metadata, content }) {
                   metadata.nextChapter
                     ? `/stories/${metadata.parent}/${metadata.nextChapter}`
                     : `/stories/${metadata.parent}`
-                }>
+                }
+              >
                 {metadata.nextChapter ? "Next Chapter" : "Story Home"}
                 {metadata.nextChapter ? (
                   <IconArrowRight size={24} />
@@ -77,13 +79,24 @@ export default function SingleChapter({ metadata, content }) {
           </div>
         </div>
         {!metadata.nextChapter && (
-          <div className="container my-2">
-            <CommentsList
-              target={metadata.parent}
-              type="stories"
-              fetchOnClient
-            />
-          </div>
+          <>
+            <div className="container my-2">
+              <CommentsList
+                target={metadata.parent}
+                type="stories"
+                fetchOnClient
+              />
+            </div>
+            <div className="d-flex justify-content-center mb-3">
+              <Link
+                className="btn btn-outline-primary icon-right"
+                href="/submissions"
+              >
+                Submit your work to {APP_TITLE}
+                <IconArrowRight size={18} />
+              </Link>
+            </div>
+          </>
         )}
       </div>
     </>
