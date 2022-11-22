@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import CommentsList from "../../../components/commentsList/CommentsList";
 import ContentCardLarge from "../../../components/contentCards/ContentCardLarge";
 import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
+import SubscriptionForm from "../../../components/subscriptionForm/SubscriptionForm";
 import TagsList from "../../../components/tagsList/TagsList";
 import {
   APP_TITLE,
@@ -133,6 +134,7 @@ export default function StoryDetails({
               </Link>
             </div>
           )}
+          <SubscriptionForm />
         </div>
       </div>
     </>

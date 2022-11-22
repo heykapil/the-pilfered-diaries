@@ -25,6 +25,7 @@ import {
 } from "../../services/serverData.promises";
 import styles from "../../styles/SinglePost.module.scss";
 import { scrollToContent } from "../../utils/utils";
+import SubscriptionForm from "../../components/subscriptionForm/SubscriptionForm";
 
 export default function SinglePost({
   meta,
@@ -123,6 +124,7 @@ export default function SinglePost({
               </Link>
             </div>
           )}
+          <SubscriptionForm />
         </div>
       </div>
     </>
