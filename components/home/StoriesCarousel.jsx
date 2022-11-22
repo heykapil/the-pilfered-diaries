@@ -12,7 +12,7 @@ import { DATE_FORMATS } from "../../constants/app.constants";
 import styles from "../../styles/Home.module.scss";
 import TagsList from "../tagsList/TagsList";
 
-export default function StoriesHome({ stories }) {
+export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();
   const contentCarouselRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,13 +42,15 @@ export default function StoriesHome({ stories }) {
         <button
           className="icon-btn ms-auto"
           onClick={() => toggleCarousel("prev")}
-          disabled={currentSlide === 0}>
+          disabled={currentSlide === 0}
+        >
           <IconChevronLeft size={24} />
         </button>
         <button
           className="icon-btn ms-2 ms-md-3"
           onClick={() => toggleCarousel("next")}
-          disabled={currentSlide === stories.length - 1}>
+          disabled={currentSlide === stories.length - 1}
+        >
           <IconChevronRight size={24} />
         </button>
         <Link
@@ -57,7 +59,8 @@ export default function StoriesHome({ stories }) {
           data-bs-offset="0,5"
           data-bs-placement="left"
           title="View All Stories"
-          className="icon-btn ms-2 ms-md-3">
+          className="icon-btn ms-2 ms-md-3"
+        >
           <IconExternalLink size={18} />
         </Link>
       </div>
@@ -65,14 +68,16 @@ export default function StoriesHome({ stories }) {
       <div
         ref={coverCarouselRef}
         className={`carousel slide ${styles["cover-carousel"]}`}
-        data-bs-touch="false">
+        data-bs-touch="false"
+      >
         <div className={`carousel-inner ${styles["cover-carousel__inner"]}`}>
           {stories.map((story, index) => (
             <div
               key={story.slug}
               className={`carousel-item ${index === 0 ? "active" : ""} ${
                 styles["cover-carousel__item"]
-              }`}>
+              }`}
+            >
               <Link href={`/stories/${story.slug}`}>
                 <Image
                   style={{
@@ -93,17 +98,20 @@ export default function StoriesHome({ stories }) {
       <div
         className={`carousel slide mt-3 ${styles["content-carousel"]}`}
         ref={contentCarouselRef}
-        data-bs-touch="false">
+        data-bs-touch="false"
+      >
         <div className={`carousel-inner ${styles["content-carousel__inner"]}`}>
           {stories.map((story, index) => (
             <div
               key={story.slug}
               className={`carousel-item ${index === 0 ? "active" : ""} ${
                 styles["content-carousel__item"]
-              }`}>
+              }`}
+            >
               <Link
                 href={`/stories/${story.slug}`}
-                className={`h3 mb-1 ${styles["story-title"]}`}>
+                className={`h3 mb-1 ${styles["story-title"]}`}
+              >
                 {story.title}
               </Link>
               <p className="text-light mb-2">{story.excerpt}</p>

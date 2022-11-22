@@ -1,9 +1,9 @@
 import { NextSeo } from "next-seo";
-import AboutHome from "../components/blocks/AboutHome";
-import GuestPostsHome from "../components/blocks/GuestPostsHome";
-import HeaderHome from "../components/blocks/HeaderHome";
-import PostsHome from "../components/blocks/PostsHome";
-import StoriesHome from "../components/blocks/StoriesHome";
+import About from "../components/home/About";
+import GuestPosts from "../components/home/GuestPosts";
+import Header from "../components/home/Header";
+import PostsList from "../components/home/PostsList";
+import StoriesCarousel from "../components/home/StoriesCarousel";
 import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "../constants/app.constants";
 import firestore from "../firebase/config";
 import { postsList, storiesList } from "../services/serverData.promises";
@@ -38,21 +38,21 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
         ]}
       />
       <div className={styles["tpd-home"]}>
-        <HeaderHome siteCover={siteCover} />
-        <AboutHome />
+        <Header siteCover={siteCover} />
+        <About />
         <div className="container-fluid py-2">
           <div className="container px-0 mt-4">
             <div className="row">
               <div className="col-md-7 mb-3 mb-md-0">
-                <StoriesHome stories={stories} />
+                <StoriesCarousel stories={stories} />
               </div>
               <div className="col-md-5">
-                <PostsHome posts={posts} />
+                <PostsList posts={posts} />
               </div>
             </div>
           </div>
         </div>
-        <GuestPostsHome posts={guestPosts} />
+        <GuestPosts posts={guestPosts} />
       </div>
     </>
   );
