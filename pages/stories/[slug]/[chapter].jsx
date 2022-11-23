@@ -9,6 +9,7 @@ import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
 import CommentsList from "../../../components/commentsList/CommentsList";
@@ -18,6 +19,7 @@ import firestore from "../../../firebase/config";
 import styles from "../../../styles/SingleChapter.module.scss";
 
 export default function SingleChapter({ metadata, content }) {
+  const { query } = useRouter();
   return (
     <>
       <NextSeo
@@ -52,7 +54,7 @@ export default function SingleChapter({ metadata, content }) {
               {metadata.previousChapter && (
                 <Link
                   className={styles["chapter-toggle"]}
-                  href={`/stories/${metadata.parent}/${metadata.previousChapter}`}
+                  href={`/stories/${query.slug}/${metadata.previousChapter}`}
                 >
                   <IconArrowLeft size={24} />
                   Previous Chapter
@@ -64,8 +66,8 @@ export default function SingleChapter({ metadata, content }) {
                 className={styles["chapter-toggle"]}
                 href={
                   metadata.nextChapter
-                    ? `/stories/${metadata.parent}/${metadata.nextChapter}`
-                    : `/stories/${metadata.parent}`
+                    ? `/stories/${query.slug}/${metadata.nextChapter}`
+                    : `/stories/${query.slug}`
                 }
               >
                 {metadata.nextChapter ? "Next Chapter" : "Story Home"}
@@ -81,11 +83,7 @@ export default function SingleChapter({ metadata, content }) {
         {!metadata.nextChapter && (
           <>
             <div className="container my-2">
-              <CommentsList
-                target={metadata.parent}
-                type="stories"
-                fetchOnClient
-              />
+              <CommentsList target={query.slug} type="stories" fetchOnClient />
             </div>
             <div className="d-flex justify-content-center mb-3">
               <Link
@@ -126,21 +124,19 @@ export async function getStaticPaths() {
 /** @type {import('next').GetStaticProps} */
 export async function getStaticProps(ctx) {
   const { params } = ctx;
-  const filePath = (
-    await firestore
-      .doc(`stories/${params.slug}/chapters/${params.chapter}`)
-      .get()
-  ).data().content;
 
-  const storyFile = await axios.get(filePath);
-  const { data: metadata, content: source } = grayMatter(storyFile.data);
+  const chapterDoc = await firestore
+    .doc(`stories/${params.slug}/chapters/${params.chapter}`)
+    .get();
+  const storyFile = await axios.get(chapterDoc.data().content);
+
+  const { content: source } = grayMatter(storyFile.data);
   const time = readingTime(source, { wordsPerMinute: AVG_READING_SPEED });
-  metadata["readTime"] = time;
   const content = await serialize(source);
 
   return {
     props: {
-      metadata,
+      metadata: { ...chapterDoc.data(), readTime: time },
       content,
     },
   };
