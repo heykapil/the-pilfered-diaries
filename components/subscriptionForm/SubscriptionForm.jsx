@@ -97,7 +97,7 @@ export default function SubscriptionForm() {
   ) : (
     <>
       <p className="fs-4 fst-italic mb-0 text-muted">
-        Subscribe to the monthly newsletter; get new posts on your email!
+        Subscribe to the monthly newsletter; get new content on your email!
       </p>
       <form
         className="row mt-3 align-items-center mb-3 mb-md-0"
@@ -112,6 +112,7 @@ export default function SubscriptionForm() {
               className={`form-control form-control-sm ${
                 errors.email ? "is-invalid" : ""
               }`}
+              id="inpSub"
               placeholder="Your Email Address *"
             />
             <label htmlFor="email">Your Email Address *</label>

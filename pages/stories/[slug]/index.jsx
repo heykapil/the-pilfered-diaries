@@ -34,6 +34,10 @@ export default function StoryDetails({
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
 
+  const goToForm = () => {
+    document.getElementById("inpSub")?.focus();
+  };
+
   return (
     <>
       <NextSeo
@@ -108,6 +112,27 @@ export default function StoryDetails({
                 </Link>
               </div>
             ))}
+            {/* Work In Progress Marker */}
+            {story.wip && (
+              <div className="col-md-6 mb-3 mb-md-4">
+                <div className={styles["to-be-continued"]}>
+                  <h4 className="mb-1 text-center">To Be Continued...</h4>
+                  <p className="text-muted mb-0 text-center">
+                    <span className="text-primary">
+                      &ldquo;{story.title}&rdquo;
+                    </span>{" "}
+                    is an ongoing story. More chapters are coming soon. <br />
+                    <button
+                      className="btn p-1 btn-primary border-0 bg-dark no-glow text-decoration-underline"
+                      onClick={goToForm}
+                    >
+                      Subscribe now
+                    </button>{" "}
+                    to get notified of new chapters.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
           <CommentsList
             type="stories"
