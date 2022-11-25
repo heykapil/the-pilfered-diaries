@@ -37,7 +37,7 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
           },
         ]}
       />
-      <div className={styles["tpd-home"]}>
+      <div className={styles.home}>
         <Header siteCover={siteCover} />
         <About />
         <div className="container-fluid py-2">

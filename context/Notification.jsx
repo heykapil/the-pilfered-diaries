@@ -13,7 +13,7 @@ export const NotificationContext = createContext({
 
 const requiredClassNames = [
   "toast",
-  "Notification_tpd-toast",
+  "Notification_toast",
   "fade",
   "hide",
   "show",
@@ -80,7 +80,7 @@ export function NotificationsProvider({ children }) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       <div
-        className={`toast ${styles["tpd-toast"]}`}
+        className={`toast ${styles.toast}`}
         role="alert"
         aria-live="assertive"
         aria-atomic="true"

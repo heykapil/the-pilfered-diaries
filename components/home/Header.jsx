@@ -6,7 +6,7 @@ import styles from "../../styles/modules/Home.module.scss";
 export default function Header({ siteCover }) {
   return (
     <div
-      className={`container-fluid ${styles["tpd-home__header"]}`}
+      className={`container-fluid ${styles.home__cover}`}
       style={{ backgroundImage: `url(${siteCover.url})` }}
     >
       <div className="container px-0 text-center">
@@ -24,7 +24,7 @@ export default function Header({ siteCover }) {
           </a>
         </div>
       </div>
-      <p className={`${styles["photo-credit"]} small text-light`}>
+      <p className={`${styles.cc} small text-light`}>
         Photo By: {siteCover.photoCredit}
       </p>
     </div>

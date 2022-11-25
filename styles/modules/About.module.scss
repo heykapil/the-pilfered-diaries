@@ -1,13 +1,14 @@
 @import "../theme/variables";
 
-.tpd-about {
+.about {
   margin-top: -60px;
   padding-bottom: 60px;
   &__content {
     padding-top: 95px;
   }
 }
-.about-action {
+
+.action {
   display: block;
   padding: 0.75rem;
   background-color: lighten($color: $dark, $amount: 5);

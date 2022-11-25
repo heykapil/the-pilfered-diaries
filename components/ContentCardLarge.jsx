@@ -11,25 +11,23 @@ export default function ContentCardLarge({ data, variant }) {
   return (
     <Link
       href={`/${variant}/${data.slug}`}
-      className={`shadow card ${styles["content-card-large"]}`}
+      className={`shadow card ${styles.lg}`}
     >
       {data.byGuest && (
-        <div
-          className={`shadow-md ${styles["content-card-large__guest-marker"]}`}
-        >
+        <div className={`shadow-md ${styles.lg__gtag}`}>
           <p className="mb-0 small">{GUEST_POST_MARKER_TEXT}</p>
         </div>
       )}
-      <div className={styles["content-card-large__img-container"]}>
+      <div className={styles.lg__imgbox}>
         <Image
           src={data.cover}
           alt={data.slug + "-cover"}
           width={960}
           height={540}
-          className={`card-img-top ${styles["content-card-large__img"]}`}
+          className={`card-img-top ${styles.lg__img}`}
         />
       </div>
-      <div className={styles["content-card-large__content"]}>
+      <div className={styles.lg__content}>
         <h4 className="mb-1">{data.title}</h4>
         <p className="text-light small mb-2">
           {dayjs(data.published).format(DATE_FORMATS.date)}

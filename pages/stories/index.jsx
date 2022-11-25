@@ -16,10 +16,8 @@ export default function StoriesList({ stories }) {
           url: SITE_URL + "/stories",
         }}
       />
-      <div className={styles["listing-page"]}>
-        <div
-          className={`container-fluid shadow ${styles["listing-page__header"]}`}
-        >
+      <div className={styles.listing}>
+        <div className={`container-fluid shadow ${styles.listing__header}`}>
           <div className="container px-0 text-center py-5">
             <h1 className="text-center">Latest Stories on</h1>
             <h1 className="display-3 text-primary">{APP_TITLE}</h1>

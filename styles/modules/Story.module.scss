@@ -1,6 +1,6 @@
 @import "../theme/variables";
 
-.single-story {
+.story {
   margin-top: -60px;
   &__header {
     position: relative;
@@ -27,7 +27,7 @@
       backdrop-filter: blur(6px);
       z-index: 0;
     }
-    .story-excerpt {
+    .excerpt {
       margin-top: 1rem;
       margin-bottom: 0.5rem;
       font-size: 14px;
@@ -36,7 +36,7 @@
       max-width: 500px;
     }
   }
-  .chapter-card {
+  .chapter {
     display: block;
     text-decoration: none;
     padding: 0.75rem;
@@ -62,7 +62,7 @@
   }
 }
 
-.to-be-continued {
+.wip {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -3,10 +3,15 @@ import React from "react";
 import styles from "../styles/modules/Markdown.module.scss";
 import { components } from "@components/md";
 
-function Markdown(props) {
+/**
+ * @param {Object} props
+ * @param {import('react').HTMLAttributes} props.containerProps
+ * @returns
+ */
+function Markdown({ containerProps, ...mdxProps }) {
   return (
-    <div className={styles.markdown}>
-      <MDXRemote {...props} components={components} />
+    <div className={styles.md} {...containerProps}>
+      <MDXRemote {...mdxProps} components={components} />
     </div>
   );
 }

@@ -23,3 +23,10 @@ export const TAGLINE = (
     Stories Happen.
   </>
 );
+
+export const FOOTER_LINK_PROPS = {
+  "data-bs-toggle": "tooltip",
+  "data-bs-offset": "0,5",
+  "data-bs-placement": "top",
+  target: "_blank",
+};

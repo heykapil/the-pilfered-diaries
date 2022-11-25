@@ -25,7 +25,6 @@ export default function About() {
   const {
     handleSubmit,
     register,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onSubmit",
@@ -93,8 +92,8 @@ export default function About() {
           url: SITE_URL + "/about",
         }}
       />
-      <div className={styles["tpd-about"]}>
-        <div className={`container ${styles["tpd-about__content"]}`}>
+      <div className={styles.about}>
+        <div className={`container ${styles.about__content}`}>
           <div className="row">
             <div className="col-md-6 d-flex justify-content-center">
               <Image
@@ -135,21 +134,21 @@ export default function About() {
           <div className="row">
             <div className="col-md-6">
               <p className="fs-4">Exciting stuff around here.</p>
-              <Link href="/stories" className={styles["about-action"]}>
+              <Link href="/stories" className={styles.action}>
                 <h3>Explore Stories</h3>
                 <p className="mb-0 text-muted">
                   I am no accomplished writer, but like many others, I like to
                   cook up scenarios in my head and pen them down sometimes.
                 </p>
               </Link>
-              <Link href="/posts" className={styles["about-action"]}>
+              <Link href="/posts" className={styles.action}>
                 <h3>Explore Short Posts</h3>
                 <p className="mb-0 text-muted">
                   Little thoughts, ideas and incidents, that I keep track of,
                   and try to compile into coherent scenarios.
                 </p>
               </Link>
-              <Link href="/submissions" className={styles["about-action"]}>
+              <Link href="/submissions" className={styles.action}>
                 <h3>Get Featured</h3>
                 <p className="mb-0 text-muted">
                   You can send your work to {APP_TITLE}. Let&apos;s collborate

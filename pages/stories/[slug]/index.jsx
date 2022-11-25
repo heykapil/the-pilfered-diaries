@@ -15,7 +15,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "../../../styles/modules/SingleStory.module.scss";
+import styles from "../../../styles/modules/Story.module.scss";
 
 export default function StoryDetails({
   story,
@@ -55,9 +55,9 @@ export default function StoryDetails({
           ],
         }}
       />
-      <div className={styles["single-story"]}>
+      <div className={styles.story}>
         <div
-          className={`container-fluid shadow ${styles["single-story__header"]}`}
+          className={`container-fluid shadow ${styles.story__header}`}
           style={{ backgroundImage: `url(${story.cover})` }}
         >
           <h1 className="display-1">{story.title}</h1>
@@ -74,7 +74,7 @@ export default function StoryDetails({
               {dayjs(story.published).format(DATE_FORMATS.date)}
             </span>
           </p>
-          <p className={styles["story-excerpt"]}>{story.excerpt}</p>
+          <p className={styles.excerpt}>{story.excerpt}</p>
           <button
             className="icon-btn icon-btn__lg mt-3"
             data-bs-toggle="tooltip"
@@ -91,24 +91,30 @@ export default function StoryDetails({
           <div className="my-2">
             <TagsList tags={story.tags} />
           </div>
-          <Markdown {...story.preface} />
+          <Markdown
+            {...story.preface}
+            containerProps={{
+              style: {
+                fontSize: "18px",
+              },
+            }}
+          />
           <h2 className="text-primary mt-4">Chapters</h2>
           <div className="row mt-3 mt-md-4">
             {chapters.map((ch) => (
               <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
                 <Link
                   href={`/stories/${story.slug}/${ch.slug}`}
-                  className={`shadow ${styles["chapter-card"]}`}
+                  className={`shadow ${styles.chapter}`}
                 >
                   <h4 className="mb-2">{ch.title}</h4>
                   <p className="small mb-0">{ch.excerpt}</p>
                 </Link>
               </div>
             ))}
-            {/* Work In Progress Marker */}
             {story.wip && (
               <div className="col-md-6 mb-3 mb-md-4">
-                <div className={styles["to-be-continued"]}>
+                <div className={styles.wip}>
                   <h4 className="mb-1 text-center">To Be Continued...</h4>
                   <p className="text-muted mb-0 text-center">
                     <span className="text-primary">

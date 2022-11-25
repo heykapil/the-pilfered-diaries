@@ -21,7 +21,7 @@ import React from "react";
 import readingTime from "reading-time";
 import SubscriptionForm from "@components/SubscriptionForm";
 import { commentsList, getRelatedPosts } from "@services/server";
-import styles from "../../styles/modules/SinglePost.module.scss";
+import styles from "../../styles/modules/Post.module.scss";
 import { scrollToContent } from "@lib/utils";
 
 export default function SinglePost({
@@ -58,9 +58,9 @@ export default function SinglePost({
           ],
         }}
       />
-      <div className={styles["single-post"]}>
+      <div className={styles.post}>
         <div
-          className={`container-fluid shadow ${styles["single-post__header"]}`}
+          className={`container-fluid shadow ${styles.post__header}`}
           style={{ backgroundImage: `url(${meta.cover})` }}
         >
           <h1 className="display-1">{meta.title}</h1>
@@ -92,7 +92,14 @@ export default function SinglePost({
           </button>
         </div>
         <div className="container mt-4 py-3" id="contentBlock">
-          <Markdown {...content} />
+          <Markdown
+            {...content}
+            containerProps={{
+              style: {
+                fontSize: "18px",
+              },
+            }}
+          />
           <div className="my-2">
             <TagsList tags={meta.tags} />
           </div>

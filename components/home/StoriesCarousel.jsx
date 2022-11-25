@@ -67,26 +67,21 @@ export default function StoriesCarousel({ stories }) {
 
       <div
         ref={coverCarouselRef}
-        className={`carousel slide ${styles["cover-carousel"]}`}
+        className={`carousel slide ${styles.imgcarr}`}
         data-bs-touch="false"
       >
-        <div className={`carousel-inner ${styles["cover-carousel__inner"]}`}>
-          {stories.map((story, index) => (
+        <div className={`carousel-inner ${styles.imgcarr__inner}`}>
+          {stories.map((story, i) => (
             <div
               key={story.slug}
-              className={`carousel-item ${index === 0 ? "active" : ""} ${
-                styles["cover-carousel__item"]
+              className={`carousel-item ${i === 0 ? "active" : ""} ${
+                styles.imgcarr__item
               }`}
             >
               <Link href={`/stories/${story.slug}`}>
                 <Image
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "50% 50%",
-                    borderRadius: "0.75rem",
-                  }}
                   fill
-                  className={styles["story-cover-img"]}
+                  className={styles.cimg}
                   src={story.cover}
                   alt={story.slug}
                 />
@@ -96,21 +91,21 @@ export default function StoriesCarousel({ stories }) {
         </div>
       </div>
       <div
-        className={`carousel slide mt-3 ${styles["content-carousel"]}`}
+        className={`carousel slide mt-3 ${styles.concarr}`}
         ref={contentCarouselRef}
         data-bs-touch="false"
       >
-        <div className={`carousel-inner ${styles["content-carousel__inner"]}`}>
-          {stories.map((story, index) => (
+        <div className={`carousel-inner ${styles.concarr__inner}`}>
+          {stories.map((story, i) => (
             <div
               key={story.slug}
-              className={`carousel-item ${index === 0 ? "active" : ""} ${
-                styles["content-carousel__item"]
+              className={`carousel-item ${i === 0 ? "active" : ""} ${
+                styles.concarr__item
               }`}
             >
               <Link
                 href={`/stories/${story.slug}`}
-                className={`h3 mb-1 ${styles["story-title"]}`}
+                className={`h3 mb-1 ${styles.title}`}
               >
                 {story.title}
               </Link>

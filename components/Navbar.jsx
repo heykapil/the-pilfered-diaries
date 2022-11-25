@@ -44,13 +44,13 @@ function Navbar() {
   return (
     <>
       <nav
-        className={`${styles["tpd-navbar"]} ${
-          scrolled ? styles["tpd-navbar--scrolled"] : ""
+        className={`${styles.nav} ${
+          scrolled ? styles.nav_scr : ""
         } container-fluid`}
       >
         <div
-          className={`${styles["tpd-navbar__content"]} ${
-            scrolled ? styles["tpd-navbar__content--scrolled"] : "container"
+          className={`${styles.nav__bar} ${
+            scrolled ? styles.nav__bar_scr : "container"
           } shadow`}
         >
           <Link
@@ -69,17 +69,14 @@ function Navbar() {
             />
             {APP_TITLE}
           </Link>
-          <button
-            className={styles["tpd-navbar_menu-toggler"]}
-            onClick={openMenu}
-          >
+          <button className={styles.nav_hamb} onClick={openMenu}>
             <IconMenu2 />
           </button>
         </div>
       </nav>
 
       <div
-        className={`offcanvas offcanvas-end ${styles["tpd-sidebar"]}`}
+        className={`offcanvas offcanvas-end ${styles.sidenav}`}
         tabIndex="-1"
         ref={sidebarRef}
         aria-labelledby="tpdSidebarLabel"

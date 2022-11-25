@@ -1,6 +1,6 @@
 @import "../theme/variables";
 
-.post-card-small {
+.sm {
   display: flex;
   width: 100%;
   align-items: flex-start;
@@ -23,7 +23,7 @@
   }
 }
 
-.content-card-large {
+.lg {
   display: block;
   border-radius: 1rem;
   background-color: lighten($color: $dark, $amount: 3);
@@ -37,7 +37,7 @@
   & > * {
     transition: all 0.15s ease-in-out;
   }
-  &__img-container {
+  &__imgbox {
     height: 240px;
     overflow: hidden;
     display: flex;
@@ -50,7 +50,7 @@
   &__content {
     padding: 0.75rem;
   }
-  &__guest-marker {
+  &__gtag {
     position: absolute;
     top: 240px;
     right: 0;

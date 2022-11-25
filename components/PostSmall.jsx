@@ -11,13 +11,9 @@ import TagsList from "@components/TagsList";
 export default function PostSmall({ post }) {
   const isLargeScreen = useMediaQuery("md");
   return (
-    <Link
-      className={styles["post-card-small"]}
-      key={post.slug}
-      href={`/posts/${post.slug}`}
-    >
+    <Link className={styles.sm} key={post.slug} href={`/posts/${post.slug}`}>
       <Image src={post.thumbnail} width={112} height={112} alt={post.slug} />
-      <div className={`px-3 py-2 ${styles["post-card-small__content"]}`}>
+      <div className={`px-3 py-2 ${styles.sm__content}`}>
         <h4 className="mb-1">{post.title}</h4>
         <p className="small text-light text-truncate mb-2">{post.excerpt}</p>
         <p className="small text-muted mb-2">

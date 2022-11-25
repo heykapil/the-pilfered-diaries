@@ -102,7 +102,7 @@ export default function CommentsList({
       </h2>
       {showForm && (
         <form
-          className={styles["comment-form"]}
+          className={styles.form}
           noValidate
           onSubmit={handleSubmit(submitComment)}
         >
@@ -236,7 +236,7 @@ export default function CommentsList({
             </div>
           )}
           {(fetchOnClient ? fetchedComments : comments).map((comment) => (
-            <div className={styles["comment-card"]} key={comment.id}>
+            <div className={styles.comment} key={comment.id}>
               <h5 className="text-light">{comment.userName}</h5>
               <p className="text-muted small fst-italic mb-1">
                 {dayjs(comment.date).format(DATE_FORMATS.dateTime)}

@@ -1,6 +1,6 @@
 @import "../theme/variables";
 
-.submissions {
+.subs {
   margin-top: -60px;
   &__header {
     padding-top: 80px;
@@ -10,7 +10,7 @@
   }
 }
 
-.tpd-accordion {
+.acc {
   margin-top: 1rem;
   &__item {
     color: $light;
@@ -31,7 +31,7 @@
   }
 }
 
-.list-item {
+.litem {
   background-color: lighten($color: $dark, $amount: 5);
   color: $light;
   padding-left: 0px;

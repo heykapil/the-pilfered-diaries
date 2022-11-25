@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
-import styles from "../../../styles/modules/SingleChapter.module.scss";
+import styles from "../../../styles/modules/Chapter.module.scss";
 
 export default function SingleChapter({ metadata, content }) {
   const { query } = useRouter();
@@ -36,8 +36,8 @@ export default function SingleChapter({ metadata, content }) {
           },
         }}
       />
-      <div className={`container-fluid ${styles["single-story"]}`}>
-        <div className={`container px-0 ${styles["single-story__header"]}`}>
+      <div className={`container-fluid ${styles.chapter}`}>
+        <div className={`container px-0 ${styles.chapter__header}`}>
           <h1 className="display-3">{metadata.title}</h1>
           <p className="small text-warning mb-0">
             by {metadata.author}
@@ -48,12 +48,19 @@ export default function SingleChapter({ metadata, content }) {
           </p>
         </div>
         <div className="container px-1">
-          <Markdown {...content} />
+          <Markdown
+            {...content}
+            containerProps={{
+              style: {
+                fontSize: "18px",
+              },
+            }}
+          />
           <div className="row mb-3">
             <div className="col-6 px-0">
               {metadata.previousChapter && (
                 <Link
-                  className={styles["chapter-toggle"]}
+                  className={styles.navigation}
                   href={`/stories/${query.slug}/${metadata.previousChapter}`}
                 >
                   <IconArrowLeft size={24} />
@@ -63,7 +70,7 @@ export default function SingleChapter({ metadata, content }) {
             </div>
             <div className="col-6 px-0">
               <Link
-                className={styles["chapter-toggle"]}
+                className={styles.navigation}
                 href={
                   metadata.nextChapter
                     ? `/stories/${query.slug}/${metadata.nextChapter}`

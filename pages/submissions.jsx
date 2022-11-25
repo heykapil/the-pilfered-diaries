@@ -112,9 +112,9 @@ export default function Submissions() {
   return (
     <>
       <NextSeo title="Submit your Work" />
-      <div className={styles.submissions}>
+      <div className={styles.subs}>
         <div
-          className={`container-fluid shadow pb-4 bg-secondary ${styles["submissions__header"]}`}
+          className={`container-fluid shadow pb-4 bg-secondary ${styles.subs__header}`}
         >
           <div className="container px-0">
             <div className="row align-items-center">
@@ -149,22 +149,17 @@ export default function Submissions() {
           </div>
         </div>
         {/* FAQs */}
-        <div className={`container-fluid py-4 ${styles["submissions__faq"]}`}>
+        <div className="container-fluid py-4">
           <div className="container px-0">
             <h2 className="text-primary">FAQs for submitting content</h2>
-            <div
-              className={`accordion ${styles["tpd-accordion"]}`}
-              id="submissionsFAQ"
-            >
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}
-              >
+            <div className={`accordion ${styles.acc}`} id="submissionsFAQ">
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  className={`accordion-header ${styles.acc__header}`}
                   id="headingOne"
                 >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapseOne"
@@ -182,7 +177,7 @@ export default function Submissions() {
                 >
                   <div className="accordion-body">
                     <div className="list-group list-group-flush">
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -192,7 +187,7 @@ export default function Submissions() {
                           button above
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -201,7 +196,7 @@ export default function Submissions() {
                           Make sure to provide a valid email address.
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -211,7 +206,7 @@ export default function Submissions() {
                           your composition.
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -224,15 +219,13 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}
-              >
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  className={`accordion-header ${styles.acc__header}`}
                   id="heading2"
                 >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse2"
@@ -275,15 +268,13 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}
-              >
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  className={`accordion-header ${styles.acc__header}`}
                   id="heading3"
                 >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse3"
@@ -312,15 +303,13 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}
-              >
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
+                  className={`accordion-header ${styles.acc__header}`}
                   id="heading4"
                 >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse4"
