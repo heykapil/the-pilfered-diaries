@@ -1,6 +1,6 @@
 import Alert from "@components/Alert";
 import { APP_TITLE, SITE_URL } from "@constants/app";
-import { firestoreClient } from "@fb/client";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
 import { useNotifications } from "@hooks/notifications";
@@ -53,7 +53,7 @@ export default function About() {
   const sendMessage = async (values) => {
     setSending(true);
     try {
-      const messages = collection(firestoreClient, "messages");
+      const messages = collection(store, "messages");
       await addDoc(messages, {
         ...values,
         date: Timestamp.fromDate(new Date()),

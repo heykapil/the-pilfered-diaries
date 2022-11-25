@@ -1,5 +1,5 @@
 import { APP_TITLE } from "@constants/app";
-import { firestoreClient } from "@fb/client";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
 import { useNotifications } from "@hooks/notifications";
@@ -88,7 +88,7 @@ export default function Submissions() {
   const submitIdea = async (values) => {
     setSubmitting(true);
     try {
-      const collectionRef = collection(firestoreClient, "submissions");
+      const collectionRef = collection(store, "submissions");
       await addDoc(collectionRef, values);
       showNotification({
         title: "Submission successful",

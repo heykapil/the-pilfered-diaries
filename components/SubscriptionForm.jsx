@@ -1,6 +1,6 @@
 import Alert from "@components/Alert";
 import { APP_TITLE } from "@constants/app";
-import { firestoreClient } from "@fb/client";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import {
@@ -48,9 +48,9 @@ export default function SubscriptionForm() {
   const subscribe = async ({ email }) => {
     setSubscribing(true);
     try {
-      const subscriptions = collection(firestoreClient, "subscriptions");
+      const subscriptions = collection(store, "subscriptions");
       const q = query(
-        collection(firestoreClient, "subscriptions"),
+        collection(store, "subscriptions"),
         where("email", "==", email)
       );
       const sub = await getDocs(q);

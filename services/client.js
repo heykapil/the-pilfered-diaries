@@ -1,5 +1,5 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { firestoreClient } from "@fb/client";
+import { store } from "@fb/client";
 
 /**
  * Retrieve a list of approved comments for a specific content
@@ -8,7 +8,7 @@ import { firestoreClient } from "@fb/client";
  */
 export async function commentsList(type, target) {
   const q = query(
-    collection(firestoreClient, "comments"),
+    collection(store, "comments"),
     where("type", "==", type),
     where("target", "==", target),
     where("approved", "==", true),

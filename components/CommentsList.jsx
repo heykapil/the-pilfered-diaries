@@ -1,5 +1,5 @@
 import { COMMENT_HEADER, COMMENT_NOTICE, DATE_FORMATS } from "@constants/app";
-import { firestoreClient } from "@fb/client";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import noComments from "@images/NoComments.svg";
@@ -68,7 +68,7 @@ export default function CommentsList({
     };
     setSubmitting(true);
     try {
-      const ref = collection(firestoreClient, "comments");
+      const ref = collection(store, "comments");
       await addDoc(ref, commentDoc);
       setShowForm(false);
       reset();
