@@ -1,11 +1,11 @@
+import PostSmall from "@components/PostSmall";
+import { APP_TITLE } from "@constants/app";
+import { useMediaQuery } from "@hooks/media-query";
+import noPostsArt from "@images/NoGuestPosts.svg";
+import submitWork from "@images/submissions-artwork.svg";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { APP_TITLE } from "../../constants/app.constants";
-import { useMediaQuery } from "../../hooks/media-query";
-import noPostsArt from "../../resources/images/NoGuestPosts.svg";
-import submitWork from "../../resources/images/submissions-artwork.svg";
-import PostSmall from "../contentCards/PostSmall";
 
 export default function GuestPosts({ posts }) {
   const isLargeScreen = useMediaQuery("md");

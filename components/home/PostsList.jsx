@@ -1,7 +1,7 @@
+import PostSmall from "@components/PostSmall";
 import { IconExternalLink } from "@tabler/icons";
 import Link from "next/link";
 import React from "react";
-import PostSmall from "../contentCards/PostSmall";
 
 export default function PostsList({ posts }) {
   return (

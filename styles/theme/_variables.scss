@@ -3,28 +3,26 @@ $secondary: #4c6793;
 $success: #53bf9d;
 $danger: #f94c66;
 $info: #37e2d5;
-// $warning: #ffc54d;
 
 $black: #000000;
 $white: #ffffff;
 $dark: #202027;
 $light: #f1f1f1;
 
+$theme-font-headings: "Belleza", sans-serif;
+$theme-font-body: "Crimson Pro", serif;
+
 $theme-colors: (
   "primary": $primary,
   "secondary": $secondary,
   "success": $success,
   "info": $info,
-  // "warning": $warning,
   "danger": $danger,
   "light": $light,
   "dark": $dark,
   "white": $white,
   "black": $black,
 );
-
-$theme-font-headings: "Belleza", sans-serif;
-$theme-font-body: "Crimson Pro", serif;
 
 // For the sidebar menu
 $offcanvas-bg-color: rgba(

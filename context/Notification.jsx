@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import styles from "./Notification.module.scss";
+import { createContext, useRef, useState } from "react";
+import styles from "../styles/modules/Notification.module.scss";
 
 export const NotificationContext = createContext({
   showNotification: ({
@@ -84,7 +84,8 @@ export function NotificationsProvider({ children }) {
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
-        ref={toastContainer}>
+        ref={toastContainer}
+      >
         {content.title && (
           <div className="toast-header">
             {content.icon}
@@ -95,7 +96,8 @@ export function NotificationsProvider({ children }) {
                 className="btn-close"
                 data-bs-dismiss="toast"
                 aria-label="Close"
-                onClick={hideNotif}></button>
+                onClick={hideNotif}
+              ></button>
             )}
           </div>
         )}

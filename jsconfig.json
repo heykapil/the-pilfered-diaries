@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2020",
+    "jsx": "react",
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
+      "@context/*": ["context/*"],
+      "@fb/*": ["firebase/*"],
+      "@hooks/*": ["hooks/*"],
+      "@images/*": ["images/*"],
+      "@services/*": ["services/*"],
+      "@lib/*": ["utils/*"]
+    }
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

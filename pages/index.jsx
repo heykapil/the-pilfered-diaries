@@ -1,13 +1,13 @@
+import About from "@components/home/About";
+import GuestPosts from "@components/home/GuestPosts";
+import Header from "@components/home/Header";
+import PostsList from "@components/home/PostsList";
+import StoriesCarousel from "@components/home/StoriesCarousel";
+import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "@constants/app";
+import firestore from "@fb/server";
+import { postsList, storiesList } from "@services/server";
 import { NextSeo } from "next-seo";
-import About from "../components/home/About";
-import GuestPosts from "../components/home/GuestPosts";
-import Header from "../components/home/Header";
-import PostsList from "../components/home/PostsList";
-import StoriesCarousel from "../components/home/StoriesCarousel";
-import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "../constants/app.constants";
-import firestore from "../firebase/config";
-import { postsList, storiesList } from "../services/serverData.promises";
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/modules/Home.module.scss";
 
 export default function Home({ stories, posts, guestPosts, siteCover }) {
   return (

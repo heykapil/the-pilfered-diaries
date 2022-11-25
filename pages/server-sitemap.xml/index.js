@@ -1,5 +1,5 @@
 import { getServerSideSitemap } from "next-sitemap";
-import firestore from "../../firebase/config";
+import firestore from "@fb/server";
 
 /** @type {import('next').GetServerSideProps} */
 export async function getServerSideProps(ctx) {

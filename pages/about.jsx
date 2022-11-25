@@ -1,4 +1,10 @@
+import Alert from "@components/Alert";
+import { APP_TITLE, SITE_URL } from "@constants/app";
+import { firestoreClient } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMediaQuery } from "@hooks/media-query";
+import { useNotifications } from "@hooks/notifications";
+import profilePic from "@images/about-2.png";
 import { IconCheck, IconCircleCheck, IconSend, IconX } from "@tabler/icons";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { NextSeo } from "next-seo";
@@ -7,13 +13,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import Alert from "../components/alert/Alert";
-import { APP_TITLE, SITE_URL } from "../constants/app.constants";
-import { firestoreClient } from "../firebase/clientConfig";
-import { useMediaQuery } from "../hooks/media-query";
-import { useNotifications } from "../hooks/notifications";
-import profilePic from "../resources/images/about-2.png";
-import styles from "../styles/About.module.scss";
+import styles from "../styles/modules/About.module.scss";
 
 export default function About() {
   const isLargeScreen = useMediaQuery("md");
@@ -183,7 +183,8 @@ export default function About() {
                   <form
                     className={styles["message-form"]}
                     noValidate
-                    onSubmit={handleSubmit(sendMessage)}>
+                    onSubmit={handleSubmit(sendMessage)}
+                  >
                     <div className="form-floating mb-3">
                       <input
                         type="text"
@@ -227,7 +228,8 @@ export default function About() {
                         }`}
                         {...register(".message")}
                         placeholder="Your Message, Comment, Suggesstion (required)"
-                        style={{ height: "100px" }}></textarea>
+                        style={{ height: "100px" }}
+                      ></textarea>
                       <label htmlFor="commentBody">
                         Your Message, Comment, Suggesstion{" "}
                         <span className="small">(required)</span>
@@ -244,7 +246,8 @@ export default function About() {
                         className={`btn btn-primary btn-sm icon-left ${
                           sending ? "loading" : ""
                         }`}
-                        disabled={sending}>
+                        disabled={sending}
+                      >
                         <div className="spinner-border text-dark" role="status">
                           <span className="visually-hidden">Loading...</span>
                         </div>

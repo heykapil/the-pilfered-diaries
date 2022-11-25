@@ -1,3 +1,7 @@
+import CommentsList from "@components/CommentsList";
+import Markdown from "@components/Markdown";
+import { APP_TITLE, AVG_READING_SPEED } from "@constants/app";
+import firestore from "@fb/server";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -12,11 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
-import CommentsList from "../../../components/commentsList/CommentsList";
-import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import { APP_TITLE, AVG_READING_SPEED } from "../../../constants/app.constants";
-import firestore from "../../../firebase/config";
-import styles from "../../../styles/SingleChapter.module.scss";
+import styles from "../../../styles/modules/SingleChapter.module.scss";
 
 export default function SingleChapter({ metadata, content }) {
   const { query } = useRouter();
@@ -48,7 +48,7 @@ export default function SingleChapter({ metadata, content }) {
           </p>
         </div>
         <div className="container px-1">
-          <RenderMarkdown {...content} />
+          <Markdown {...content} />
           <div className="row mb-3">
             <div className="col-6 px-0">
               {metadata.previousChapter && (

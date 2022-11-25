@@ -1,3 +1,12 @@
+import CommentsList from "@components/CommentsList";
+import ContentCardLarge from "@components/ContentCardLarge";
+import Markdown from "@components/Markdown";
+import SubscriptionForm from "@components/SubscriptionForm";
+import TagsList from "@components/TagsList";
+import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
+import firestore from "@fb/server";
+import { scrollToContent } from "@lib/utils";
+import { commentsList, getRelatedStories } from "@services/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -6,23 +15,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import CommentsList from "../../../components/commentsList/CommentsList";
-import ContentCardLarge from "../../../components/contentCards/ContentCardLarge";
-import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import SubscriptionForm from "../../../components/subscriptionForm/SubscriptionForm";
-import TagsList from "../../../components/tagsList/TagsList";
-import {
-  APP_TITLE,
-  DATE_FORMATS,
-  ISR_INTERVAL,
-} from "../../../constants/app.constants";
-import firestore from "../../../firebase/config";
-import {
-  commentsList,
-  getRelatedStories,
-} from "../../../services/serverData.promises";
-import styles from "../../../styles/SingleStory.module.scss";
-import { scrollToContent } from "../../../utils/utils";
+import styles from "../../../styles/modules/SingleStory.module.scss";
 
 export default function StoryDetails({
   story,
@@ -98,7 +91,7 @@ export default function StoryDetails({
           <div className="my-2">
             <TagsList tags={story.tags} />
           </div>
-          <RenderMarkdown {...story.preface} />
+          <Markdown {...story.preface} />
           <h2 className="text-primary mt-4">Chapters</h2>
           <div className="row mt-3 mt-md-4">
             {chapters.map((ch) => (

@@ -1,12 +1,7 @@
+import { APP_TITLE, INSTA_HANDLE, INSTA_LINK, TAGLINE } from "@constants/app";
 import { IconBrandInstagram } from "@tabler/icons";
 import React from "react";
-import {
-  APP_TITLE,
-  INSTA_HANDLE,
-  INSTA_LINK,
-  TAGLINE,
-} from "../../constants/app.constants";
-import styles from "../../styles/Home.module.scss";
+import styles from "../../styles/modules/Home.module.scss";
 
 export default function Header({ siteCover }) {
   return (

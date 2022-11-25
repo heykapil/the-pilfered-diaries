@@ -1,3 +1,5 @@
+import TagsList from "@components/TagsList";
+import { DATE_FORMATS } from "@constants/app";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -8,9 +10,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { DATE_FORMATS } from "../../constants/app.constants";
-import styles from "../../styles/Home.module.scss";
-import TagsList from "../tagsList/TagsList";
+import styles from "../../styles/modules/Home.module.scss";
 
 export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();

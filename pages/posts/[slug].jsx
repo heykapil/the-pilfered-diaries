@@ -1,3 +1,14 @@
+import CommentsList from "@components/CommentsList";
+import ContentCardLarge from "@components/ContentCardLarge";
+import Markdown from "@components/Markdown";
+import TagsList from "@components/TagsList";
+import {
+  APP_TITLE,
+  AVG_READING_SPEED,
+  DATE_FORMATS,
+  ISR_INTERVAL,
+} from "@constants/app";
+import firestore from "@fb/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -8,24 +19,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import readingTime from "reading-time";
-import CommentsList from "../../components/commentsList/CommentsList";
-import ContentCardLarge from "../../components/contentCards/ContentCardLarge";
-import RenderMarkdown from "../../components/markdown/RenderMarkdown";
-import TagsList from "../../components/tagsList/TagsList";
-import {
-  APP_TITLE,
-  AVG_READING_SPEED,
-  DATE_FORMATS,
-  ISR_INTERVAL,
-} from "../../constants/app.constants";
-import firestore from "../../firebase/config";
-import {
-  commentsList,
-  getRelatedPosts,
-} from "../../services/serverData.promises";
-import styles from "../../styles/SinglePost.module.scss";
-import { scrollToContent } from "../../utils/utils";
-import SubscriptionForm from "../../components/subscriptionForm/SubscriptionForm";
+import SubscriptionForm from "@components/SubscriptionForm";
+import { commentsList, getRelatedPosts } from "@services/server";
+import styles from "../../styles/modules/SinglePost.module.scss";
+import { scrollToContent } from "@lib/utils";
 
 export default function SinglePost({
   meta,
@@ -95,7 +92,7 @@ export default function SinglePost({
           </button>
         </div>
         <div className="container mt-4 py-3" id="contentBlock">
-          <RenderMarkdown {...content} />
+          <Markdown {...content} />
           <div className="my-2">
             <TagsList tags={meta.tags} />
           </div>

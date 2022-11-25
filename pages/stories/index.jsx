@@ -1,13 +1,9 @@
-import React from "react";
-import styles from "../../styles/ListingPage.module.scss";
+import ContentCardLarge from "@components/ContentCardLarge";
+import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "@constants/app";
+import { storiesList } from "@services/server";
 import { NextSeo } from "next-seo";
-import {
-  APP_TITLE,
-  ISR_INTERVAL,
-  SITE_URL,
-} from "../../constants/app.constants";
-import { storiesList } from "../../services/serverData.promises";
-import ContentCardLarge from "../../components/contentCards/ContentCardLarge";
+import React from "react";
+import styles from "../../styles/modules/ListingPage.module.scss";
 
 export default function StoriesList({ stories }) {
   return (
@@ -22,7 +18,8 @@ export default function StoriesList({ stories }) {
       />
       <div className={styles["listing-page"]}>
         <div
-          className={`container-fluid shadow ${styles["listing-page__header"]}`}>
+          className={`container-fluid shadow ${styles["listing-page__header"]}`}
+        >
           <div className="container px-0 text-center py-5">
             <h1 className="text-center">Latest Stories on</h1>
             <h1 className="display-3 text-primary">{APP_TITLE}</h1>
