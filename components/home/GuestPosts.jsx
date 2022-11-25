@@ -7,7 +7,7 @@ import noPostsArt from "../../resources/images/NoGuestPosts.svg";
 import submitWork from "../../resources/images/submissions-artwork.svg";
 import PostSmall from "../contentCards/PostSmall";
 
-export default function GuestPostsHome({ posts }) {
+export default function GuestPosts({ posts }) {
   const isLargeScreen = useMediaQuery("md");
   return (
     <div className="container-fluid pt-2 pb-4 bg-primary text-dark">
@@ -16,11 +16,13 @@ export default function GuestPostsHome({ posts }) {
         <div
           className={`row flex-md-row-reverse ${
             posts.length === 0 ? "align-items-center" : ""
-          }`}>
+          }`}
+        >
           <div
             className={`col-md-6 mb-5 mb-md-0 pt-4 pt-md-0 ${
               posts.length === 0 ? "d-flex flex-column align-items-center" : ""
-            }`}>
+            }`}
+          >
             {posts.length > 0 ? (
               posts.map((post) => <PostSmall post={post} key={post.slug} />)
             ) : (

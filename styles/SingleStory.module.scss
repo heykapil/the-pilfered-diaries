@@ -61,3 +61,14 @@
     }
   }
 }
+
+.to-be-continued {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.75rem;
+  height: 100%;
+  border-radius: 0.75rem;
+  border: 1px dashed rgba($color: $primary, $alpha: 0.6);
+}

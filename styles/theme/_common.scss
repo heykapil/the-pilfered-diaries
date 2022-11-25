@@ -35,6 +35,9 @@ main.page-content {
     margin-top: -4px;
     opacity: 0.85;
   }
+  &.no-glow::after {
+    display: none;
+  }
   &::after {
     content: "";
     position: absolute;

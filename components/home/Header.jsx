@@ -8,11 +8,12 @@ import {
 } from "../../constants/app.constants";
 import styles from "../../styles/Home.module.scss";
 
-export default function HeaderHome({ siteCover }) {
+export default function Header({ siteCover }) {
   return (
     <div
       className={`container-fluid ${styles["tpd-home__header"]}`}
-      style={{ backgroundImage: `url(${siteCover.url})` }}>
+      style={{ backgroundImage: `url(${siteCover.url})` }}
+    >
       <div className="container px-0 text-center">
         <h2 className={`display-1 mb-0 ${styles.tagline}`}>{TAGLINE}</h2>
         <p className="h1 text-primary mb-0 mt-3">{APP_TITLE}</p>
@@ -21,7 +22,8 @@ export default function HeaderHome({ siteCover }) {
             href={INSTA_LINK}
             className="text-white"
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+          >
             <IconBrandInstagram size={18} />
             <span>{INSTA_HANDLE}</span>
           </a>
