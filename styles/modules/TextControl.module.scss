@@ -59,6 +59,7 @@
   border-radius: 0.35rem;
   color: $white;
   border: 1px solid rgba($color: $light, $alpha: 0.25);
-  background-color: lighten($color: $dark, $amount: 7);
+  background-color: lighten($color: $dark, $amount: 10);
+  box-shadow: darken($color: $dark, $amount: 3) 0px 7px 29px 0px;
   display: flex;
 }

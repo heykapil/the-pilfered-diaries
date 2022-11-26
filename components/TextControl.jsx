@@ -65,7 +65,7 @@ export default function TextControl({
         </button>
       </div>
       <button className={styles.button} onClick={() => setShow(!show)}>
-        {show ? <IconX size={18} /> : <IconTextSize size={18} />}
+        {show ? <IconX size={24} /> : <IconTextSize size={24} />}
       </button>
     </>
   );
