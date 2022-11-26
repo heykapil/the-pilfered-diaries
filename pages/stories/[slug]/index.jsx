@@ -5,7 +5,7 @@ import SubscriptionForm from "@components/SubscriptionForm";
 import TagsList from "@components/TagsList";
 import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
 import firestore from "@fb/server";
-import { scrollToContent } from "@lib/utils";
+import { scrollToRef } from "@lib/utils";
 import { commentsList, getRelatedStories } from "@services/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
@@ -15,6 +15,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
 
 export default function StoryDetails({
@@ -24,6 +25,7 @@ export default function StoryDetails({
   relatedStories = [],
 }) {
   const router = useRouter();
+  const ref = useRef();
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
 
@@ -81,25 +83,20 @@ export default function StoryDetails({
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}
+            onClick={() => scrollToRef(ref, 140)}
           >
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container mt-4 py-3" id="contentBlock">
+        <div className="container mt-4">
           <h2 className="text-primary">Preface</h2>
-          <div className="my-2">
+          <div className="mt-2">
             <TagsList tags={story.tags} />
           </div>
-          <Markdown
-            {...story.preface}
-            containerProps={{
-              style: {
-                fontSize: "18px",
-              },
-            }}
-          />
-          <h2 className="text-primary mt-4">Chapters</h2>
+        </div>
+        <Markdown {...story.preface} theme="dark" fontSize={18} ref={ref} />
+        <div className="container">
+          <h2 className="text-primary">Chapters</h2>
           <div className="row mt-3 mt-md-4">
             {chapters.map((ch) => (
               <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
@@ -159,7 +156,7 @@ export default function StoryDetails({
             </div>
           )}
           <SubscriptionForm />
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-center my-3">
             <Link
               className="btn btn-outline-primary icon-right"
               href="/submissions"

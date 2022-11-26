@@ -1,9 +1,9 @@
-import "../styles/globals.scss";
+import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
-import { useEffect } from "react";
 import { NotificationsProvider } from "@context/Notification";
 import { useRouter } from "next/router";
-import Footer from "@components/Footer";
+import { useEffect } from "react";
+import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   const { pathname } = useRouter();

@@ -1,7 +1,7 @@
-export function scrollToContent(elementId) {
-  const { offsetTop } = document.getElementById(elementId);
+export function scrollToRef(elementRef, offset = 60) {
+  const { offsetTop } = elementRef.current;
   document.scrollingElement.scrollTo({
-    top: offsetTop - 60,
+    top: offsetTop - offset,
     behavior: "smooth",
   });
   document.activeElement.blur();

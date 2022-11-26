@@ -1,0 +1,64 @@
+@import "../theme/variables";
+
+.button {
+  bottom: 15px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.control {
+  bottom: 15px;
+  width: 160px;
+  transition: all 0.25s ease-in-out;
+  opacity: 0;
+  overflow: hidden;
+  &__show {
+    bottom: 60px;
+    opacity: 1;
+  }
+  &__size {
+    border: none;
+    width: 40px;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $light;
+    &:first-child {
+      border-right: 1px solid rgba($color: $light, $alpha: 0.25);
+    }
+    &:last-child {
+      border-left: 1px solid rgba($color: $light, $alpha: 0.25);
+    }
+    &:active {
+      background-color: rgba($color: $primary, $alpha: 0.5);
+    }
+    &:disabled {
+      pointer-events: none;
+      color: rgba($color: $light, $alpha: 0.45);
+    }
+  }
+  &__value {
+    height: 100%;
+    width: 80px;
+    color: $light;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    pointer-events: none;
+  }
+}
+
+.button,
+.control {
+  position: fixed;
+  right: 15px;
+  height: 40px;
+  border-radius: 0.35rem;
+  color: $white;
+  border: 1px solid rgba($color: $light, $alpha: 0.25);
+  background-color: lighten($color: $dark, $amount: 7);
+  display: flex;
+}

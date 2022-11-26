@@ -1,7 +1,9 @@
 import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
+import SubscriptionForm from "@components/SubscriptionForm";
 import TagsList from "@components/TagsList";
+import TextControl from "@components/TextControl";
 import {
   APP_TITLE,
   AVG_READING_SPEED,
@@ -9,6 +11,9 @@ import {
   ISR_INTERVAL,
 } from "@constants/app";
 import firestore from "@fb/server";
+import { useIntersection } from "@hooks/intersection";
+import { scrollToRef } from "@lib/utils";
+import { commentsList, getRelatedPosts } from "@services/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -17,12 +22,9 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
-import SubscriptionForm from "@components/SubscriptionForm";
-import { commentsList, getRelatedPosts } from "@services/server";
 import styles from "../../styles/modules/Post.module.scss";
-import { scrollToContent } from "@lib/utils";
 
 export default function SinglePost({
   meta,
@@ -31,6 +33,10 @@ export default function SinglePost({
   relatedPosts = [],
 }) {
   const router = useRouter();
+  const [fontSize, setFontSize] = useState(18);
+  const ref = useRef();
+  const contentVisible = useIntersection(ref);
+
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
 
@@ -86,20 +92,13 @@ export default function SinglePost({
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}
+            onClick={() => scrollToRef(ref)}
           >
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container mt-4 py-3" id="contentBlock">
-          <Markdown
-            {...content}
-            containerProps={{
-              style: {
-                fontSize: "18px",
-              },
-            }}
-          />
+        <Markdown ref={ref} theme="dark" fontSize={fontSize} {...content} />
+        <div className="container">
           <div className="my-2">
             <TagsList tags={meta.tags} />
           </div>
@@ -140,6 +139,9 @@ export default function SinglePost({
           </div>
         </div>
       </div>
+      {contentVisible && (
+        <TextControl initialSize={18} onSizeChange={setFontSize} />
+      )}
     </>
   );
 }

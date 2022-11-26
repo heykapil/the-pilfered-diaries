@@ -1,7 +1,9 @@
 import CommentsList from "@components/CommentsList";
 import Markdown from "@components/Markdown";
+import TextControl from "@components/TextControl";
 import { APP_TITLE, AVG_READING_SPEED } from "@constants/app";
 import firestore from "@fb/server";
+import { useIntersection } from "@hooks/intersection";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -14,12 +16,17 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
 import styles from "../../../styles/modules/Chapter.module.scss";
 
 export default function SingleChapter({ metadata, content }) {
   const { query } = useRouter();
+
+  const [fontSize, setFontSize] = useState(18);
+  const ref = useRef();
+  const contentVisible = useIntersection(ref);
+
   return (
     <>
       <NextSeo
@@ -36,7 +43,7 @@ export default function SingleChapter({ metadata, content }) {
           },
         }}
       />
-      <div className={`container-fluid ${styles.chapter}`}>
+      <div className={`container-fluid px-0 ${styles.chapter}`}>
         <div className={`container px-0 ${styles.chapter__header}`}>
           <h1 className="display-3">{metadata.title}</h1>
           <p className="small text-warning mb-0">
@@ -47,15 +54,8 @@ export default function SingleChapter({ metadata, content }) {
             {metadata.readTime.text} ({metadata.readTime.words} words)
           </p>
         </div>
+        <Markdown {...content} ref={ref} theme="dark" fontSize={fontSize} />
         <div className="container px-1">
-          <Markdown
-            {...content}
-            containerProps={{
-              style: {
-                fontSize: "18px",
-              },
-            }}
-          />
           <div className="row mb-3">
             <div className="col-6 px-0">
               {metadata.previousChapter && (
@@ -104,6 +104,9 @@ export default function SingleChapter({ metadata, content }) {
           </>
         )}
       </div>
+      {contentVisible && (
+        <TextControl initialSize={18} onSizeChange={setFontSize} />
+      )}
     </>
   );
 }

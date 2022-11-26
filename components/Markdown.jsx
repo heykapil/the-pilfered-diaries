@@ -1,19 +1,21 @@
 import { MDXRemote } from "next-mdx-remote";
-import React from "react";
+import React, { forwardRef } from "react";
 import styles from "../styles/modules/Markdown.module.scss";
 import { components } from "@components/md";
 
 /**
  * @param {Object} props
- * @param {import('react').HTMLAttributes} props.containerProps
- * @returns
+ * @param {'light' | 'dark'} theme
+ * @param {number} fontSize
  */
-function Markdown({ containerProps, ...mdxProps }) {
+function Markdown({ theme, fontSize, ...mdxProps }, ref) {
   return (
-    <div className={styles.md} {...containerProps}>
-      <MDXRemote {...mdxProps} components={components} />
+    <div className={`container-fluid ${styles.md} ${theme}`} ref={ref}>
+      <div className="container" style={{ fontSize: `${fontSize}px` }}>
+        <MDXRemote {...mdxProps} components={components} />
+      </div>
     </div>
   );
 }
 
-export default Markdown;
+export default forwardRef(Markdown);
