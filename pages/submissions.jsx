@@ -1,4 +1,9 @@
+import { APP_TITLE } from "@constants/app";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMediaQuery } from "@hooks/media-query";
+import { useNotifications } from "@hooks/notifications";
+import submitWork from "@images/submissions-artwork.svg";
 import {
   IconCheck,
   IconChecks,
@@ -12,12 +17,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { APP_TITLE } from "../constants/app.constants";
-import { firestoreClient } from "../firebase/clientConfig";
-import { useMediaQuery } from "../hooks/media-query";
-import { useNotifications } from "../hooks/notifications";
-import submitWork from "../resources/images/submissions-artwork.svg";
-import styles from "../styles/Submissions.module.scss";
+import styles from "../styles/modules/Submissions.module.scss";
 
 export default function Submissions() {
   const { showNotification } = useNotifications();
@@ -88,7 +88,7 @@ export default function Submissions() {
   const submitIdea = async (values) => {
     setSubmitting(true);
     try {
-      const collectionRef = collection(firestoreClient, "submissions");
+      const collectionRef = collection(store, "submissions");
       await addDoc(collectionRef, values);
       showNotification({
         title: "Submission successful",
@@ -112,9 +112,10 @@ export default function Submissions() {
   return (
     <>
       <NextSeo title="Submit your Work" />
-      <div className={styles.submissions}>
+      <div className={styles.subs}>
         <div
-          className={`container-fluid shadow pb-4 bg-secondary ${styles["submissions__header"]}`}>
+          className={`container-fluid shadow pb-4 bg-secondary ${styles.subs__header}`}
+        >
           <div className="container px-0">
             <div className="row align-items-center">
               <div className="col-md-6 py-5 py-md-0">
@@ -126,7 +127,8 @@ export default function Submissions() {
                 </h4>
                 <button
                   className="btn btn-lg btn-primary shadow icon-right"
-                  onClick={showSubmissionForm}>
+                  onClick={showSubmissionForm}
+                >
                   Share it with us
                   <IconMailFast size={32} />
                 </button>
@@ -147,24 +149,23 @@ export default function Submissions() {
           </div>
         </div>
         {/* FAQs */}
-        <div className={`container-fluid py-4 ${styles["submissions__faq"]}`}>
+        <div className="container-fluid py-4">
           <div className="container px-0">
             <h2 className="text-primary">FAQs for submitting content</h2>
-            <div
-              className={`accordion ${styles["tpd-accordion"]}`}
-              id="submissionsFAQ">
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+            <div className={`accordion ${styles.acc}`} id="submissionsFAQ">
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
-                  id="headingOne">
+                  className={`accordion-header ${styles.acc__header}`}
+                  id="headingOne"
+                >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapseOne"
                     aria-expanded="true"
-                    aria-controls="collapseOne">
+                    aria-controls="collapseOne"
+                  >
                     How do I submit content to {APP_TITLE}?
                   </button>
                 </h4>
@@ -172,10 +173,11 @@ export default function Submissions() {
                   id="collapseOne"
                   className="accordion-collapse collapse show"
                   aria-labelledby="headingOne"
-                  data-bs-parent="#submissionsFAQ">
+                  data-bs-parent="#submissionsFAQ"
+                >
                   <div className="accordion-body">
                     <div className="list-group list-group-flush">
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -185,7 +187,7 @@ export default function Submissions() {
                           button above
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -194,7 +196,7 @@ export default function Submissions() {
                           Make sure to provide a valid email address.
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -204,7 +206,7 @@ export default function Submissions() {
                           your composition.
                         </span>
                       </div>
-                      <div className={`list-group-item ${styles["list-item"]}`}>
+                      <div className={`list-group-item ${styles.litem}`}>
                         <span className="text-success me-3">
                           <IconChecks size={18} />
                         </span>
@@ -217,17 +219,18 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
-                  id="heading2">
+                  className={`accordion-header ${styles.acc__header}`}
+                  id="heading2"
+                >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse2"
-                    aria-controls="collapse2">
+                    aria-controls="collapse2"
+                  >
                     What kind of submissions does {APP_TITLE} accept?
                   </button>
                 </h4>
@@ -235,7 +238,8 @@ export default function Submissions() {
                   id="collapse2"
                   className="accordion-collapse collapse"
                   aria-labelledby="heading2"
-                  data-bs-parent="#submissionsFAQ">
+                  data-bs-parent="#submissionsFAQ"
+                >
                   <div className="accordion-body">
                     <p>
                       We accept all sorts of thoughts relating to life for
@@ -264,17 +268,18 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
-                  id="heading3">
+                  className={`accordion-header ${styles.acc__header}`}
+                  id="heading3"
+                >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse3"
-                    aria-controls="collapse3">
+                    aria-controls="collapse3"
+                  >
                     Do you accept submissions in any language or format?
                   </button>
                 </h4>
@@ -282,7 +287,8 @@ export default function Submissions() {
                   id="collapse3"
                   className="accordion-collapse collapse"
                   aria-labelledby="heading3"
-                  data-bs-parent="#submissionsFAQ">
+                  data-bs-parent="#submissionsFAQ"
+                >
                   <div className="accordion-body">
                     <p>
                       {APP_TITLE} is intended to be primarily in English, but we
@@ -297,17 +303,18 @@ export default function Submissions() {
                   </div>
                 </div>
               </div>
-              <div
-                className={`accordion-item shadow ${styles["tpd-accordion__item"]}`}>
+              <div className={`accordion-item shadow ${styles.acc__item}`}>
                 <h4
-                  className={`accordion-header ${styles["tpd-accordion__header"]}`}
-                  id="heading4">
+                  className={`accordion-header ${styles.acc__header}`}
+                  id="heading4"
+                >
                   <button
-                    className={`accordion-button ${styles["tpd-accordion__button"]}`}
+                    className={`accordion-button ${styles.acc__button}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse4"
-                    aria-controls="collapse4">
+                    aria-controls="collapse4"
+                  >
                     What is in it for me if I post something to {APP_TITLE}?
                   </button>
                 </h4>
@@ -315,7 +322,8 @@ export default function Submissions() {
                   id="collapse4"
                   className="accordion-collapse collapse "
                   aria-labelledby="heading4"
-                  data-bs-parent="#submissionsFAQ">
+                  data-bs-parent="#submissionsFAQ"
+                >
                   <div className="accordion-body">
                     <p>
                       <span className="fw-bold">
@@ -340,12 +348,14 @@ export default function Submissions() {
         ref={modalRef}
         tabIndex="-1"
         aria-labelledby="ideaFormLabel"
-        aria-hidden="true">
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
           <form
             noValidate
             className="modal-content"
-            onSubmit={handleSubmit(submitIdea)}>
+            onSubmit={handleSubmit(submitIdea)}
+          >
             <div className="modal-header">
               <h5 className="modal-title" id="ideaFormLabel">
                 Submit Your Idea
@@ -407,7 +417,8 @@ export default function Submissions() {
                   }`}
                   {...register("ideaDescription")}
                   placeholder="Brief Ddescription"
-                  style={{ height: "220px" }}></textarea>
+                  style={{ height: "220px" }}
+                ></textarea>
                 <label htmlFor="commentBody">Brief Ddescription</label>
                 {errors.ideaDescription && (
                   <div className="invalid-feedback">
@@ -423,7 +434,8 @@ export default function Submissions() {
               <button
                 type="button"
                 className="btn btn-outline-primary icon-left"
-                onClick={closeForm}>
+                onClick={closeForm}
+              >
                 <IconX size={18} />
                 Cancel
               </button>
@@ -431,7 +443,8 @@ export default function Submissions() {
                 type="submit"
                 className={`btn btn-primary icon-right ${
                   submitting ? "loading" : ""
-                }`}>
+                }`}
+              >
                 <div className="spinner-border text-dark" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>

@@ -1,31 +1,32 @@
+import CommentsList from "@components/CommentsList";
+import ContentCardLarge from "@components/ContentCardLarge";
+import Markdown from "@components/Markdown";
+import SubscriptionForm from "@components/SubscriptionForm";
+import TagsList from "@components/TagsList";
+import {
+  APP_TITLE,
+  AVG_READING_SPEED,
+  DATE_FORMATS,
+  ISR_INTERVAL,
+} from "@constants/app";
+import firestore from "@fb/server";
+import { useIntersection } from "@hooks/intersection";
+import { scrollToRef } from "@lib/utils";
+import { commentsList, getRelatedPosts } from "@services/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
-import CommentsList from "../../components/commentsList/CommentsList";
-import ContentCardLarge from "../../components/contentCards/ContentCardLarge";
-import RenderMarkdown from "../../components/markdown/RenderMarkdown";
-import TagsList from "../../components/tagsList/TagsList";
-import {
-  APP_TITLE,
-  AVG_READING_SPEED,
-  DATE_FORMATS,
-  ISR_INTERVAL,
-} from "../../constants/app.constants";
-import firestore from "../../firebase/config";
-import {
-  commentsList,
-  getRelatedPosts,
-} from "../../services/serverData.promises";
-import styles from "../../styles/SinglePost.module.scss";
-import { scrollToContent } from "../../utils/utils";
-import SubscriptionForm from "../../components/subscriptionForm/SubscriptionForm";
+import styles from "../../styles/modules/Post.module.scss";
+
+const TextControl = dynamic(() => import("../../components/TextControl"));
 
 export default function SinglePost({
   meta,
@@ -34,6 +35,10 @@ export default function SinglePost({
   relatedPosts = [],
 }) {
   const router = useRouter();
+  const [fontSize, setFontSize] = useState(18);
+  const ref = useRef();
+  const contentVisible = useIntersection(ref);
+
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
 
@@ -61,9 +66,9 @@ export default function SinglePost({
           ],
         }}
       />
-      <div className={styles["single-post"]}>
+      <div className={styles.post}>
         <div
-          className={`container-fluid shadow ${styles["single-post__header"]}`}
+          className={`container-fluid shadow ${styles.post__header}`}
           style={{ backgroundImage: `url(${meta.cover})` }}
         >
           <h1 className="display-1">{meta.title}</h1>
@@ -89,13 +94,13 @@ export default function SinglePost({
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}
+            onClick={() => scrollToRef(ref)}
           >
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container mt-4 py-3" id="contentBlock">
-          <RenderMarkdown {...content} />
+        <Markdown ref={ref} theme="dark" fontSize={fontSize} {...content} />
+        <div className="container">
           <div className="my-2">
             <TagsList tags={meta.tags} />
           </div>
@@ -125,7 +130,7 @@ export default function SinglePost({
             </div>
           )}
           <SubscriptionForm />
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-center my-3">
             <Link
               className="btn btn-outline-primary btn-sm icon-right"
               href="/submissions"
@@ -136,6 +141,9 @@ export default function SinglePost({
           </div>
         </div>
       </div>
+      {contentVisible && (
+        <TextControl initialSize={18} onSizeChange={setFontSize} />
+      )}
     </>
   );
 }

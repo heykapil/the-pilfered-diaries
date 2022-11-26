@@ -1,0 +1,13 @@
+@import "../theme/variables";
+
+.toast {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1090;
+  max-width: 320px;
+  svg {
+    margin-right: 0.75rem;
+  }
+}

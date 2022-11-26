@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "../styles/NotFound.module.scss";
-import notFound from "../resources/images/NotFound.svg";
+import { useMediaQuery } from "@hooks/media-query";
+import notFound from "@images/NotFound.svg";
 import Image from "next/image";
-import { useMediaQuery } from "../hooks/media-query";
 import Link from "next/link";
+import React from "react";
+import styles from "../styles/modules/NotFound.module.scss";
 
 export default function NotFound() {
   const isLargeScreen = useMediaQuery("md");

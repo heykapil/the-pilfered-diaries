@@ -1,3 +1,7 @@
+import Markdown from "@components/Markdown";
+import { APP_TITLE, AVG_READING_SPEED } from "@constants/app";
+import firestore from "@fb/server";
+import { useIntersection } from "@hooks/intersection";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -8,18 +12,23 @@ import axios from "axios";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
-import CommentsList from "../../../components/commentsList/CommentsList";
-import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import { APP_TITLE, AVG_READING_SPEED } from "../../../constants/app.constants";
-import firestore from "../../../firebase/config";
-import styles from "../../../styles/SingleChapter.module.scss";
+import styles from "../../../styles/modules/Chapter.module.scss";
+
+const TextControl = dynamic(() => import("../../../components/TextControl"));
+const CommentsList = dynamic(() => import("../../../components/CommentsList"));
 
 export default function SingleChapter({ metadata, content }) {
   const { query } = useRouter();
+
+  const [fontSize, setFontSize] = useState(18);
+  const ref = useRef();
+  const contentVisible = useIntersection(ref);
+
   return (
     <>
       <NextSeo
@@ -36,8 +45,8 @@ export default function SingleChapter({ metadata, content }) {
           },
         }}
       />
-      <div className={`container-fluid ${styles["single-story"]}`}>
-        <div className={`container px-0 ${styles["single-story__header"]}`}>
+      <div className={`container-fluid px-0 ${styles.chapter}`}>
+        <div className={`container px-0 ${styles.chapter__header}`}>
           <h1 className="display-3">{metadata.title}</h1>
           <p className="small text-warning mb-0">
             by {metadata.author}
@@ -47,13 +56,13 @@ export default function SingleChapter({ metadata, content }) {
             {metadata.readTime.text} ({metadata.readTime.words} words)
           </p>
         </div>
+        <Markdown {...content} ref={ref} theme="dark" fontSize={fontSize} />
         <div className="container px-1">
-          <RenderMarkdown {...content} />
           <div className="row mb-3">
             <div className="col-6 px-0">
               {metadata.previousChapter && (
                 <Link
-                  className={styles["chapter-toggle"]}
+                  className={styles.navigation}
                   href={`/stories/${query.slug}/${metadata.previousChapter}`}
                 >
                   <IconArrowLeft size={24} />
@@ -63,7 +72,7 @@ export default function SingleChapter({ metadata, content }) {
             </div>
             <div className="col-6 px-0">
               <Link
-                className={styles["chapter-toggle"]}
+                className={styles.navigation}
                 href={
                   metadata.nextChapter
                     ? `/stories/${query.slug}/${metadata.nextChapter}`
@@ -97,6 +106,9 @@ export default function SingleChapter({ metadata, content }) {
           </>
         )}
       </div>
+      {contentVisible && (
+        <TextControl initialSize={18} onSizeChange={setFontSize} />
+      )}
     </>
   );
 }

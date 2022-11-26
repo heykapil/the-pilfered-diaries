@@ -1,0 +1,74 @@
+@import "../theme/variables";
+
+.story {
+  margin-top: -60px;
+  &__header {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    text-align: center;
+    & > * {
+      z-index: 1;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($color: $dark, $alpha: 0.35);
+      backdrop-filter: blur(6px);
+      z-index: 0;
+    }
+    .excerpt {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-size: 14px;
+      font-style: italic;
+      text-align: center;
+      max-width: 500px;
+    }
+  }
+  .chapter {
+    display: block;
+    text-decoration: none;
+    padding: 0.75rem;
+    background-color: lighten($color: $dark, $amount: 5);
+    transition: all 0.15s ease-in-out;
+    height: 100%;
+    border-radius: 0.75rem;
+    h4 {
+      color: darken($color: $light, $amount: 10);
+      transition: all 0.15s ease-in-out;
+    }
+    p {
+      color: darken($color: $light, $amount: 25);
+    }
+    &:hover,
+    &:focus {
+      outline: none;
+      background-color: darken($color: $dark, $amount: 5);
+      h4 {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.wip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.75rem;
+  height: 100%;
+  border-radius: 0.75rem;
+  border: 1px dashed rgba($color: $primary, $alpha: 0.6);
+}

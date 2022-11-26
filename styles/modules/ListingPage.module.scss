@@ -1,0 +1,17 @@
+@import "../theme/variables";
+
+.listing {
+  margin-top: -60px;
+  &__header {
+    background-color: lighten($color: $dark, $amount: 3);
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../images/Halftone.svg");
+    background-size: cover;
+    background-position: 50% 34%;
+    background-repeat: no-repeat;
+  }
+}

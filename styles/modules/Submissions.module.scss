@@ -1,0 +1,40 @@
+@import "../theme/variables";
+
+.subs {
+  margin-top: -60px;
+  &__header {
+    padding-top: 80px;
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.acc {
+  margin-top: 1rem;
+  &__item {
+    color: $light;
+    border: 0;
+    margin-bottom: 1rem;
+    background-color: lighten($color: $dark, $amount: 5);
+  }
+  &__header {
+    background-color: transparent;
+  }
+  //   &__button,
+  &__button:not(.collapsed) {
+    box-shadow: none;
+    font-size: 18px;
+    color: $light;
+    border: none;
+    background-color: transparent;
+  }
+}
+
+.litem {
+  background-color: lighten($color: $dark, $amount: 5);
+  color: $light;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-color: rgba($color: $light, $alpha: 0.18);
+}

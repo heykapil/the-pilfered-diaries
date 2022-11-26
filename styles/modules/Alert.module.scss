@@ -1,0 +1,26 @@
+@import "../theme/variables";
+
+.alert {
+  font-family: $theme-font-headings;
+  letter-spacing: 1px;
+  &.success {
+    background-color: rgba($color: $success, $alpha: 0.1);
+    border: 1px solid rgba($color: $success, $alpha: 0.6);
+    color: $success;
+  }
+  &.danger {
+    background-color: rgba($color: $danger, $alpha: 0.1);
+    border: 1px solid rgba($color: $danger, $alpha: 0.6);
+    color: $danger;
+  }
+  &.info {
+    background-color: rgba($color: $info, $alpha: 0.1);
+    border: 1px solid rgba($color: $info, $alpha: 0.6);
+    color: $info;
+  }
+  &.secondary {
+    background-color: rgba($color: $secondary, $alpha: 0.1);
+    border: 1px solid rgba($color: $secondary, $alpha: 0.6);
+    color: $secondary;
+  }
+}

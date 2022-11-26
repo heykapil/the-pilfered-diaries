@@ -1,4 +1,10 @@
+import Alert from "@components/Alert";
+import { APP_TITLE, SITE_URL } from "@constants/app";
+import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMediaQuery } from "@hooks/media-query";
+import { useNotifications } from "@hooks/notifications";
+import profilePic from "@images/about-2.png";
 import { IconCheck, IconCircleCheck, IconSend, IconX } from "@tabler/icons";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { NextSeo } from "next-seo";
@@ -7,13 +13,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import Alert from "../components/alert/Alert";
-import { APP_TITLE, SITE_URL } from "../constants/app.constants";
-import { firestoreClient } from "../firebase/clientConfig";
-import { useMediaQuery } from "../hooks/media-query";
-import { useNotifications } from "../hooks/notifications";
-import profilePic from "../resources/images/about-2.png";
-import styles from "../styles/About.module.scss";
+import styles from "../styles/modules/About.module.scss";
 
 export default function About() {
   const isLargeScreen = useMediaQuery("md");
@@ -25,7 +25,6 @@ export default function About() {
   const {
     handleSubmit,
     register,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onSubmit",
@@ -54,7 +53,7 @@ export default function About() {
   const sendMessage = async (values) => {
     setSending(true);
     try {
-      const messages = collection(firestoreClient, "messages");
+      const messages = collection(store, "messages");
       await addDoc(messages, {
         ...values,
         date: Timestamp.fromDate(new Date()),
@@ -93,8 +92,8 @@ export default function About() {
           url: SITE_URL + "/about",
         }}
       />
-      <div className={styles["tpd-about"]}>
-        <div className={`container ${styles["tpd-about__content"]}`}>
+      <div className={styles.about}>
+        <div className={`container ${styles.about__content}`}>
           <div className="row">
             <div className="col-md-6 d-flex justify-content-center">
               <Image
@@ -135,21 +134,21 @@ export default function About() {
           <div className="row">
             <div className="col-md-6">
               <p className="fs-4">Exciting stuff around here.</p>
-              <Link href="/stories" className={styles["about-action"]}>
+              <Link href="/stories" className={styles.action}>
                 <h3>Explore Stories</h3>
                 <p className="mb-0 text-muted">
                   I am no accomplished writer, but like many others, I like to
                   cook up scenarios in my head and pen them down sometimes.
                 </p>
               </Link>
-              <Link href="/posts" className={styles["about-action"]}>
+              <Link href="/posts" className={styles.action}>
                 <h3>Explore Short Posts</h3>
                 <p className="mb-0 text-muted">
                   Little thoughts, ideas and incidents, that I keep track of,
                   and try to compile into coherent scenarios.
                 </p>
               </Link>
-              <Link href="/submissions" className={styles["about-action"]}>
+              <Link href="/submissions" className={styles.action}>
                 <h3>Get Featured</h3>
                 <p className="mb-0 text-muted">
                   You can send your work to {APP_TITLE}. Let&apos;s collborate
@@ -183,7 +182,8 @@ export default function About() {
                   <form
                     className={styles["message-form"]}
                     noValidate
-                    onSubmit={handleSubmit(sendMessage)}>
+                    onSubmit={handleSubmit(sendMessage)}
+                  >
                     <div className="form-floating mb-3">
                       <input
                         type="text"
@@ -227,7 +227,8 @@ export default function About() {
                         }`}
                         {...register(".message")}
                         placeholder="Your Message, Comment, Suggesstion (required)"
-                        style={{ height: "100px" }}></textarea>
+                        style={{ height: "100px" }}
+                      ></textarea>
                       <label htmlFor="commentBody">
                         Your Message, Comment, Suggesstion{" "}
                         <span className="small">(required)</span>
@@ -244,7 +245,8 @@ export default function About() {
                         className={`btn btn-primary btn-sm icon-left ${
                           sending ? "loading" : ""
                         }`}
-                        disabled={sending}>
+                        disabled={sending}
+                      >
                         <div className="spinner-border text-dark" role="status">
                           <span className="visually-hidden">Loading...</span>
                         </div>

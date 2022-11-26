@@ -1,17 +1,12 @@
+import { APP_TITLE, INSTA_HANDLE, INSTA_LINK, TAGLINE } from "@constants/app";
 import { IconBrandInstagram } from "@tabler/icons";
 import React from "react";
-import {
-  APP_TITLE,
-  INSTA_HANDLE,
-  INSTA_LINK,
-  TAGLINE,
-} from "../../constants/app.constants";
-import styles from "../../styles/Home.module.scss";
+import styles from "../../styles/modules/Home.module.scss";
 
 export default function Header({ siteCover }) {
   return (
     <div
-      className={`container-fluid ${styles["tpd-home__header"]}`}
+      className={`container-fluid ${styles.home__cover}`}
       style={{ backgroundImage: `url(${siteCover.url})` }}
     >
       <div className="container px-0 text-center">
@@ -29,7 +24,7 @@ export default function Header({ siteCover }) {
           </a>
         </div>
       </div>
-      <p className={`${styles["photo-credit"]} small text-light`}>
+      <p className={`${styles.cc} small text-light`}>
         Photo By: {siteCover.photoCredit}
       </p>
     </div>

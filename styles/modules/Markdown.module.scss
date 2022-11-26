@@ -1,0 +1,36 @@
+@import "../theme/variables";
+
+.md {
+  color: darken($color: $light, $amount: 15);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 0px;
+  padding-right: 0px;
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  a {
+    text-decoration: none;
+    color: $primary;
+    opacity: 0.75;
+    transition: all 0.2s ease-in;
+    &:hover,
+    &:focus {
+      outline: none;
+      opacity: 1;
+      text-decoration: underline;
+    }
+  }
+  a,
+  p {
+    font-size: 1em;
+  }
+  p {
+    transition: all 0.2s ease-in;
+  }
+}

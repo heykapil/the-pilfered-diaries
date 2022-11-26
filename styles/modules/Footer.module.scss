@@ -1,0 +1,34 @@
+@import "../theme/variables";
+
+.footer {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 0.75rem;
+  border-top: 1px solid rgba($color: $light, $alpha: 0.15);
+  .lnk {
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      color: $light;
+    }
+    &__insta {
+      color: $instagram;
+    }
+    &__lkdn {
+      color: $linkedin;
+    }
+    &__git {
+      color: $github;
+    }
+    &__bs5 {
+      color: $bootstrap;
+    }
+    &__next {
+      color: $white;
+    }
+    &__firebase {
+      color: $firebase;
+    }
+  }
+}

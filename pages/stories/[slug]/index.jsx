@@ -1,3 +1,12 @@
+import CommentsList from "@components/CommentsList";
+import ContentCardLarge from "@components/ContentCardLarge";
+import Markdown from "@components/Markdown";
+import SubscriptionForm from "@components/SubscriptionForm";
+import TagsList from "@components/TagsList";
+import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
+import firestore from "@fb/server";
+import { scrollToRef } from "@lib/utils";
+import { commentsList, getRelatedStories } from "@services/server";
 import { IconArrowDown, IconArrowRight, IconPoint } from "@tabler/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -6,23 +15,8 @@ import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import CommentsList from "../../../components/commentsList/CommentsList";
-import ContentCardLarge from "../../../components/contentCards/ContentCardLarge";
-import RenderMarkdown from "../../../components/markdown/RenderMarkdown";
-import SubscriptionForm from "../../../components/subscriptionForm/SubscriptionForm";
-import TagsList from "../../../components/tagsList/TagsList";
-import {
-  APP_TITLE,
-  DATE_FORMATS,
-  ISR_INTERVAL,
-} from "../../../constants/app.constants";
-import firestore from "../../../firebase/config";
-import {
-  commentsList,
-  getRelatedStories,
-} from "../../../services/serverData.promises";
-import styles from "../../../styles/SingleStory.module.scss";
-import { scrollToContent } from "../../../utils/utils";
+import { useRef } from "react";
+import styles from "../../../styles/modules/Story.module.scss";
 
 export default function StoryDetails({
   story,
@@ -31,6 +25,7 @@ export default function StoryDetails({
   relatedStories = [],
 }) {
   const router = useRouter();
+  const ref = useRef();
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
 
@@ -62,9 +57,9 @@ export default function StoryDetails({
           ],
         }}
       />
-      <div className={styles["single-story"]}>
+      <div className={styles.story}>
         <div
-          className={`container-fluid shadow ${styles["single-story__header"]}`}
+          className={`container-fluid shadow ${styles.story__header}`}
           style={{ backgroundImage: `url(${story.cover})` }}
         >
           <h1 className="display-1">{story.title}</h1>
@@ -81,41 +76,42 @@ export default function StoryDetails({
               {dayjs(story.published).format(DATE_FORMATS.date)}
             </span>
           </p>
-          <p className={styles["story-excerpt"]}>{story.excerpt}</p>
+          <p className={styles.excerpt}>{story.excerpt}</p>
           <button
             className="icon-btn icon-btn__lg mt-3"
             data-bs-toggle="tooltip"
             data-bs-offset="0,5"
             data-bs-placement="bottom"
             title="Scroll To Content"
-            onClick={() => scrollToContent("contentBlock")}
+            onClick={() => scrollToRef(ref, 140)}
           >
             <IconArrowDown size={36} />
           </button>
         </div>
-        <div className="container mt-4 py-3" id="contentBlock">
+        <div className="container mt-4">
           <h2 className="text-primary">Preface</h2>
-          <div className="my-2">
+          <div className="mt-2">
             <TagsList tags={story.tags} />
           </div>
-          <RenderMarkdown {...story.preface} />
-          <h2 className="text-primary mt-4">Chapters</h2>
+        </div>
+        <Markdown {...story.preface} theme="dark" fontSize={18} ref={ref} />
+        <div className="container">
+          <h2 className="text-primary">Chapters</h2>
           <div className="row mt-3 mt-md-4">
             {chapters.map((ch) => (
               <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
                 <Link
                   href={`/stories/${story.slug}/${ch.slug}`}
-                  className={`shadow ${styles["chapter-card"]}`}
+                  className={`shadow ${styles.chapter}`}
                 >
                   <h4 className="mb-2">{ch.title}</h4>
                   <p className="small mb-0">{ch.excerpt}</p>
                 </Link>
               </div>
             ))}
-            {/* Work In Progress Marker */}
             {story.wip && (
               <div className="col-md-6 mb-3 mb-md-4">
-                <div className={styles["to-be-continued"]}>
+                <div className={styles.wip}>
                   <h4 className="mb-1 text-center">To Be Continued...</h4>
                   <p className="text-muted mb-0 text-center">
                     <span className="text-primary">
@@ -160,7 +156,7 @@ export default function StoryDetails({
             </div>
           )}
           <SubscriptionForm />
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-center my-3">
             <Link
               className="btn btn-outline-primary icon-right"
               href="/submissions"

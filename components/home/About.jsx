@@ -1,9 +1,9 @@
+import SubscriptionForm from "@components/SubscriptionForm";
+import { APP_TITLE } from "@constants/app";
+import { useMediaQuery } from "@hooks/media-query";
+import profilePic from "@images/about-1.png";
 import Image from "next/image";
 import React from "react";
-import { APP_TITLE } from "../../constants/app.constants";
-import profilePic from "../../resources/images/about-1.png";
-import SubscriptionForm from "../subscriptionForm/SubscriptionForm";
-import { useMediaQuery } from "../../hooks/media-query";
 
 export default function About() {
   const isLargeScreen = useMediaQuery("md");
