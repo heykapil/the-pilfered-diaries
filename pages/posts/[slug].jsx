@@ -130,7 +130,7 @@ export default function SinglePost({
             </div>
           )}
           <SubscriptionForm />
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-center my-3">
             <Link
               className="btn btn-outline-primary btn-sm icon-right"
               href="/submissions"
