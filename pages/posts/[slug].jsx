@@ -3,7 +3,6 @@ import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import SubscriptionForm from "@components/SubscriptionForm";
 import TagsList from "@components/TagsList";
-import TextControl from "@components/TextControl";
 import {
   APP_TITLE,
   AVG_READING_SPEED,
@@ -20,11 +19,14 @@ import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
 import styles from "../../styles/modules/Post.module.scss";
+
+const TextControl = dynamic(() => import("../../components/TextControl"));
 
 export default function SinglePost({
   meta,

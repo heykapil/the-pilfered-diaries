@@ -1,6 +1,4 @@
-import CommentsList from "@components/CommentsList";
 import Markdown from "@components/Markdown";
-import TextControl from "@components/TextControl";
 import { APP_TITLE, AVG_READING_SPEED } from "@constants/app";
 import firestore from "@fb/server";
 import { useIntersection } from "@hooks/intersection";
@@ -14,11 +12,15 @@ import axios from "axios";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
 import styles from "../../../styles/modules/Chapter.module.scss";
+
+const TextControl = dynamic(() => import("../../../components/TextControl"));
+const CommentsList = dynamic(() => import("../../../components/CommentsList"));
 
 export default function SingleChapter({ metadata, content }) {
   const { query } = useRouter();
