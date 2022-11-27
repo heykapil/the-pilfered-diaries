@@ -79,6 +79,7 @@ export async function getStaticProps() {
     ...doc.data(),
     slug: doc.id,
     published: doc.data().published.toDate().toISOString(),
+    lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
   }));
 
   const posts = postsRes.docs.map((doc) => ({

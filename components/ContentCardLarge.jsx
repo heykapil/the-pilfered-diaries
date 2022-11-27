@@ -1,3 +1,4 @@
+import Tag from "@components/Tag";
 import TagsList from "@components/TagsList";
 import { DATE_FORMATS, GUEST_POST_MARKER_TEXT } from "@constants/app";
 import { IconPoint } from "@tabler/icons";
@@ -28,7 +29,14 @@ export default function ContentCardLarge({ data, variant }) {
         />
       </div>
       <div className={styles.lg__content}>
-        <h4 className="mb-1">{data.title}</h4>
+        <p className="mb-2 d-flex justify-content-between align-items-center gap-1">
+          <span className="h4 mb-0"> {data.title}</span>
+          {variant === "stories" && data.wip && (
+            <Tag>
+              <IconPoint size={12} /> <span className="ms-1">Ongoing</span>
+            </Tag>
+          )}
+        </p>
         <p className="text-light small mb-2">
           {dayjs(data.published).format(DATE_FORMATS.date)}
           <span className="mx-1">
@@ -40,7 +48,7 @@ export default function ContentCardLarge({ data, variant }) {
               <span className="mx-1">
                 <IconPoint size={12} />
               </span>
-              {data.chapterCount} Chapters
+              {data.chapterSlugs.length} Chapters
             </>
           )}
         </p>

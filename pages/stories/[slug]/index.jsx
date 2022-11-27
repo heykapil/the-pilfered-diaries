@@ -64,17 +64,15 @@ export default function StoryDetails({
         >
           <h1 className="display-1">{story.title}</h1>
           <p className="my-3">
-            <span className="me-1">{story.author}</span>
-            <span className="mx-1 text-primary">
+            <span>{story.author}</span>
+            <span className="mx-1 text-light">
               <IconPoint size={16} />
             </span>
-            <span className="mx-1">{story.chapterCount} Chapters</span>
-            <span className="mx-1 text-primary">
+            <span>{story.chapterSlugs.length} Chapters</span>
+            <span className="mx-1 text-light">
               <IconPoint size={16} />
             </span>
-            <span className="ms-1">
-              {dayjs(story.published).format(DATE_FORMATS.date)}
-            </span>
+            <span>{dayjs(story.published).format(DATE_FORMATS.date)}</span>
           </p>
           <p className={styles.excerpt}>{story.excerpt}</p>
           <button
@@ -211,6 +209,7 @@ export async function getStaticProps(ctx) {
     ...storyRes.data(),
     slug: storyRes.id,
     published: storyRes.data().published.toDate().toISOString(),
+    lastUpdated: storyRes.data().lastUpdated.toDate().toISOString(),
     preface: await serialize(prefaceRaw),
   };
   const chapters = chapterRes.docs.map((doc) => ({
@@ -231,6 +230,7 @@ export async function getStaticProps(ctx) {
         ...doc.data(),
         slug: doc.id,
         published: doc.data().published.toDate().toISOString(),
+        lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
       })),
     },
     revalidate: ISR_INTERVAL,
