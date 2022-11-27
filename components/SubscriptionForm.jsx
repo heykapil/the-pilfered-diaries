@@ -74,7 +74,6 @@ export default function SubscriptionForm() {
         sessionStorage.setItem("subscribed", email);
       }
     } catch (error) {
-      console.log(error);
       showNotification({
         title: "Failed to subscribe",
         body: "Your subscription failed, please try again, or sedn me a message from the about page.",

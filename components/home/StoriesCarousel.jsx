@@ -1,5 +1,7 @@
+import Tag from "@components/Tag";
 import TagsList from "@components/TagsList";
 import { DATE_FORMATS } from "@constants/app";
+import { useMediaQuery } from "@hooks/media-query";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -15,6 +17,7 @@ import styles from "../../styles/modules/Home.module.scss";
 export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();
   const contentCarouselRef = useRef();
+  const isDesktop = useMediaQuery("md");
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const toggleCarousel = (dir) => {
@@ -28,11 +31,11 @@ export default function StoriesCarousel({ stories }) {
     if (dir === "next") {
       setCurrentSlide((prev) => prev + 1);
       coverCarousel.next();
-      setTimeout(() => contentCarousel.next(), 100);
+      setTimeout(() => contentCarousel.next(), 150);
     } else {
       setCurrentSlide((prev) => prev - 1);
       coverCarousel.prev();
-      setTimeout(() => contentCarousel.prev(), 100);
+      setTimeout(() => contentCarousel.prev(), 150);
     }
   };
   return (
@@ -68,6 +71,7 @@ export default function StoriesCarousel({ stories }) {
       <div
         ref={coverCarouselRef}
         className={`carousel slide ${styles.imgcarr}`}
+        style={{ height: `${isDesktop ? "320" : "240"}px` }}
         data-bs-touch="false"
       >
         <div className={`carousel-inner ${styles.imgcarr__inner}`}>
@@ -105,9 +109,15 @@ export default function StoriesCarousel({ stories }) {
             >
               <Link
                 href={`/stories/${story.slug}`}
-                className={`h3 mb-1 ${styles.title}`}
+                className={`mb-1 ${styles.title}`}
               >
-                {story.title}
+                <span className="h3 mb-0">{story.title}</span>
+                {story.wip && (
+                  <Tag>
+                    <IconPoint size={12} />{" "}
+                    <span className="ms-1">Ongoing</span>
+                  </Tag>
+                )}
               </Link>
               <p className="text-light mb-2">{story.excerpt}</p>
               <TagsList tags={story.tags} showCount={4} />
@@ -116,7 +126,7 @@ export default function StoriesCarousel({ stories }) {
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
                 {story.author}
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
-                {story.chapterCount} Chapters
+                {story.chapterSlugs.length} Chapters
               </p>
             </div>
           ))}
