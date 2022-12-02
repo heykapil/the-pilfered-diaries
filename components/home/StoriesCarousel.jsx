@@ -14,7 +14,9 @@ import Link from "next/link";
 import React, { useRef, useState } from "react";
 import styles from "../../styles/modules/Home.module.scss";
 
-const TagsList = dynamic(() => import("../TagsList"));
+const TagsList = dynamic(() => import("../TagsList"), {
+  ssr: false,
+});
 
 export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();

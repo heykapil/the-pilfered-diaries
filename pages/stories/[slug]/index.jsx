@@ -18,7 +18,9 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
 
-const TagsList = dynamic(() => import("../../../components/TagsList"));
+const TagsList = dynamic(() => import("../../../components/TagsList"), {
+  ssr: false,
+});
 
 export default function StoryDetails({
   story,

@@ -7,7 +7,9 @@ import { DATE_FORMATS } from "@constants/app";
 import styles from "../styles/modules/ContentCards.module.scss";
 import dynamic from "next/dynamic";
 
-const TagsList = dynamic(() => import("./TagsList"));
+const TagsList = dynamic(() => import("./TagsList"), {
+  ssr: false,
+});
 
 export default function PostSmall({ post }) {
   return (

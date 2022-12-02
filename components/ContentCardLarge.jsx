@@ -8,7 +8,9 @@ import Link from "next/link";
 import React from "react";
 import styles from "../styles/modules/ContentCards.module.scss";
 
-const TagsList = dynamic(() => import("./TagsList"));
+const TagsList = dynamic(() => import("./TagsList"), {
+  ssr: false,
+});
 
 export default function ContentCardLarge({ data, variant }) {
   return (

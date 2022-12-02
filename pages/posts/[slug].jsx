@@ -26,7 +26,9 @@ import readingTime from "reading-time";
 import styles from "../../styles/modules/Post.module.scss";
 
 const TextControl = dynamic(() => import("../../components/TextControl"));
-const TagsList = dynamic(() => import("../../components/TagsList"));
+const TagsList = dynamic(() => import("../../components/TagsList"), {
+  ssr: false,
+});
 
 export default function SinglePost({
   meta,
