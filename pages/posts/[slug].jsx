@@ -2,7 +2,6 @@ import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import SubscriptionForm from "@components/SubscriptionForm";
-import TagsList from "@components/TagsList";
 import {
   APP_TITLE,
   AVG_READING_SPEED,
@@ -27,6 +26,7 @@ import readingTime from "reading-time";
 import styles from "../../styles/modules/Post.module.scss";
 
 const TextControl = dynamic(() => import("../../components/TextControl"));
+const TagsList = dynamic(() => import("../../components/TagsList"));
 
 export default function SinglePost({
   meta,

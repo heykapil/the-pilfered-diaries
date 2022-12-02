@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const { Tooltip } = require("bootstrap");
     const tooltips = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"')
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
     );
     tooltips.map(function (trigger) {
       return new Tooltip(trigger);

@@ -1,0 +1,35 @@
+@import "../theme/variables";
+
+.tags {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+  &__list {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    height: 21px;
+    overflow: hidden;
+  }
+  &__item {
+    background-color: rgba($color: $primary, $alpha: 0.075);
+    color: lighten($color: $primary, $amount: 10);
+    text-transform: uppercase;
+    font-family: $theme-font-headings;
+    border-radius: 0.25rem;
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+  }
+  &__active {
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    border: 1px solid rgba($color: $primary, $alpha: 0.6);
+    &:hover {
+      background-color: $primary;
+      color: $white;
+    }
+  }
+}

@@ -7,19 +7,20 @@
   border-radius: 0.75rem;
   overflow: hidden;
   margin-bottom: 0.75rem;
-  background-color: lighten($color: $dark, $amount: 5);
-  transition: all 0.15s ease-in-out;
+  background-color: lighten($color: $dark, $amount: 3);
   text-decoration: none;
   color: $light;
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: darken($color: $dark, $amount: 5);
-    color: $primary;
-  }
   &__content {
     min-width: 0;
     line-height: 1;
+  }
+  a {
+    transition: all 0.15s ease-in-out;
+    color: $white;
+    &:hover,
+    &:focus {
+      color: $primary;
+    }
   }
 }
 
@@ -29,7 +30,6 @@
   background-color: lighten($color: $dark, $amount: 3);
   border: none;
   transition: all 0.15s ease-in-out;
-  text-decoration: none;
   overflow: hidden;
   color: $light;
   height: 100%;
@@ -46,6 +46,11 @@
   &__img {
     object-fit: contain;
     object-position: 50% 50%;
+    transition: all 0.15s ease-in-out;
+    &:hover,
+    &:focus {
+      transform: scale(1.02);
+    }
   }
   &__content {
     padding: 0.75rem;
@@ -62,10 +67,15 @@
     font-size: 18px;
     color: $white;
   }
-  &:hover,
-  &:focus {
-    outline: none;
+  &:hover {
     background-color: darken($color: $dark, $amount: 5);
-    color: $primary;
+  }
+  a {
+    transition: all 0.15s ease-in-out;
+    color: $white;
+    &:hover,
+    &:focus {
+      color: $primary;
+    }
   }
 }

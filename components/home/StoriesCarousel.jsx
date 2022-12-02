@@ -1,5 +1,4 @@
 import Tag from "@components/Tag";
-import TagsList from "@components/TagsList";
 import { DATE_FORMATS } from "@constants/app";
 import { useMediaQuery } from "@hooks/media-query";
 import {
@@ -9,10 +8,13 @@ import {
   IconPoint,
 } from "@tabler/icons";
 import dayjs from "dayjs";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import styles from "../../styles/modules/Home.module.scss";
+
+const TagsList = dynamic(() => import("../TagsList"));
 
 export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();
@@ -120,7 +122,7 @@ export default function StoriesCarousel({ stories }) {
                 )}
               </Link>
               <p className="text-light mb-2">{story.excerpt}</p>
-              <TagsList tags={story.tags} showCount={4} />
+              <TagsList tags={story.tags} />
               <p className="text-muted small mt-2">
                 {dayjs(story.published).format(DATE_FORMATS.date)}
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />

@@ -2,7 +2,6 @@ import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import SubscriptionForm from "@components/SubscriptionForm";
-import TagsList from "@components/TagsList";
 import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
 import firestore from "@fb/server";
 import { scrollToRef } from "@lib/utils";
@@ -13,10 +12,13 @@ import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
+
+const TagsList = dynamic(() => import("../../../components/TagsList"));
 
 export default function StoryDetails({
   story,
