@@ -7,25 +7,29 @@ export default function TagsList({ tags = [] }) {
   const [hidden, setHidden] = useState([]);
 
   useEffect(() => {
-    resizeObserver.current = new ResizeObserver(([container]) => {
-      const containerPosition = container.target.getBoundingClientRect().bottom;
-      const hiddenTags = [];
+    resizeObserver.current =
+      typeof window !== undefined
+        ? new ResizeObserver(([container]) => {
+            const containerPosition =
+              container.target.getBoundingClientRect().bottom;
+            const hiddenTags = [];
 
-      container.target.childNodes.forEach((node) => {
-        if (node.getBoundingClientRect().top >= containerPosition)
-          hiddenTags.push(node.textContent);
-      });
-      setHidden(hiddenTags);
-    });
+            container.target.childNodes.forEach((node) => {
+              if (node.getBoundingClientRect().top >= containerPosition)
+                hiddenTags.push(node.textContent);
+            });
+            setHidden(hiddenTags);
+          })
+        : null;
   });
 
   useEffect(() => {
     const tagsList = tagsContainer.current;
     const observer = resizeObserver.current;
-    if (tagsList) observer.observe(tagsList);
+    if (tagsList && observer) observer.observe(tagsList);
 
     return () => {
-      if (tagsList) observer.unobserve(tagsList);
+      if (tagsList && observer) observer.unobserve(tagsList);
     };
   }, []);
 

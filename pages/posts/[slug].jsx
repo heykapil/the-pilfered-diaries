@@ -21,7 +21,7 @@ import { NextSeo } from "next-seo";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import readingTime from "reading-time";
 import styles from "../../styles/modules/Post.module.scss";
 
@@ -104,7 +104,9 @@ export default function SinglePost({
         <Markdown ref={ref} theme="dark" fontSize={fontSize} {...content} />
         <div className="container">
           <div className="my-2">
-            <TagsList tags={meta.tags} />
+            <Suspense fallback="...">
+              <TagsList tags={meta.tags} />
+            </Suspense>
           </div>
           <CommentsList
             type="posts"

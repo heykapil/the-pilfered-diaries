@@ -15,7 +15,7 @@ import { NextSeo } from "next-seo";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
 
 const TagsList = dynamic(() => import("../../../components/TagsList"), {
@@ -93,7 +93,9 @@ export default function StoryDetails({
         <div className="container mt-4">
           <h2 className="text-primary">Preface</h2>
           <div className="mt-2">
-            <TagsList tags={story.tags} />
+            <Suspense fallback="...">
+              <TagsList tags={story.tags} />
+            </Suspense>
           </div>
         </div>
         <Markdown {...story.preface} theme="dark" fontSize={18} ref={ref} />

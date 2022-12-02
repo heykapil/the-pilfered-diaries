@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import styles from "../styles/modules/ContentCards.module.scss";
 
 const TagsList = dynamic(() => import("./TagsList"), {
@@ -61,7 +61,9 @@ export default function ContentCardLarge({ data, variant }) {
           )}
         </p>
         <div className="mb-2">
-          <TagsList tags={data.tags} />
+          <Suspense fallback="...">
+            <TagsList tags={data.tags} />
+          </Suspense>
         </div>
         <p className="text-muted small mb-0">{data.excerpt}</p>
       </div>

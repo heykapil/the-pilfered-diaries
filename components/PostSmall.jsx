@@ -2,7 +2,7 @@ import { IconPoint } from "@tabler/icons";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { DATE_FORMATS } from "@constants/app";
 import styles from "../styles/modules/ContentCards.module.scss";
 import dynamic from "next/dynamic";
@@ -30,7 +30,9 @@ export default function PostSmall({ post }) {
           <IconPoint size={8} style={{ margin: "0px 4px" }} />
           {post.author}
         </p>
-        <TagsList tags={post.tags} />
+        <Suspense fallback="...">
+          <TagsList tags={post.tags} />
+        </Suspense>
       </div>
     </div>
   );
