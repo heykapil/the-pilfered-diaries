@@ -111,7 +111,10 @@ export default function Submissions() {
 
   return (
     <>
-      <NextSeo title="Submit your Work" />
+      <NextSeo
+        title="Submit your Work"
+        description={`Get your work featured on ${APP_TITLE}`}
+      />
       <div className={styles.subs}>
         <div
           className={`container-fluid shadow pb-4 bg-secondary ${styles.subs__header}`}

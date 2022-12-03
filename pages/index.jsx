@@ -14,7 +14,6 @@ export default function Home({ stories, posts, guestPosts, images }) {
     <>
       <NextSeo
         defaultTitle={APP_TITLE}
-        titleTemplate={`%s | ${APP_TITLE}`}
         openGraph={{
           type: "website",
           locale: "en_IN",
@@ -27,13 +26,8 @@ export default function Home({ stories, posts, guestPosts, images }) {
         additionalMetaTags={[
           {
             name: "viewport",
-            content: "minimum-scale=1, initial-scale=1, width=device-width",
-          },
-        ]}
-        additionalLinkTags={[
-          {
-            rel: "icon",
-            href: "/favicon.svg",
+            content:
+              "minimum-scale=1, maximum-scale=1, initial-scale=1, width=device-width",
           },
         ]}
       />
