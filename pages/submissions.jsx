@@ -67,8 +67,7 @@ export default function Submissions() {
         ideaTitle: yup
           .string()
           .required("Title is required")
-          .min(20, "Title should be between 20-180 characters in length")
-          .max(180, "Title should be between 20-180 characters in length"),
+          .max(180, "Title should be 180 characters or less."),
         ideaDescription: yup
           .string()
           .required("Brief description is required.")
@@ -403,7 +402,7 @@ export default function Submissions() {
                   className={`form-control ${
                     errors.ideaTitle ? "is-invalid" : ""
                   }`}
-                  {...register(".ideaTitle")}
+                  {...register("ideaTitle")}
                   placeholder="Title of your Idea"
                 />
                 <label htmlFor="commentTitle">Title of your Idea</label>
@@ -412,6 +411,9 @@ export default function Submissions() {
                     {errors.ideaTitle.message}
                   </div>
                 )}
+                <div className="form-text small fst-italic text-end">
+                  {watch("ideaTitle").length}/180 characters
+                </div>
               </div>
               <div className="form-floating">
                 <textarea
