@@ -146,9 +146,12 @@ export async function getStaticProps(ctx) {
   const time = readingTime(source, { wordsPerMinute: AVG_READING_SPEED });
   const content = await serialize(source);
 
+  const metadata = { ...chapterDoc.data(), readTime: time };
+  delete metadata.content;
+
   return {
     props: {
-      metadata: { ...chapterDoc.data(), readTime: time },
+      metadata,
       content,
     },
   };

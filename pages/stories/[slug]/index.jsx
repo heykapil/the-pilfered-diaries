@@ -218,10 +218,16 @@ export async function getStaticProps(ctx) {
     lastUpdated: storyRes.data().lastUpdated.toDate().toISOString(),
     preface: await serialize(prefaceRaw),
   };
-  const chapters = chapterRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-  }));
+  delete story.content;
+
+  const chapters = chapterRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+    };
+    delete obj.content;
+    return obj;
+  });
 
   return {
     props: {
@@ -232,12 +238,16 @@ export async function getStaticProps(ctx) {
         id: doc.id,
         date: doc.data().date.toDate().toISOString(),
       })),
-      relatedStories: relatedStoriesRes.docs.map((doc) => ({
-        ...doc.data(),
-        slug: doc.id,
-        published: doc.data().published.toDate().toISOString(),
-        lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-      })),
+      relatedStories: relatedStoriesRes.docs.map((doc) => {
+        const obj = {
+          ...doc.data(),
+          slug: doc.id,
+          published: doc.data().published.toDate().toISOString(),
+          lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+        };
+        delete obj.content;
+        return obj;
+      }),
     },
     revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week
   };

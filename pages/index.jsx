@@ -62,23 +62,35 @@ export async function getStaticProps() {
 
   const siteImageConfig = await firestore.doc("siteContent/site-config").get();
 
-  const stories = storiesRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-    lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-  }));
+  const stories = storiesRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+      lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
 
-  const posts = postsRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-  }));
-  const guestPosts = guestPostsRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-  }));
+  const posts = postsRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
+  const guestPosts = guestPostsRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
 
   const { siteHeader, profileHome } = siteImageConfig.data();
 

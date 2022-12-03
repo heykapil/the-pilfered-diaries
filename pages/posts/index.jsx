@@ -42,11 +42,15 @@ export default function PostsList({ posts }) {
 /** @type {import('next').GetStaticProps} */
 export async function getStaticProps() {
   const response = await postsList("all", 25);
-  const posts = response.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-  }));
+  const posts = response.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
 
   return {
     props: {

@@ -183,15 +183,18 @@ export async function getStaticProps(ctx) {
 
   const { content } = grayMatter(file.data);
 
+  const metadata = {
+    ...postRes.data(),
+    readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
+    published: postRes.data().published.toDate().toISOString(),
+    slug: params.slug,
+  };
+  delete metadata.content;
+
   return {
     props: {
       content: await serialize(content),
-      meta: {
-        ...postRes.data(),
-        readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
-        published: postRes.data().published.toDate().toISOString(),
-        slug: params.slug,
-      },
+      meta: metadata,
       comments:
         commentsRes.docs.length > 0
           ? commentsRes.docs.map((doc) => ({
@@ -200,11 +203,15 @@ export async function getStaticProps(ctx) {
               id: doc.id,
             }))
           : [],
-      relatedPosts: relatedPostsRes.docs.map((doc) => ({
-        ...doc.data(),
-        slug: doc.id,
-        published: doc.data().published.toDate().toISOString(),
-      })),
+      relatedPosts: relatedPostsRes.docs.map((doc) => {
+        const obj = {
+          ...doc.data(),
+          slug: doc.id,
+          published: doc.data().published.toDate().toISOString(),
+        };
+        delete obj.content;
+        return obj;
+      }),
     },
     revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week.
   };
