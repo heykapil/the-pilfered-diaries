@@ -9,7 +9,7 @@ import { postsList, storiesList } from "@services/server";
 import { NextSeo } from "next-seo";
 import styles from "../styles/modules/Home.module.scss";
 
-export default function Home({ stories, posts, guestPosts, siteCover }) {
+export default function Home({ stories, posts, guestPosts, images }) {
   return (
     <>
       <NextSeo
@@ -38,8 +38,8 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
         ]}
       />
       <div className={styles.home}>
-        <Header siteCover={siteCover} />
-        <About />
+        <Header image={images.siteHeader} />
+        <About image={images.profileHome} />
         <div className="container-fluid py-2">
           <div className="container px-0 mt-4">
             <div className="row">
@@ -66,14 +66,7 @@ export async function getStaticProps() {
     postsList("guest", 5),
   ]);
 
-  const headerId = (
-    await firestore.doc("siteContent/site-config").get()
-  ).data();
-  const siteCover = (
-    await firestore
-      .doc(`siteContent/site-config/headers/${headerId.headerImg}`)
-      .get()
-  ).data();
+  const siteImageConfig = await firestore.doc("siteContent/site-config").get();
 
   const stories = storiesRes.docs.map((doc) => ({
     ...doc.data(),
@@ -93,12 +86,14 @@ export async function getStaticProps() {
     published: doc.data().published.toDate().toISOString(),
   }));
 
+  const { siteHeader, profileHome } = siteImageConfig.data();
+
   return {
     props: {
       stories,
       posts,
       guestPosts,
-      siteCover,
+      images: { siteHeader, profileHome },
     },
     revalidate: ISR_INTERVAL,
   };

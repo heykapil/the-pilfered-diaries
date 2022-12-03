@@ -239,6 +239,6 @@ export async function getStaticProps(ctx) {
         lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
       })),
     },
-    revalidate: ISR_INTERVAL,
+    revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week
   };
 }
