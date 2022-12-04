@@ -1,6 +1,7 @@
 import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
+import Share from "@components/Share";
 import SubscriptionForm from "@components/SubscriptionForm";
 import {
   APP_TITLE,
@@ -107,6 +108,9 @@ export default function SinglePost({
             <Suspense fallback="...">
               <TagsList tags={meta.tags} />
             </Suspense>
+          </div>
+          <div className="mt-3">
+            <Share title={meta.title} url={router.asPath} contentType="post" />
           </div>
           <CommentsList
             type="posts"

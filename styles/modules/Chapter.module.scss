@@ -24,6 +24,7 @@
     font-family: $theme-font-headings;
     color: $light;
     border-radius: 0.5rem;
+    border: 1px solid rgba($color: $light, $alpha: 0.1);
     cursor: pointer;
     transition: all 0.15s ease-in-out;
     &:hover,

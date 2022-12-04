@@ -97,7 +97,7 @@ export default function CommentsList({
 
   return (
     <>
-      <h2 className="text-primary my-4">
+      <h2 className="text-primary mb-4 mt-2">
         {COMMENT_HEADER} {title ? <>&ldquo;{title}&rdquo;</> : "this story"}
       </h2>
       {showForm && (

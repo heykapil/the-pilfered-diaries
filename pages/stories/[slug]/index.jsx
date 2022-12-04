@@ -1,6 +1,7 @@
 import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
+import Share from "@components/Share";
 import SubscriptionForm from "@components/SubscriptionForm";
 import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
 import firestore from "@fb/server";
@@ -133,6 +134,13 @@ export default function StoryDetails({
                 </div>
               </div>
             )}
+          </div>
+          <div className="mt-3">
+            <Share
+              title={story.title}
+              url={router.asPath}
+              contentType="story"
+            />
           </div>
           <CommentsList
             type="stories"

@@ -1,3 +1,10 @@
+import {
+  IconBrandFacebook,
+  IconBrandLinkedin,
+  IconBrandTwitter,
+  IconBrandWhatsapp,
+} from "@tabler/icons";
+
 export const APP_TITLE = "The Pilfered Diaries";
 export const INSTA_HANDLE = "/the.pilfered.diaries";
 export const INSTA_LINK = `https://instagram.com${INSTA_HANDLE}`;
@@ -30,4 +37,27 @@ export const FOOTER_LINK_PROPS = {
   "data-bs-offset": "0,5",
   "data-bs-placement": "top",
   target: "_blank",
+};
+
+export const SHARE = {
+  whatsapp: {
+    path: "https://api.whatsapp.com/send",
+    icon: <IconBrandWhatsapp size={16} />,
+    label: "Whatsapp",
+  },
+  facebook: {
+    path: "https://www.facebook.com/sharer.php",
+    icon: <IconBrandFacebook size={16} />,
+    label: "Facebook",
+  },
+  twitter: {
+    path: "https://twitter.com/intent/tweet",
+    icon: <IconBrandTwitter size={16} />,
+    label: "Twitter",
+  },
+  linkedIn: {
+    path: "https://www.linkedin.com/shareArticle",
+    icon: <IconBrandLinkedin size={16} />,
+    label: "LinkedIn",
+  },
 };
