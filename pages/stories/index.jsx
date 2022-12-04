@@ -42,12 +42,16 @@ export default function StoriesList({ stories }) {
 /** @type {import('next').GetStaticProps} */
 export async function getStaticProps() {
   const response = await storiesList(25);
-  const stories = response.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-    lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-  }));
+  const stories = response.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+      lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
 
   return {
     props: {

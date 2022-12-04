@@ -1,6 +1,6 @@
 import Alert from "@components/Alert";
 import { APP_TITLE } from "@constants/app";
-import { store } from "@fb/client";
+import { firebaseApp, store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import {
@@ -9,6 +9,7 @@ import {
   IconCircleCheck,
   IconInfoCircle,
 } from "@tabler/icons";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -72,6 +73,8 @@ export default function SubscriptionForm() {
         reset();
         setSubscribed(email);
         sessionStorage.setItem("subscribed", email);
+        const analytics = getAnalytics(firebaseApp);
+        logEvent(analytics, "sign_up");
       }
     } catch (error) {
       showNotification({

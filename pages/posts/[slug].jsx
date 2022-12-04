@@ -2,7 +2,6 @@ import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import SubscriptionForm from "@components/SubscriptionForm";
-import TagsList from "@components/TagsList";
 import {
   APP_TITLE,
   AVG_READING_SPEED,
@@ -22,11 +21,14 @@ import { NextSeo } from "next-seo";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import readingTime from "reading-time";
 import styles from "../../styles/modules/Post.module.scss";
 
 const TextControl = dynamic(() => import("../../components/TextControl"));
+const TagsList = dynamic(() => import("../../components/TagsList"), {
+  ssr: false,
+});
 
 export default function SinglePost({
   meta,
@@ -102,7 +104,9 @@ export default function SinglePost({
         <Markdown ref={ref} theme="dark" fontSize={fontSize} {...content} />
         <div className="container">
           <div className="my-2">
-            <TagsList tags={meta.tags} />
+            <Suspense fallback="...">
+              <TagsList tags={meta.tags} />
+            </Suspense>
           </div>
           <CommentsList
             type="posts"
@@ -179,15 +183,18 @@ export async function getStaticProps(ctx) {
 
   const { content } = grayMatter(file.data);
 
+  const metadata = {
+    ...postRes.data(),
+    readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
+    published: postRes.data().published.toDate().toISOString(),
+    slug: params.slug,
+  };
+  delete metadata.content;
+
   return {
     props: {
       content: await serialize(content),
-      meta: {
-        ...postRes.data(),
-        readTime: readingTime(content, { wordsPerMinute: AVG_READING_SPEED }),
-        published: postRes.data().published.toDate().toISOString(),
-        slug: params.slug,
-      },
+      meta: metadata,
       comments:
         commentsRes.docs.length > 0
           ? commentsRes.docs.map((doc) => ({
@@ -196,12 +203,16 @@ export async function getStaticProps(ctx) {
               id: doc.id,
             }))
           : [],
-      relatedPosts: relatedPostsRes.docs.map((doc) => ({
-        ...doc.data(),
-        slug: doc.id,
-        published: doc.data().published.toDate().toISOString(),
-      })),
+      relatedPosts: relatedPostsRes.docs.map((doc) => {
+        const obj = {
+          ...doc.data(),
+          slug: doc.id,
+          published: doc.data().published.toDate().toISOString(),
+        };
+        delete obj.content;
+        return obj;
+      }),
     },
-    revalidate: ISR_INTERVAL,
+    revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week.
   };
 }

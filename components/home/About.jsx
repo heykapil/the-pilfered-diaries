@@ -1,11 +1,10 @@
 import SubscriptionForm from "@components/SubscriptionForm";
 import { APP_TITLE } from "@constants/app";
 import { useMediaQuery } from "@hooks/media-query";
-import profilePic from "@images/about-1.png";
 import Image from "next/image";
 import React from "react";
 
-export default function About() {
+export default function About({ image }) {
   const isLargeScreen = useMediaQuery("md");
 
   return (
@@ -14,9 +13,9 @@ export default function About() {
         <div className="row">
           <div className="col-md-6 d-flex justify-content-center">
             <Image
-              src={profilePic}
+              src={image}
               width={isLargeScreen ? 512 : 330}
-              blurDataURL={profilePic.blurDataURL}
+              height={isLargeScreen ? 512 : 330}
               alt="Amittras' Profile Image"
             />
           </div>

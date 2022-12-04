@@ -2,7 +2,6 @@ import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import SubscriptionForm from "@components/SubscriptionForm";
-import TagsList from "@components/TagsList";
 import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
 import firestore from "@fb/server";
 import { scrollToRef } from "@lib/utils";
@@ -13,10 +12,15 @@ import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
+
+const TagsList = dynamic(() => import("../../../components/TagsList"), {
+  ssr: false,
+});
 
 export default function StoryDetails({
   story,
@@ -89,7 +93,9 @@ export default function StoryDetails({
         <div className="container mt-4">
           <h2 className="text-primary">Preface</h2>
           <div className="mt-2">
-            <TagsList tags={story.tags} />
+            <Suspense fallback="...">
+              <TagsList tags={story.tags} />
+            </Suspense>
           </div>
         </div>
         <Markdown {...story.preface} theme="dark" fontSize={18} ref={ref} />
@@ -212,10 +218,16 @@ export async function getStaticProps(ctx) {
     lastUpdated: storyRes.data().lastUpdated.toDate().toISOString(),
     preface: await serialize(prefaceRaw),
   };
-  const chapters = chapterRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-  }));
+  delete story.content;
+
+  const chapters = chapterRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+    };
+    delete obj.content;
+    return obj;
+  });
 
   return {
     props: {
@@ -226,13 +238,17 @@ export async function getStaticProps(ctx) {
         id: doc.id,
         date: doc.data().date.toDate().toISOString(),
       })),
-      relatedStories: relatedStoriesRes.docs.map((doc) => ({
-        ...doc.data(),
-        slug: doc.id,
-        published: doc.data().published.toDate().toISOString(),
-        lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-      })),
+      relatedStories: relatedStoriesRes.docs.map((doc) => {
+        const obj = {
+          ...doc.data(),
+          slug: doc.id,
+          published: doc.data().published.toDate().toISOString(),
+          lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+        };
+        delete obj.content;
+        return obj;
+      }),
     },
-    revalidate: ISR_INTERVAL,
+    revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week
   };
 }

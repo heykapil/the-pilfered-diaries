@@ -1,10 +1,10 @@
 import Alert from "@components/Alert";
-import { APP_TITLE, SITE_URL } from "@constants/app";
+import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "@constants/app";
 import { store } from "@fb/client";
+import firebase from "@fb/server";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
 import { useNotifications } from "@hooks/notifications";
-import profilePic from "@images/about-2.png";
 import { IconCheck, IconCircleCheck, IconSend, IconX } from "@tabler/icons";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { NextSeo } from "next-seo";
@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import styles from "../styles/modules/About.module.scss";
 
-export default function About() {
+export default function About({ image }) {
   const isLargeScreen = useMediaQuery("md");
   const { showNotification } = useNotifications();
 
@@ -97,9 +97,9 @@ export default function About() {
           <div className="row">
             <div className="col-md-6 d-flex justify-content-center">
               <Image
-                src={profilePic}
+                src={image}
                 width={isLargeScreen ? 512 : 330}
-                blurDataURL={profilePic.blurDataURL}
+                height={isLargeScreen ? 512 : 330}
                 alt="Amittras' Profile Image"
               />
             </div>
@@ -263,4 +263,17 @@ export default function About() {
       </div>
     </>
   );
+}
+
+/** @type {import('next').GetStaticProps} */
+export async function getStaticProps() {
+  const siteImageConfig = await firebase.doc("siteContent/site-config").get();
+  const { profileAbout: image } = siteImageConfig.data();
+
+  return {
+    props: {
+      image,
+    },
+    revalidate: ISR_INTERVAL * 24 * 30, // revalidate once a month
+  };
 }

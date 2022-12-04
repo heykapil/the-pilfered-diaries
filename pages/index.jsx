@@ -9,12 +9,11 @@ import { postsList, storiesList } from "@services/server";
 import { NextSeo } from "next-seo";
 import styles from "../styles/modules/Home.module.scss";
 
-export default function Home({ stories, posts, guestPosts, siteCover }) {
+export default function Home({ stories, posts, guestPosts, images }) {
   return (
     <>
       <NextSeo
         defaultTitle={APP_TITLE}
-        titleTemplate={`%s | ${APP_TITLE}`}
         openGraph={{
           type: "website",
           locale: "en_IN",
@@ -27,19 +26,14 @@ export default function Home({ stories, posts, guestPosts, siteCover }) {
         additionalMetaTags={[
           {
             name: "viewport",
-            content: "minimum-scale=1, initial-scale=1, width=device-width",
-          },
-        ]}
-        additionalLinkTags={[
-          {
-            rel: "icon",
-            href: "/favicon.svg",
+            content:
+              "minimum-scale=1, maximum-scale=1, initial-scale=1, width=device-width",
           },
         ]}
       />
       <div className={styles.home}>
-        <Header siteCover={siteCover} />
-        <About />
+        <Header image={images.siteHeader} />
+        <About image={images.profileHome} />
         <div className="container-fluid py-2">
           <div className="container px-0 mt-4">
             <div className="row">
@@ -66,39 +60,46 @@ export async function getStaticProps() {
     postsList("guest", 5),
   ]);
 
-  const headerId = (
-    await firestore.doc("siteContent/site-config").get()
-  ).data();
-  const siteCover = (
-    await firestore
-      .doc(`siteContent/site-config/headers/${headerId.headerImg}`)
-      .get()
-  ).data();
+  const siteImageConfig = await firestore.doc("siteContent/site-config").get();
 
-  const stories = storiesRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-    lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-  }));
+  const stories = storiesRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+      lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
 
-  const posts = postsRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-  }));
-  const guestPosts = guestPostsRes.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-    published: doc.data().published.toDate().toISOString(),
-  }));
+  const posts = postsRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
+  const guestPosts = guestPostsRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
+
+  const { siteHeader, profileHome } = siteImageConfig.data();
 
   return {
     props: {
       stories,
       posts,
       guestPosts,
-      siteCover,
+      images: { siteHeader, profileHome },
     },
     revalidate: ISR_INTERVAL,
   };

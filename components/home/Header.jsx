@@ -3,11 +3,11 @@ import { IconBrandInstagram } from "@tabler/icons";
 import React from "react";
 import styles from "../../styles/modules/Home.module.scss";
 
-export default function Header({ siteCover }) {
+export default function Header({ image }) {
   return (
     <div
       className={`container-fluid ${styles.home__cover}`}
-      style={{ backgroundImage: `url(${siteCover.url})` }}
+      style={{ backgroundImage: `url(${image.url})` }}
     >
       <div className="container px-0 text-center">
         <h2 className={`display-1 mb-0 ${styles.tagline}`}>{TAGLINE}</h2>
@@ -25,7 +25,7 @@ export default function Header({ siteCover }) {
         </div>
       </div>
       <p className={`${styles.cc} small text-light`}>
-        Photo By: {siteCover.photoCredit}
+        Photo By: {image.credit}
       </p>
     </div>
   );
