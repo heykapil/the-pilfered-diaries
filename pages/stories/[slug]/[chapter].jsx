@@ -47,7 +47,7 @@ export default function SingleChapter({ metadata, content }) {
         }}
       />
       <div className={`container-fluid px-0 ${styles.chapter}`}>
-        <div className={`container px-0 ${styles.chapter__header}`}>
+        <div className={`container ${styles.chapter__header}`}>
           <h1 className="display-3">{metadata.title}</h1>
           <p className="small text-warning mb-0">
             by {metadata.author}

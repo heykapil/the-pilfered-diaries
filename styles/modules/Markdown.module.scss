@@ -14,6 +14,10 @@
     border-radius: 0.5rem;
     margin-bottom: 0.75rem;
   }
+  a,
+  p {
+    font-size: 1em;
+  }
   a {
     text-decoration: none;
     color: $primary;
@@ -26,14 +30,14 @@
       text-decoration: underline;
     }
   }
-  a,
-  p {
-    font-size: 1em;
-  }
   p {
     transition: all 0.2s ease-in;
     &:last-child {
       margin-bottom: 0;
     }
+  }
+  blockquote {
+    padding: 1rem;
+    border-left: 3px solid rgba($color: $light, $alpha: 0.3);
   }
 }

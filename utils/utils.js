@@ -9,6 +9,19 @@ export function scrollToRef(elementRef, offset = 60) {
   document.activeElement.blur();
 }
 
+export const handleFragmentNavigation = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const targetElement = document.getElementById(
+    e.target.getAttribute("href").slice(1)
+  );
+  const { offsetTop } = targetElement;
+  document.scrollingElement.scrollTo({
+    top: offsetTop - 60,
+    behavior: "smooth",
+  });
+};
+
 function generateParams(params) {
   const urlParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
