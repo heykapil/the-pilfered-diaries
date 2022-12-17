@@ -1,0 +1,152 @@
+@import "../../styles/theme/variables";
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &__form {
+    border: 1px solid rgba($color: $light, $alpha: 0.1);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.wrapper {
+  display: flex;
+  margin-top: -62px;
+  height: calc(100vh - 60px);
+  padding-top: 81px;
+  background-image: url("../../images/Halftone.svg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba($color: $light, $alpha: 0.1);
+  border-top: 1px solid rgba($color: $light, $alpha: 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.content {
+  border-top: 1px solid rgba($color: $light, $alpha: 0.1);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+
+.nav {
+  border: none;
+  background-color: transparent;
+  font-family: $theme-font-headings;
+  padding: 0.75rem 1.25rem;
+  width: 100%;
+  color: $light;
+  border-bottom: 1px solid rgba($color: $light, $alpha: 0.1);
+  text-align: left;
+  transition: all 0.15s ease-in-out;
+  font-size: 1.2rem;
+  &:hover {
+    background-color: rgba($color: $primary, $alpha: 0.2);
+  }
+  &__active {
+    background-color: $primary;
+    pointer-events: none;
+    border-left: 3px solid $white;
+  }
+  &:disabled {
+    color: rgba($color: $light, $alpha: 0.5);
+  }
+}
+
+.comment {
+  border-radius: 0.5rem;
+  background-color: lighten($color: $dark, $amount: 5);
+  padding: 0.75rem;
+  &__approve {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.3rem 0.5rem;
+    color: $light;
+    border: none;
+    background-color: transparent;
+    border-radius: 0.3rem;
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      background-color: lighten($color: $dark, $amount: 25);
+    }
+  }
+}
+
+.preview {
+  position: relative;
+  &__input {
+    display: none;
+  }
+  &__header {
+    position: sticky;
+    top: 0;
+    padding: 0.7rem 1.25rem;
+    border-bottom: 1px solid rgba($color: $light, $alpha: 0.1);
+  }
+}
+
+.file {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba($color: $light, $alpha: 0.1);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    border-color: rgba($color: $primary, $alpha: 0.3);
+  }
+  &__invalid {
+    border-color: $danger;
+  }
+  input {
+    display: none;
+  }
+}
+
+.tag {
+  height: 165px;
+  border-bottom: 1px solid darken($color: $light, $amount: 50);
+  transition: all 0.15s ease-in-out;
+  &__invalid {
+    border-bottom: 1px solid $danger !important;
+  }
+  &__value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  &__item {
+    border: 1px solid rgba($color: $light, $alpha: 0.2);
+    padding: 0rem 0rem 0rem 0.25rem;
+  }
+  &__remove {
+    border: none;
+    padding: 0.25rem;
+    background-color: transparent;
+    color: $light;
+    &:hover {
+      color: $danger;
+    }
+  }
+  &:focus-within {
+    border-bottom-color: $primary;
+  }
+  input {
+    border: none;
+  }
+}

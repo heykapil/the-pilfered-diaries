@@ -133,6 +133,15 @@ export default function StoriesCarousel({ stories }) {
                 {story.author}
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
                 {story.chapterSlugs.length} Chapters
+                {story.wip && story.chapterSlugs.length > 1 && (
+                  <>
+                    <IconPoint size={8} style={{ margin: "0px 4px" }} />
+                    <span className="text-success">
+                      Updated:{" "}
+                      {dayjs(story.lastUpdated).format(DATE_FORMATS.date)}
+                    </span>
+                  </>
+                )}
               </p>
             </div>
           ))}

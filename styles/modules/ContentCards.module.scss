@@ -38,22 +38,52 @@
     transition: all 0.15s ease-in-out;
   }
   &__imgbox {
-    height: 240px;
     overflow: hidden;
     display: flex;
     align-items: center;
+    &:hover,
+    &:focus {
+      outline: none;
+      img {
+        outline: none;
+        transform: scale(1.05);
+        filter: saturate(1);
+      }
+    }
   }
   &__img {
     object-fit: contain;
     object-position: 50% 50%;
+    filter: saturate(0.5);
     transition: all 0.15s ease-in-out;
-    &:hover,
-    &:focus {
-      transform: scale(1.02);
-    }
   }
   &__content {
     padding: 0.75rem;
+    a {
+      height: 30px;
+      text-decoration: none;
+      position: relative;
+      color: $white !important;
+      &::after {
+        content: "";
+        position: absolute;
+        left: -2px;
+        bottom: 0;
+        width: 25px;
+        height: 2px;
+        background-color: $primary;
+        transition: all 0.15s ease-in-out;
+        z-index: 0;
+        transform: translateY(3px);
+      }
+      &:hover,
+      &:focus {
+        outline: none;
+        &::after {
+          width: calc(100% + 20px);
+        }
+      }
+    }
   }
   &__gtag {
     position: absolute;

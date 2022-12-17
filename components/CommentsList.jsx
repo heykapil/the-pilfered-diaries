@@ -3,6 +3,7 @@ import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import noComments from "@images/NoComments.svg";
+import { commentFormValues, commentValidator } from "@lib/validators";
 import { commentsList } from "@services/client";
 import { IconCheck, IconMessagePlus, IconSend, IconX } from "@tabler/icons";
 import dayjs from "dayjs";
@@ -10,7 +11,6 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import styles from "../styles/modules/CommentsList.module.scss";
 
 export default function CommentsList({
@@ -42,20 +42,8 @@ export default function CommentsList({
   } = useForm({
     mode: "onBlur",
     shouldFocusError: true,
-    defaultValues: {
-      userName: "",
-      email: "",
-      title: "",
-      body: "",
-    },
-    resolver: yupResolver(
-      yup.object().shape({
-        userName: yup.string().required("Name is required."),
-        email: yup.string().optional().email("Invalid Email"),
-        title: yup.string().required("Comment title is required"),
-        body: yup.string().optional(),
-      })
-    ),
+    defaultValues: commentFormValues,
+    resolver: yupResolver(commentValidator),
   });
 
   const submitComment = async (values) => {

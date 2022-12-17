@@ -16,10 +16,17 @@ export const handleFragmentNavigation = (e) => {
     e.target.getAttribute("href").slice(1)
   );
   const { offsetTop } = targetElement;
-  document.scrollingElement.scrollTo({
-    top: offsetTop - 60,
-    behavior: "smooth",
-  });
+  const prContent = document.getElementById("prContent");
+  if (prContent)
+    prContent.scrollTo({
+      top: offsetTop - 60,
+      behavior: "smooth",
+    });
+  else
+    document.scrollingElement.scrollTo({
+      top: offsetTop - 60,
+      behavior: "smooth",
+    });
 };
 
 function generateParams(params) {

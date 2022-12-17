@@ -3,6 +3,7 @@ import { APP_TITLE } from "@constants/app";
 import { firebaseApp, store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
+import { subscriptionFormValues, subscriptionValidator } from "@lib/validators";
 import {
   IconArrowRight,
   IconCheck,
@@ -10,10 +11,16 @@ import {
   IconInfoCircle,
 } from "@tabler/icons";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 
 export default function SubscriptionForm() {
   const { showNotification } = useNotifications();
@@ -33,17 +40,8 @@ export default function SubscriptionForm() {
   } = useForm({
     mode: "onSubmit",
     shouldFocusError: true,
-    defaultValues: {
-      email: "",
-    },
-    resolver: yupResolver(
-      yup.object().shape({
-        email: yup
-          .string()
-          .email("Please enter a valid email ID.")
-          .required("Please enter an Email ID."),
-      })
-    ),
+    defaultValues: subscriptionFormValues,
+    resolver: yupResolver(subscriptionValidator),
   });
 
   const subscribe = async ({ email }) => {
@@ -63,7 +61,10 @@ export default function SubscriptionForm() {
           icon: <IconInfoCircle size={18} />,
         });
       } else {
-        await addDoc(subscriptions, { email });
+        await addDoc(subscriptions, {
+          email,
+          subscribedOn: Timestamp.fromDate(new Date()),
+        });
         showNotification({
           title: "Subscribed",
           body: `You are successfully subscribed to ${APP_TITLE}`,

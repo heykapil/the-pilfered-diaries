@@ -29,7 +29,7 @@ export const ROUTES = [
   {
     path: "/submissions",
     matchers: ["/submissions"],
-    label: "Submit a post",
+    label: "Submit an Idea",
   },
 ];
 

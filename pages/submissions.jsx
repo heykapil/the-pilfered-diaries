@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
 import { useNotifications } from "@hooks/notifications";
 import submitWork from "@images/submissions-artwork.svg";
+import { submissionFormValues, submissionValidator } from "@lib/validators";
 import {
   IconCheck,
   IconChecks,
@@ -11,7 +12,7 @@ import {
   IconSend,
   IconX,
 } from "@tabler/icons";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -47,34 +48,12 @@ export default function Submissions() {
     reset,
     register,
     watch,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm({
     mode: "onBlur",
     shouldFocusError: true,
-    defaultValues: {
-      userName: "",
-      emailId: "",
-      ideaTitle: "",
-      ideaDescription: "",
-    },
-    resolver: yupResolver(
-      yup.object().shape({
-        userName: yup.string().required("Name is required."),
-        emailId: yup
-          .string()
-          .email("Invalid Email")
-          .required("Email Id is required."),
-        ideaTitle: yup
-          .string()
-          .required("Title is required")
-          .max(180, "Title should be 180 characters or less."),
-        ideaDescription: yup
-          .string()
-          .required("Brief description is required.")
-          .min(120, "Title should be between 120-1000 characters in length")
-          .max(1000, "Title should be between 120-1000 characters in length"),
-      })
-    ),
+    defaultValues: submissionFormValues,
+    resolver: yupResolver(submissionValidator),
   });
 
   const closeForm = () => {
@@ -88,7 +67,12 @@ export default function Submissions() {
     setSubmitting(true);
     try {
       const collectionRef = collection(store, "submissions");
-      await addDoc(collectionRef, values);
+      await addDoc(collectionRef, {
+        ...values,
+        submittedOn: Timestamp.fromDate(new Date()),
+        discussed: false,
+        used: false,
+      });
       showNotification({
         title: "Submission successful",
         body: "Your submission was successful, we'll get back to you within 24 hours.",
@@ -386,7 +370,7 @@ export default function Submissions() {
                   className={`form-control ${
                     errors.emailId ? "is-invalid" : ""
                   }`}
-                  {...register(".emailId")}
+                  {...register("emailId")}
                   placeholder="Email Address"
                 />
                 <label htmlFor="commentTitle">Email Address</label>

@@ -1,5 +1,6 @@
 import Tag from "@components/Tag";
 import { DATE_FORMATS, GUEST_POST_MARKER_TEXT } from "@constants/app";
+import { useMediaQuery } from "@hooks/media-query";
 import { IconPoint } from "@tabler/icons";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
@@ -13,6 +14,7 @@ const TagsList = dynamic(() => import("./TagsList"), {
 });
 
 export default function ContentCardLarge({ data, variant }) {
+  const isLargeScreen = useMediaQuery("md");
   return (
     <div className={`shadow card ${styles.lg}`}>
       {data.byGuest && (
@@ -20,24 +22,23 @@ export default function ContentCardLarge({ data, variant }) {
           <p className="mb-0 small">{GUEST_POST_MARKER_TEXT}</p>
         </div>
       )}
-      <div className={styles.lg__imgbox}>
-        <Link href={`/${variant}/${data.slug}`}>
-          <Image
-            src={data.cover}
-            alt={data.slug + "-cover"}
-            width={960}
-            height={540}
-            className={`card-img-top ${styles.lg__img}`}
-          />
-        </Link>
-      </div>
+      <Link
+        href={`/${variant}/${data.slug}`}
+        className={styles.lg__imgbox}
+        style={{ height: isLargeScreen ? "240px" : "200px" }}
+      >
+        <Image
+          src={data.cover}
+          alt={data.slug + "-cover"}
+          width={960}
+          height={540}
+          className={`card-img-top ${styles.lg__img}`}
+        />
+      </Link>
       <div className={styles.lg__content}>
         <p className="mb-2 d-flex justify-content-between align-items-center gap-1">
-          <Link
-            href={`/${variant}/${data.slug}`}
-            className="h4 mb-0 text-decoration-none"
-          >
-            {data.title}
+          <Link href={`/${variant}/${data.slug}`} className="h4 mb-0">
+            <span>{data.title}</span>
           </Link>
           {variant === "stories" && data.wip && (
             <Tag>
@@ -45,21 +46,28 @@ export default function ContentCardLarge({ data, variant }) {
             </Tag>
           )}
         </p>
-        <p className="text-light small mb-2">
-          {dayjs(data.published).format(DATE_FORMATS.date)}
-          <span className="mx-1">
-            <IconPoint size={12} />
-          </span>
-          {data.author}
-          {variant === "stories" && (
-            <>
-              <span className="mx-1">
-                <IconPoint size={12} />
-              </span>
-              {data.chapterSlugs.length} Chapters
-            </>
-          )}
+        <p className={`mb-${variant === "stories" ? "0" : "2"} small`}>
+          <span className="text-muted">Published:</span>{" "}
+          {dayjs(data.published).format(DATE_FORMATS.date)}, by {data.author}
         </p>
+        {variant === "stories" && (
+          <>
+            <p
+              className={`mb-${
+                data.wip && data.chapterSlugs.length > 1 ? "0" : "2"
+              } small`}
+            >
+              <span className="text-muted">Chapters:</span>{" "}
+              {data.chapterSlugs.length}
+            </p>
+            {data.wip && data.chapterSlugs.length > 1 && (
+              <p className="mb-2 small">
+                <span className="text-muted">Lastest chapter added:</span>{" "}
+                {dayjs(data.lastUpdated).format(DATE_FORMATS.date)}
+              </p>
+            )}
+          </>
+        )}
         <div className="mb-2">
           <Suspense fallback="...">
             <TagsList tags={data.tags} />

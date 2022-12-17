@@ -5,6 +5,7 @@ import firebase from "@fb/server";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
 import { useNotifications } from "@hooks/notifications";
+import { messageFormValues, messageValidator } from "@lib/validators";
 import { IconCheck, IconCircleCheck, IconSend, IconX } from "@tabler/icons";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { NextSeo } from "next-seo";
@@ -29,25 +30,8 @@ export default function About({ image }) {
   } = useForm({
     mode: "onSubmit",
     shouldFocusError: true,
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-    resolver: yupResolver(
-      yup.object().shape({
-        name: yup.string().required("Name is required."),
-        email: yup
-          .string()
-          .email("Invalid Email")
-          .required("Email Id is required."),
-        message: yup
-          .string()
-          .required("Message is required")
-          .min(20, "Message should be between 20-1024 characters in length")
-          .max(1024, "Message should be between 20-1024 characters in length"),
-      })
-    ),
+    defaultValues: messageFormValues,
+    resolver: yupResolver(messageValidator),
   });
 
   const sendMessage = async (values) => {
@@ -225,7 +209,7 @@ export default function About({ image }) {
                         className={`form-control ${
                           errors.message ? "is-invalid" : ""
                         }`}
-                        {...register(".message")}
+                        {...register("message")}
                         placeholder="Your Message, Comment, Suggesstion (required)"
                         style={{ height: "100px" }}
                       ></textarea>
