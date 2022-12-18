@@ -8,15 +8,12 @@ import {
   IconPoint,
 } from "@tabler/icons";
 import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense, useRef, useState } from "react";
+import React, { lazy, Suspense, useRef, useState } from "react";
 import styles from "../../styles/modules/Home.module.scss";
 
-const TagsList = dynamic(() => import("../TagsList"), {
-  ssr: false,
-});
+const TagsList = lazy(() => import("../TagsList"));
 
 export default function StoriesCarousel({ stories }) {
   const coverCarouselRef = useRef();

@@ -1,15 +1,12 @@
+import { DATE_FORMATS } from "@constants/app";
 import { IconPoint } from "@tabler/icons";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense } from "react";
-import { DATE_FORMATS } from "@constants/app";
+import React, { lazy, Suspense } from "react";
 import styles from "../styles/modules/ContentCards.module.scss";
-import dynamic from "next/dynamic";
 
-const TagsList = dynamic(() => import("./TagsList"), {
-  ssr: false,
-});
+const TagsList = lazy(() => import("./TagsList"));
 
 export default function PostSmall({ post }) {
   return (

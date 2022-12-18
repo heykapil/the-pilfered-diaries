@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import "../styles/globals.scss";
+import Subscribe from "@components/Subscribe";
+import { SubscriptionProvider } from "@context/Subscription";
 
 function MyApp({ Component, pageProps }) {
   const { pathname, asPath } = useRouter();
@@ -31,11 +33,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <NotificationsProvider>
-      <Navbar />
-      <main className="page-content">
-        <Component {...pageProps} />
-      </main>
-      <Footer />
+      <SubscriptionProvider>
+        <Navbar />
+        <main className="page-content">
+          <Component {...pageProps} />
+        </main>
+        <Footer />
+      </SubscriptionProvider>
     </NotificationsProvider>
   );
 }

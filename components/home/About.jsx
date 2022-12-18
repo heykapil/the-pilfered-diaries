@@ -1,4 +1,4 @@
-import SubscriptionForm from "@components/SubscriptionForm";
+import Subscribe from "@components/Subscribe";
 import { APP_TITLE } from "@constants/app";
 import { useMediaQuery } from "@hooks/media-query";
 import Image from "next/image";
@@ -31,7 +31,8 @@ export default function About({ image }) {
               sometimes funny, mostly twisted thinking process of my mind...
             </p>
             <p>Find Stories down below....</p>
-            <SubscriptionForm />
+            {/* <SubscriptionForm /> */}
+            <Subscribe />
           </div>
         </div>
       </div>

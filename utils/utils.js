@@ -59,3 +59,20 @@ export function generateShareLink(text, url, type) {
       break;
   }
 }
+
+export const setMailCookie = (email) => {
+  const date = new Date();
+  date.setTime(date.getTime() + 180 * 24 * 60 * 60 * 1000);
+  const cookie = `_sub=${email}; Expires=${date.toUTCString()}; Path=/; SameSite=true; Secure=true`;
+  document.cookie = cookie;
+};
+
+export const getMailCookie = () => {
+  const cookies = document.cookie;
+  return (
+    cookies
+      .split("; ")
+      .find((cookie) => cookie.startsWith("_sub"))
+      ?.split("=")[1] ?? false
+  );
+};

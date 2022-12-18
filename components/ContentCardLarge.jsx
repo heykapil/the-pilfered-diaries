@@ -3,15 +3,12 @@ import { DATE_FORMATS, GUEST_POST_MARKER_TEXT } from "@constants/app";
 import { useMediaQuery } from "@hooks/media-query";
 import { IconPoint } from "@tabler/icons";
 import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import styles from "../styles/modules/ContentCards.module.scss";
 
-const TagsList = dynamic(() => import("./TagsList"), {
-  ssr: false,
-});
+const TagsList = lazy(() => import("./TagsList"));
 
 export default function ContentCardLarge({ data, variant }) {
   const isLargeScreen = useMediaQuery("md");

@@ -53,6 +53,8 @@ export const submissionFormValues = {
 
 export const subscriptionFormValues = {
   email: "",
+  name: "",
+  isActive: true,
 };
 
 export const commentFormValues = {
@@ -242,6 +244,7 @@ export const subscriptionValidator = yup.object().shape({
     .string()
     .email("Please enter a valid email ID.")
     .required("Please enter an Email ID."),
+  name: yup.string().required("Please provide your name."),
 });
 
 export const commentValidator = yup.object().shape({

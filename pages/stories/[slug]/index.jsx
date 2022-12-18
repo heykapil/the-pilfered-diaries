@@ -2,8 +2,9 @@ import CommentsList from "@components/CommentsList";
 import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import Share from "@components/Share";
-import SubscriptionForm from "@components/SubscriptionForm";
+import Subscribe from "@components/Subscribe";
 import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
+import { useSubscription } from "@context/Subscription";
 import firestore from "@fb/server";
 import { scrollToRef } from "@lib/utils";
 import { commentsList, getRelatedStories } from "@services/server";
@@ -13,15 +14,12 @@ import dayjs from "dayjs";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { NextSeo } from "next-seo";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Suspense, useRef } from "react";
+import { lazy, Suspense, useRef } from "react";
 import styles from "../../../styles/modules/Story.module.scss";
 
-const TagsList = dynamic(() => import("../../../components/TagsList"), {
-  ssr: false,
-});
+const TagsList = lazy(() => import("../../../components/TagsList"));
 
 export default function StoryDetails({
   story,
@@ -31,12 +29,10 @@ export default function StoryDetails({
 }) {
   const router = useRouter();
   const ref = useRef();
+  const { subscribed, showForm } = useSubscription();
+
   // TODO: Create a loading component
   if (router.isFallback) return "Loading...";
-
-  const goToForm = () => {
-    document.getElementById("inpSub")?.focus();
-  };
 
   return (
     <>
@@ -122,14 +118,22 @@ export default function StoryDetails({
                     <span className="text-primary">
                       &ldquo;{story.title}&rdquo;
                     </span>{" "}
-                    is an ongoing story. More chapters are coming soon. <br />
-                    <button
-                      className="btn p-1 btn-primary border-0 bg-dark no-glow text-decoration-underline"
-                      onClick={goToForm}
-                    >
-                      Subscribe now
-                    </button>{" "}
-                    to get notified of new chapters.
+                    is an ongoing story. More chapters are coming soon.{" "}
+                    {subscribed ? (
+                      <>
+                        You will be notified via {subscribed} of new chapters.
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="btn p-1 btn-primary border-0 bg-dark no-glow text-decoration-underline"
+                          onClick={showForm}
+                        >
+                          Subscribe now
+                        </button>{" "}
+                        to get notified of new chapters.
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
@@ -167,15 +171,19 @@ export default function StoryDetails({
               </Link>
             </div>
           )}
-          <SubscriptionForm />
-          <div className="d-flex justify-content-center my-3">
-            <Link
-              className="btn btn-outline-primary icon-right"
-              href="/submissions"
-            >
-              Submit your work to {APP_TITLE}
-              <IconArrowRight size={18} />
-            </Link>
+          <div className="row mb-3 gap-3 gap-md-0">
+            <div className="col-md-3 offset-md-3">
+              <Subscribe compact />
+            </div>
+            <div className="col-md-3">
+              <Link
+                className="btn btn-outline-primary btn-sm w-100 icon-right"
+                href="/submissions"
+              >
+                Submit work to {APP_TITLE}
+                <IconArrowRight size={18} />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
