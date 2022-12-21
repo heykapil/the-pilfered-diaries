@@ -93,7 +93,7 @@ export default function Login() {
             type="submit"
             className="btn btn-lg w-50 btn-danger text-light"
           >
-            Login [Failed Attempts: {failedAttempts}]
+            Login
           </button>
         </form>
       ) : (

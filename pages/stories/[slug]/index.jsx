@@ -180,7 +180,7 @@ export default function StoryDetails({
                 className="btn btn-outline-primary btn-sm w-100 icon-right"
                 href="/submissions"
               >
-                Submit work to {APP_TITLE}
+                Submit your work
                 <IconArrowRight size={18} />
               </Link>
             </div>

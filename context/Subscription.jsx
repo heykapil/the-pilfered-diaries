@@ -4,7 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import { getMailCookie, setMailCookie } from "@lib/utils";
 import { subscriptionFormValues, subscriptionValidator } from "@lib/validators";
-import { IconCheck, IconInfoCircle, IconSend, IconX } from "@tabler/icons";
+import {
+  IconCheck,
+  IconInfoCircle,
+  IconSend,
+  IconUserPlus,
+  IconX,
+} from "@tabler/icons";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   addDoc,
@@ -173,7 +179,7 @@ export function SubscriptionProvider({ children }) {
           >
             <div className="modal-header d-flex jsutify-content-between align-items-center">
               <h5 className="modal-title" id="subscribeFormLabel">
-                Subscribe to {APP_TITLE}
+                <span>Subscribe to {APP_TITLE}</span>
               </h5>
               <button
                 className="icon-btn border-0 text-danger"
@@ -183,7 +189,7 @@ export function SubscriptionProvider({ children }) {
               </button>
             </div>
             <div className="modal-body pt-0">
-              <p className="text-muted">
+              <p className="text-primary">
                 Subscribe to {APP_TITLE} newsletter, and receive a monthly
                 digest of all new posts & stories, straight to your inbox...
               </p>
@@ -211,6 +217,17 @@ export function SubscriptionProvider({ children }) {
                   <div className="invalid-feedback">{errors.email.message}</div>
                 )}
               </div>
+              <p className="small">
+                <span className="fw-bold text-success text-decoration-underline">
+                  Note:
+                </span>
+                <span className="text-muted">
+                  {" "}
+                  If you are a subscriber and are seeing this, kindly re-enter
+                  your information. This helps me provide a better experience as
+                  you browse the content.
+                </span>
+              </p>
             </div>
             <div className="modal-footer d-flex">
               <button

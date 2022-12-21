@@ -1,4 +1,5 @@
 import { APP_TITLE } from "@constants/app";
+import { useSubscription } from "@context/Subscription";
 import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMediaQuery } from "@hooks/media-query";
@@ -17,10 +18,10 @@ import { NextSeo } from "next-seo";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import styles from "../styles/modules/Submissions.module.scss";
 
 export default function Submissions() {
+  const { subscribed } = useSubscription();
   const { showNotification } = useNotifications();
   const isLargeScreen = useMediaQuery("md");
   const modalRef = useRef();
@@ -34,20 +35,12 @@ export default function Submissions() {
       modalRef.current.addEventListener("shown.bs.modal", focusFirstInput);
   }, []);
 
-  const showSubmissionForm = () => {
-    const { Modal } = require("bootstrap");
-    const formModal = new Modal(modalRef.current, {
-      backdrop: "static",
-      focus: true,
-    });
-    formModal.show();
-  };
-
   const {
     handleSubmit,
     reset,
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -55,6 +48,21 @@ export default function Submissions() {
     defaultValues: submissionFormValues,
     resolver: yupResolver(submissionValidator),
   });
+
+  const showForm = () => {
+    const { Modal } = require("bootstrap");
+    const formModal = new Modal(modalRef.current, {
+      backdrop: "static",
+      focus: true,
+    });
+    formModal.show();
+    if (subscribed)
+      setValue("emailId", subscribed, {
+        shouldTouch: true,
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+  };
 
   const closeForm = () => {
     const { Modal } = require("bootstrap");
@@ -113,7 +121,7 @@ export default function Submissions() {
                 </h4>
                 <button
                   className="btn btn-lg btn-primary shadow icon-right"
-                  onClick={showSubmissionForm}
+                  onClick={showForm}
                 >
                   Share it with us
                   <IconMailFast size={32} />

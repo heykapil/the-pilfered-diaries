@@ -5,7 +5,7 @@ import {
   IconBrandWhatsapp,
 } from "@tabler/icons";
 
-export const SUB_POPUP_DELAY = 60000;
+export const SUB_POPUP_DELAY = 15000;
 export const APP_TITLE = "The Pilfered Diaries";
 export const INSTA_HANDLE = "/the.pilfered.diaries";
 export const INSTA_LINK = `https://instagram.com${INSTA_HANDLE}`;

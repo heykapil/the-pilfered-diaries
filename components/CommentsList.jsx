@@ -1,4 +1,5 @@
 import { COMMENT_HEADER, COMMENT_NOTICE, DATE_FORMATS } from "@constants/app";
+import { useSubscription } from "@context/Subscription";
 import { store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
@@ -20,6 +21,7 @@ export default function CommentsList({
   comments = [],
   fetchOnClient = false,
 }) {
+  const { subscribed } = useSubscription();
   const { showNotification } = useNotifications();
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -38,6 +40,7 @@ export default function CommentsList({
     handleSubmit,
     reset,
     register,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -45,6 +48,15 @@ export default function CommentsList({
     defaultValues: commentFormValues,
     resolver: yupResolver(commentValidator),
   });
+
+  useEffect(() => {
+    if (showForm && subscribed)
+      setValue("email", subscribed, {
+        shouldDirty: false,
+        shouldTouch: false,
+        shouldValidate: true,
+      });
+  }, [setValue, showForm, subscribed]);
 
   const submitComment = async (values) => {
     const commentDoc = {
