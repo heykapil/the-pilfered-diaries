@@ -3,7 +3,7 @@ import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import Share from "@components/Share";
 import Subscribe from "@components/Subscribe";
-import { APP_TITLE, DATE_FORMATS, ISR_INTERVAL } from "@constants/app";
+import { APP_TITLE, DATE_FORMATS } from "@constants/app";
 import { useSubscription } from "@context/Subscription";
 import firestore from "@fb/server";
 import { scrollToRef } from "@lib/utils";
@@ -265,6 +265,5 @@ export async function getStaticProps(ctx) {
         return obj;
       }),
     },
-    revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week
   };
 }

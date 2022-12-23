@@ -39,6 +39,7 @@ export default function StoriesList({ stories }) {
   );
 }
 
+// TODO: This will be a client fetch, we'll not use server rendering here.
 /** @type {import('next').GetStaticProps} */
 export async function getStaticProps() {
   const response = await storiesList(25);

@@ -6,8 +6,7 @@ import Subscribe from "@components/Subscribe";
 import {
   APP_TITLE,
   AVG_READING_SPEED,
-  DATE_FORMATS,
-  ISR_INTERVAL,
+  DATE_FORMATS
 } from "@constants/app";
 import firestore from "@fb/server";
 import { useIntersection } from "@hooks/intersection";
@@ -218,6 +217,5 @@ export async function getStaticProps(ctx) {
         return obj;
       }),
     },
-    revalidate: ISR_INTERVAL * 24 * 7, // revalidate every 1 week.
   };
 }

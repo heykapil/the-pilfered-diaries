@@ -1,5 +1,6 @@
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { store } from "@fb/client";
+import axios from "axios";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 /**
  * Retrieve a list of approved comments for a specific content
@@ -20,4 +21,17 @@ export async function commentsList(type, target) {
     date: doc.data().date.toDate().toISOString(),
     id: doc.id,
   }));
+}
+
+/**
+ * Calls the own revalidation API to refresh a given list of pages.
+ * @param {String} refreshPassword password to refresh pages.
+ * @param {Array.<String>} pagePaths List of paths to refresh
+ * @returns {import("axios").AxiosResponse}
+ */
+export function refreshPages(refreshPassword, pagePaths) {
+  return axios.post("/api/revalidate", {
+    pwd: refreshPassword,
+    paths: pagePaths,
+  });
 }

@@ -70,14 +70,14 @@ export default function AddPost({ onCompleted }) {
           if (!formValues.draft)
             post.published = Timestamp.fromDate(new Date());
           delete post.postId;
-          delete post.refreshPassword; // TODO:
+          delete post.refreshPassword; 
           const docRef = doc(store, "posts", formValues.postId);
           await setDoc(docRef, post);
 
           if (!formValues.draft) {
             await await axios.post("/api/revalidate", {
               pwd: formValues.refreshPassword,
-              updateType: ["posts"],
+              paths: ["posts"],
             });
           }
           setProcessing("Completed.");

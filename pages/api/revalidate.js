@@ -28,17 +28,17 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "Invalid credentials." });
 
   // check if routes are provided.
-  const { updateType = [] } = req.body;
-  if (updateType.length === 0)
+  const { paths = [] } = req.body;
+  if (paths.length === 0)
     return res.status(400).json({ error: "Routes not provided." });
 
   /* MAIN BUSINESS LOGIC */
   try {
     await Promise.all([
       res.revalidate("/"),
-      ...updateType.map((route) => res.revalidate(`/${route}`)),
+      ...paths.map((route) => res.revalidate(`/${route}`)),
     ]);
-    return res.json({ message: `Rebuilt routes: ${updateType.join(", ")}` });
+    return res.json({ message: `Rebuilt routes: ${paths.join(", ")}` });
   } catch (error) {
     return res.status(500).json({
       error: "Something went wrong, revalidation of the routes failed.",

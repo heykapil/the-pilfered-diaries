@@ -16,6 +16,21 @@ export const storyFormValues = {
   chapterSlugs: [],
 };
 
+
+/**
+ * The complete Triforce, or one or more components of the Triforce.
+ * @typedef {Object} ChapterFormValues
+ * @property {string} author
+ * @property {string} excerpt
+ * @property {string} chapterId
+ * @property {number} order
+ * @property {string} previousChapter
+ * @property {string} nextChapter
+ * @property {string} title
+ * @property {File} file
+ * @property {boolean} markCompleted
+ * @property {string} refreshPassword
+ */
 export const chapterFormValues = {
   author: "",
   excerpt: "",
