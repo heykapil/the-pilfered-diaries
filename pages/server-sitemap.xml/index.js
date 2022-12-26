@@ -25,12 +25,11 @@ export async function getServerSideProps(ctx) {
     lastmod: story.data().published.toDate().toISOString(),
   }));
   const chapters = storiesRes.docs.flatMap((doc) => {
-    return doc.data().chapterSlugs.map((ch) => ({
-      loc: `${process.env.SITE_URL}/stories/${doc.id}/${ch}`,
-      lastmod: doc.data().published.toDate().toISOString(),
+    return doc.data().chapters.map((ch) => ({
+      loc: `${process.env.SITE_URL}/stories/${doc.id}/${ch.id}`,
+      lastmod: ch.published.toDate().toISOString(),
     }));
   });
-
   return getServerSideSitemap(ctx, [...posts, ...stories, ...chapters]);
 }
 
