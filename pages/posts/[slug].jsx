@@ -3,11 +3,7 @@ import ContentCardLarge from "@components/ContentCardLarge";
 import Markdown from "@components/Markdown";
 import Share from "@components/Share";
 import Subscribe from "@components/Subscribe";
-import {
-  APP_TITLE,
-  AVG_READING_SPEED,
-  DATE_FORMATS
-} from "@constants/app";
+import { APP_TITLE, AVG_READING_SPEED, DATE_FORMATS } from "@constants/app";
 import firestore from "@fb/server";
 import { useIntersection } from "@hooks/intersection";
 import { scrollToRef } from "@lib/utils";
@@ -70,23 +66,25 @@ export default function SinglePost({
           className={`container-fluid shadow ${styles.post__header}`}
           style={{ backgroundImage: `url(${meta.cover})` }}
         >
-          <h1 className="display-1">{meta.title}</h1>
-          <p className="my-3">
-            <span className="me-1">{meta.author}</span>
-            <span className="mx-1 text-primary">
-              <IconPoint size={16} />
-            </span>
-            <span className="mx-1">
-              {meta.readTime.text} ({meta.readTime.words} words)
-            </span>
-            <span className="mx-1 text-primary">
-              <IconPoint size={16} />
-            </span>
-            <span className="ms-1">
-              {dayjs(meta.published).format(DATE_FORMATS.date)}
-            </span>
-          </p>
-          <p className={styles["meta-excerpt"]}>{meta.excerpt}</p>
+          <div className={`shadow px-2 ${styles.post__header_content}`}>
+            <h1 className="display-1">{meta.title}</h1>
+            <p className="my-3">
+              <span className="me-1">{meta.author}</span>
+              <span className="mx-1 text-primary">
+                <IconPoint size={16} />
+              </span>
+              <span className="mx-1">
+                {meta.readTime.text} ({meta.readTime.words} words)
+              </span>
+              <span className="mx-1 text-primary">
+                <IconPoint size={16} />
+              </span>
+              <span className="ms-1">
+                {dayjs(meta.published).format(DATE_FORMATS.date)}
+              </span>
+            </p>
+            <p className={styles["meta-excerpt"]}>{meta.excerpt}</p>
+          </div>
           <button
             className="icon-btn icon-btn__lg mt-3"
             data-bs-toggle="tooltip"

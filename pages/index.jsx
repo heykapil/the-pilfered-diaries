@@ -68,10 +68,14 @@ export async function getStaticProps() {
       slug: doc.id,
       published: doc.data().published.toDate().toISOString(),
       lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+      chapterCount: doc.data().chapters.length
     };
+    delete obj.chapters;
     delete obj.content;
     return obj;
   });
+
+  console.log(stories.length);
 
   const posts = postsRes.docs.map((doc) => {
     const obj = {
@@ -101,6 +105,5 @@ export async function getStaticProps() {
       guestPosts,
       images: { siteHeader, profileHome },
     },
-    revalidate: ISR_INTERVAL,
   };
 }
