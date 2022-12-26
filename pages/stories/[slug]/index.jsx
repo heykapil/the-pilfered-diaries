@@ -235,31 +235,39 @@ export async function getStaticProps(ctx) {
   delete story.chapters;
   delete story.content;
 
-  const chapters = storyRes.data().chapters.map((ch) => ({
-    ...ch,
-    published: ch.published.toDate().toISOString(),
+  const chapters = storyRes.data().chapters.map((ch) => {
+    const obj = {
+      ...ch,
+      published: ch.published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
+
+  const comments = commentsRes.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+    date: doc.data().date.toDate().toISOString(),
   }));
+
+  const relatedStories = relatedStoriesRes.docs.map((doc) => {
+    const obj = {
+      ...doc.data(),
+      slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+      lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+    };
+    delete obj.chapters;
+    delete obj.content;
+    return obj;
+  });
 
   return {
     props: {
       story,
       chapters,
-      comments: commentsRes.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        date: doc.data().date.toDate().toISOString(),
-      })),
-      relatedStories: relatedStoriesRes.docs.map((doc) => {
-        const obj = {
-          ...doc.data(),
-          slug: doc.id,
-          published: doc.data().published.toDate().toISOString(),
-          lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-        };
-        delete obj.chapters;
-        delete obj.content;
-        return obj;
-      }),
+      comments,
+      relatedStories,
     },
   };
 }
