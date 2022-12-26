@@ -129,8 +129,8 @@ export default function StoriesCarousel({ stories }) {
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
                 {story.author}
                 <IconPoint size={8} style={{ margin: "0px 4px" }} />
-                {story.chapterSlugs.length} Chapters
-                {story.wip && story.chapterSlugs.length > 1 && (
+                {story.chapterCount} Chapters
+                {story.wip && story.chapterCount > 1 && (
                   <>
                     <IconPoint size={8} style={{ margin: "0px 4px" }} />
                     <span className="text-success">

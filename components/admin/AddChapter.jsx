@@ -2,7 +2,6 @@ import { storage, store } from "@fb/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { chapterFormValues, chapterValidator } from "@lib/validators";
 import { refreshPages } from "@services/client";
-import axios from "axios";
 import {
   collection,
   doc,
@@ -50,14 +49,14 @@ export default function AddChapter({ onCompleted }) {
 
   useEffect(() => {
     if (selectedStory) {
-      setValue("order", selectedStory?.chapterSlugs.length + 1);
+      setValue("order", selectedStory?.chapters.length + 1);
       setValue("author", selectedStory.author);
-      if (selectedStory?.chapterSlugs.length > 0)
-        setValue("previousChapter", selectedStory?.chapterSlugs.at(-1));
+      if (selectedStory?.chapters.length > 0)
+        setValue("previousChapter", selectedStory?.chapters.at(-1).id);
     }
   }, [selectedStory, setValue]);
 
-  const addChapterDoc = async (snapshotRef, values) => {
+  const updateStory = async (snapshotRef, values) => {
     setProcessing("Creating Chapter...");
     try {
       const fileUrl = await getDownloadURL(snapshotRef);
@@ -71,44 +70,29 @@ export default function AddChapter({ onCompleted }) {
         nextChapter: values.nextChapter,
         title: values.title,
         content: fileUrl,
+        id: values.chapterId,
+        published: Timestamp.fromDate(new Date()),
       };
+
+      // Update list of chapters.
+      const chapterListUpdate = [...selectedStory.chapters];
+      if (chapterListUpdate.length > 0)
+        chapterListUpdate[chapterListUpdate.length - 1].nextChapter =
+          chapter.id;
+      chapterListUpdate.push(chapter);
+
       // Payload for updating story
       const storyUpdate = {
         lastUpdated: Timestamp.fromDate(new Date()),
-        chapterSlugs: [...selectedStory.chapterSlugs, values.chapterId],
+        chapters: chapterListUpdate,
         wip: !values.markCompleted,
         draft: false,
       };
-      if (chapter.order === 1)
-        storyUpdate.published = Timestamp.fromDate(new Date());
 
-      // New Chapter Reference
-      const newChapter = doc(
-        store,
-        "stories",
-        selectedStory.id,
-        "chapters",
-        values.chapterId
-      );
-      // Previous Chapter Reference
-      const prevChapter = doc(
-        store,
-        "stories",
-        selectedStory.id,
-        "chapters",
-        values.previousChapter
-      );
-      // Story Reference
+      // Update Story.
       const storyRef = doc(store, "stories", selectedStory.id);
-
-      // Update All in parallel.
-      await Promise.all([
-        setDoc(newChapter, chapter),
-        setDoc(prevChapter, { nextChapter: values.chapterId }, { merge: true }),
-        setDoc(storyRef, storyUpdate, { merge: true }),
-      ]);
-
-      setProcessing("Refreshing Story...");
+      await setDoc(storyRef, storyUpdate, { merge: true }),
+        setProcessing("Refreshing Story...");
       await refreshPages(values.refreshPassword, [
         `stories/${selectedStory.id}`,
         `stories/${selectedStory.id}/${values.previousChapter}`,
@@ -144,7 +128,7 @@ export default function AddChapter({ onCompleted }) {
         setProcessing("");
       },
       () => {
-        addChapterDoc(uploadTask.snapshot.ref, values);
+        updateStory(uploadTask.snapshot.ref, values);
       }
     );
   };

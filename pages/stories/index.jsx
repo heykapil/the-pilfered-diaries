@@ -49,7 +49,9 @@ export async function getStaticProps() {
       slug: doc.id,
       published: doc.data().published.toDate().toISOString(),
       lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
+      chapterCount: doc.data().chapters.length,
     };
+    delete obj.chapters;
     delete obj.content;
     return obj;
   });

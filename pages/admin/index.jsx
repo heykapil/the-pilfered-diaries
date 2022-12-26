@@ -1,8 +1,7 @@
 import { auth } from "@fb/client";
 import { signOut } from "firebase/auth";
 import { NextSeo } from "next-seo";
-import React, { Suspense, useState } from "react";
-import { lazy } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import AuthProvider from "../../context/Auth";
 import styles from "../../styles/modules/Admin.module.scss";
 

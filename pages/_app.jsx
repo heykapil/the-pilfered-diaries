@@ -1,13 +1,12 @@
 import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
 import { NotificationsProvider } from "@context/Notification";
+import { SubscriptionProvider } from "@context/Subscription";
 import { firebaseApp } from "@fb/client";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getAnalytics, logEvent } from "firebase/analytics";
 import "../styles/globals.scss";
-import Subscribe from "@components/Subscribe";
-import { SubscriptionProvider } from "@context/Subscription";
 
 function MyApp({ Component, pageProps }) {
   const { pathname, asPath } = useRouter();

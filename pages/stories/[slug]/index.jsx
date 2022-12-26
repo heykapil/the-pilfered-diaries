@@ -63,19 +63,21 @@ export default function StoryDetails({
           className={`container-fluid shadow ${styles.story__header}`}
           style={{ backgroundImage: `url(${story.cover})` }}
         >
-          <h1 className="display-1">{story.title}</h1>
-          <p className="my-3">
-            <span>{story.author}</span>
-            <span className="mx-1 text-light">
-              <IconPoint size={16} />
-            </span>
-            <span>{story.chapterSlugs.length} Chapters</span>
-            <span className="mx-1 text-light">
-              <IconPoint size={16} />
-            </span>
-            <span>{dayjs(story.published).format(DATE_FORMATS.date)}</span>
-          </p>
-          <p className={styles.excerpt}>{story.excerpt}</p>
+          <div className={`shadow px-2 ${styles.story__header_content}`}>
+            <h1 className="display-1">{story.title}</h1>
+            <p className="my-3">
+              <span>{story.author}</span>
+              <span className="mx-1 text-light">
+                <IconPoint size={16} />
+              </span>
+              <span>{chapters.length} Chapters</span>
+              <span className="mx-1 text-light">
+                <IconPoint size={16} />
+              </span>
+              <span>{dayjs(story.published).format(DATE_FORMATS.date)}</span>
+            </p>
+            <p className={styles.excerpt}>{story.excerpt}</p>
+          </div>
           <button
             className="icon-btn icon-btn__lg mt-3"
             data-bs-toggle="tooltip"
@@ -100,9 +102,9 @@ export default function StoryDetails({
           <h2 className="text-primary">Chapters</h2>
           <div className="row mt-3 mt-md-4">
             {chapters.map((ch) => (
-              <div className="col-md-6 mb-3 mb-md-4" key={ch.slug}>
+              <div className="col-md-6 mb-3 mb-md-4" key={ch.id}>
                 <Link
-                  href={`/stories/${story.slug}/${ch.slug}`}
+                  href={`/stories/${story.slug}/${ch.id}`}
                   className={`shadow ${styles.chapter}`}
                 >
                   <h4 className="mb-2">{ch.title}</h4>
@@ -217,10 +219,6 @@ export async function getStaticProps(ctx) {
   const storyRes = await firestore.doc(`stories/${params.slug}`).get();
   const prefaceRes = await axios.get(storyRes.data().content);
   const commentsRes = await commentsList("stories", params.slug);
-  const chapterRes = await firestore
-    .collection(`stories/${params.slug}/chapters`)
-    .orderBy("order", "asc")
-    .get();
   const relatedStoriesRes = await getRelatedStories(
     params.slug,
     storyRes.data().tags
@@ -234,13 +232,32 @@ export async function getStaticProps(ctx) {
     lastUpdated: storyRes.data().lastUpdated.toDate().toISOString(),
     preface: await serialize(prefaceRaw),
   };
+  delete story.chapters;
   delete story.content;
 
-  const chapters = chapterRes.docs.map((doc) => {
+  const chapters = storyRes.data().chapters.map((ch) => {
+    const obj = {
+      ...ch,
+      published: ch.published.toDate().toISOString(),
+    };
+    delete obj.content;
+    return obj;
+  });
+
+  const comments = commentsRes.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+    date: doc.data().date.toDate().toISOString(),
+  }));
+
+  const relatedStories = relatedStoriesRes.docs.map((doc) => {
     const obj = {
       ...doc.data(),
       slug: doc.id,
+      published: doc.data().published.toDate().toISOString(),
+      lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
     };
+    delete obj.chapters;
     delete obj.content;
     return obj;
   });
@@ -249,21 +266,8 @@ export async function getStaticProps(ctx) {
     props: {
       story,
       chapters,
-      comments: commentsRes.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        date: doc.data().date.toDate().toISOString(),
-      })),
-      relatedStories: relatedStoriesRes.docs.map((doc) => {
-        const obj = {
-          ...doc.data(),
-          slug: doc.id,
-          published: doc.data().published.toDate().toISOString(),
-          lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-        };
-        delete obj.content;
-        return obj;
-      }),
+      comments,
+      relatedStories,
     },
   };
 }

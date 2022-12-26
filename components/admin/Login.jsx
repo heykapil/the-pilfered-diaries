@@ -10,11 +10,8 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import styles from "../../styles/modules/Admin.module.scss";
 
 export default function Login() {

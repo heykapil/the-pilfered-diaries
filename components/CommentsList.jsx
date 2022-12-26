@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import noComments from "@images/NoComments.svg";
 import { commentFormValues, commentValidator } from "@lib/validators";
-import { commentsList } from "@services/client";
 import { IconCheck, IconMessagePlus, IconSend, IconX } from "@tabler/icons";
 import dayjs from "dayjs";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -14,27 +13,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../styles/modules/CommentsList.module.scss";
 
-export default function CommentsList({
-  title,
-  type,
-  target,
-  comments = [],
-  fetchOnClient = false,
-}) {
+export default function CommentsList({ title, type, target, comments = [] }) {
   const { subscribed } = useSubscription();
   const { showNotification } = useNotifications();
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [fetchedComments, setFetchedComments] = useState([]);
-
-  useEffect(() => {
-    if (fetchOnClient) {
-      (async () => {
-        const list = await commentsList(type, target);
-        setFetchedComments(list);
-      })();
-    }
-  }, [fetchOnClient, target, type]);
 
   const {
     handleSubmit,
@@ -98,7 +81,7 @@ export default function CommentsList({
   return (
     <>
       <h2 className="text-primary mb-4 mt-2">
-        {COMMENT_HEADER} {title ? <>&ldquo;{title}&rdquo;</> : "this story"}
+        {COMMENT_HEADER} &ldquo;{title}&rdquo;
       </h2>
       {showForm && (
         <form
@@ -198,7 +181,7 @@ export default function CommentsList({
           </div>
         </form>
       )}
-      {(fetchOnClient ? fetchedComments : comments).length === 0 ? (
+      {comments.length === 0 ? (
         <>
           {!showForm ? (
             <div className="d-flex justify-content-center align-items-center flex-column py-4">
@@ -235,7 +218,7 @@ export default function CommentsList({
               </button>
             </div>
           )}
-          {(fetchOnClient ? fetchedComments : comments).map((comment) => (
+          {comments.map((comment) => (
             <div className={styles.comment} key={comment.id}>
               <h5 className="text-light">{comment.userName}</h5>
               <p className="text-muted small fst-italic mb-1">

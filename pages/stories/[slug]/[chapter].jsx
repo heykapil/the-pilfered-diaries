@@ -1,8 +1,10 @@
+import CommentsList from "@components/CommentsList";
 import Markdown from "@components/Markdown";
 import Share from "@components/Share";
 import { APP_TITLE, AVG_READING_SPEED } from "@constants/app";
 import firestore from "@fb/server";
 import { useIntersection } from "@hooks/intersection";
+import { commentsList } from "@services/server";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -21,9 +23,8 @@ import readingTime from "reading-time";
 import styles from "../../../styles/modules/Chapter.module.scss";
 
 const TextControl = dynamic(() => import("../../../components/TextControl"));
-const CommentsList = dynamic(() => import("../../../components/CommentsList"));
 
-export default function SingleChapter({ metadata, content }) {
+export default function SingleChapter({ story, chapter, content, comments }) {
   const { query, asPath } = useRouter();
 
   const [fontSize, setFontSize] = useState(18);
@@ -33,38 +34,41 @@ export default function SingleChapter({ metadata, content }) {
   return (
     <>
       <NextSeo
-        title={metadata.title}
-        description={metadata.excerpt}
+        title={chapter.title}
+        description={chapter.excerpt}
         openGraph={{
-          description: metadata.excerpt,
+          description: chapter.excerpt,
           type: "article",
-          title: metadata.title,
+          title: chapter.title,
           article: {
-            publishedTime: metadata.published,
-            tags: metadata.tags,
-            authors: [metadata.author],
+            publishedTime: chapter.published,
+            tags: chapter.tags,
+            authors: [chapter.author],
           },
         }}
       />
       <div className={`container-fluid px-0 ${styles.chapter}`}>
-        <div className={`container ${styles.chapter__header}`}>
-          <h1 className="display-3">{metadata.title}</h1>
+        <div
+          className={`container-fluid ${styles.chapter__header}`}
+          style={{ backgroundImage: `url(${story.cover})` }}
+        >
+          <h1 className="display-3">{chapter.title}</h1>
           <p className="small text-warning mb-0">
-            by {metadata.author}
+            by {chapter.author}
             <span className="mx-2">
               <IconPoint size={12} />
             </span>
-            {metadata.readTime.text} ({metadata.readTime.words} words)
+            {chapter.readTime.text} ({chapter.readTime.words} words)
           </p>
         </div>
         <Markdown {...content} ref={ref} theme="dark" fontSize={fontSize} />
         <div className="container">
           <div className="row mb-3 mx-0">
-            {metadata.previousChapter && (
+            {chapter.previousChapter && (
               <div className="col-6 ps-0 pe-1">
                 <Link
                   className={styles.navigation}
-                  href={`/stories/${query.slug}/${metadata.previousChapter}`}
+                  href={`/stories/${query.slug}/${chapter.previousChapter}`}
                 >
                   <IconArrowLeft size={24} />
                   Prev. Chapter
@@ -72,10 +76,10 @@ export default function SingleChapter({ metadata, content }) {
               </div>
             )}
             <div className="col-6 pe-0 ps-1">
-              {metadata.nextChapter ? (
+              {chapter.nextChapter ? (
                 <Link
                   className={styles.navigation}
-                  href={`/stories/${query.slug}/${metadata.nextChapter}`}
+                  href={`/stories/${query.slug}/${chapter.nextChapter}`}
                 >
                   Next Chapter
                   <span className="ms-1">
@@ -98,26 +102,31 @@ export default function SingleChapter({ metadata, content }) {
         </div>
         <div className="my-3 container">
           <Share
-            title={metadata.title}
+            title={chapter.title}
             url={asPath}
             contentType="story-chapter"
           />
         </div>
-        {!metadata.nextChapter && (
-          <>
-            <div className="container my-2">
-              <CommentsList target={query.slug} type="stories" fetchOnClient />
-            </div>
-            <div className="d-flex justify-content-center mb-3">
-              <Link
-                className="btn btn-outline-primary icon-right"
-                href="/submissions"
-              >
-                Submit your work to {APP_TITLE}
-                <IconArrowRight size={18} />
-              </Link>
-            </div>
-          </>
+        {comments.length > 0 && (
+          <div className="container my-2">
+            <CommentsList
+              type="stories"
+              title={story.title}
+              comments={comments}
+              target={query.slug}
+            />
+          </div>
+        )}
+        {!chapter.nextChapter && (
+          <div className="d-flex justify-content-center mb-3">
+            <Link
+              className="btn btn-outline-primary icon-right"
+              href="/submissions"
+            >
+              Submit your work to {APP_TITLE}
+              <IconArrowRight size={18} />
+            </Link>
+          </div>
         )}
       </div>
       {contentVisible && (
@@ -132,10 +141,10 @@ export async function getStaticPaths() {
   const paths = (
     await firestore.collection("stories").where("draft", "==", false).get()
   ).docs.flatMap((doc) => {
-    const chapterPaths = doc.data().chapterSlugs.map((chapter) => ({
+    const chapterPaths = doc.data().chapters.map((chapter) => ({
       params: {
         slug: doc.id,
-        chapter,
+        chapter: chapter.id,
       },
     }));
     return chapterPaths;
@@ -151,22 +160,39 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx) {
   const { params } = ctx;
 
-  const chapterDoc = await firestore
-    .doc(`stories/${params.slug}/chapters/${params.chapter}`)
-    .get();
-  const storyFile = await axios.get(chapterDoc.data().content);
+  const story = await firestore.doc(`stories/${params.slug}`).get();
+  const chapters = story.data().chapters;
+  const chapterIndex = chapters.findIndex((ch) => ch.id === params.chapter);
+  const file = await axios.get(chapters[chapterIndex].content);
 
-  const { content: source } = grayMatter(storyFile.data);
+  // Retrieve comments on the latest chapter only.
+  let comments = [];
+  if (chapterIndex === chapters.length - 1) {
+    const commentsRes = await commentsList("stories", params.slug);
+    comments = commentsRes.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+      date: doc.data().date.toDate().toISOString(),
+    }));
+  }
+
+  const { content: source } = grayMatter(file.data);
   const time = readingTime(source, { wordsPerMinute: AVG_READING_SPEED });
   const content = await serialize(source);
 
-  const metadata = { ...chapterDoc.data(), readTime: time };
-  delete metadata.content;
+  const chapter = {
+    ...chapters[chapterIndex],
+    readTime: time,
+    published: chapters[chapterIndex].published.toDate().toISOString(),
+  };
+  delete chapter.content;
 
   return {
     props: {
-      metadata,
+      chapter,
       content,
+      story: { title: story.data().title, cover: story.data().cover },
+      comments,
     },
   };
 }

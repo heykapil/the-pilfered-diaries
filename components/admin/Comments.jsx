@@ -1,7 +1,8 @@
 import { DATE_FORMATS } from "@constants/app";
 import { store } from "@fb/client";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { refreshPages } from "@services/client";
-import { IconCheck, IconLoader3, IconPoint, IconTrash } from "@tabler/icons";
+import { IconPoint } from "@tabler/icons";
 import dayjs from "dayjs";
 import {
   collection,
@@ -16,9 +17,8 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "../../styles/modules/Admin.module.scss";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import styles from "../../styles/modules/Admin.module.scss";
 
 export default function Comments() {
   const [comments, setComments] = useState([]);
