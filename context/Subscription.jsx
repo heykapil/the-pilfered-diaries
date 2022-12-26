@@ -4,13 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import { getMailCookie, setMailCookie } from "@lib/utils";
 import { subscriptionFormValues, subscriptionValidator } from "@lib/validators";
-import {
-  IconCheck,
-  IconInfoCircle,
-  IconSend,
-  IconUserPlus,
-  IconX,
-} from "@tabler/icons";
+import { IconCheck, IconInfoCircle, IconSend, IconX } from "@tabler/icons";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   addDoc,
@@ -20,9 +14,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { useRef } from "react";
-import { createContext } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const SubscriptionContext = createContext({

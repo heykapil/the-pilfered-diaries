@@ -13,7 +13,7 @@ export const storyFormValues = {
   lastUpdated: "",
   wip: true,
   storyId: "",
-  chapters: []
+  chapters: [],
 };
 
 export const chapterFormValues = {
@@ -28,7 +28,7 @@ export const chapterFormValues = {
   markCompleted: false,
   refreshPassword: "",
   id: "",
-  published: null
+  published: null,
 };
 
 export const postFormValues = {

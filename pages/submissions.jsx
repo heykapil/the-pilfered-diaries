@@ -242,10 +242,7 @@ export default function Submissions() {
                         Thoughtful Ideas, Short Stories, Poems, Non-fiction,
                       </span>
                       or if you have something else in mind and you would like
-                      to talk more,{" "}
-                      {/* <Link className="text-decoration-none" href="/about"> */}
-                      let&rsquo;s talk...
-                      {/* </Link> */}
+                      to talk more, let&rsquo;s talk...
                     </p>
                     <p>
                       {APP_TITLE} publishes content of a specific type, and we

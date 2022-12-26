@@ -13,7 +13,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import styles from "../styles/modules/About.module.scss";
 
 export default function About({ image }) {

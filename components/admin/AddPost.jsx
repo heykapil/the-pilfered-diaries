@@ -70,7 +70,7 @@ export default function AddPost({ onCompleted }) {
           if (!formValues.draft)
             post.published = Timestamp.fromDate(new Date());
           delete post.postId;
-          delete post.refreshPassword; 
+          delete post.refreshPassword;
           const docRef = doc(store, "posts", formValues.postId);
           await setDoc(docRef, post);
 

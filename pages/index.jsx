@@ -3,7 +3,7 @@ import GuestPosts from "@components/home/GuestPosts";
 import Header from "@components/home/Header";
 import PostsList from "@components/home/PostsList";
 import StoriesCarousel from "@components/home/StoriesCarousel";
-import { APP_TITLE, ISR_INTERVAL, SITE_URL } from "@constants/app";
+import { APP_TITLE, SITE_URL } from "@constants/app";
 import firestore from "@fb/server";
 import { postsList, storiesList } from "@services/server";
 import { NextSeo } from "next-seo";
@@ -68,7 +68,7 @@ export async function getStaticProps() {
       slug: doc.id,
       published: doc.data().published.toDate().toISOString(),
       lastUpdated: doc.data().lastUpdated.toDate().toISOString(),
-      chapterCount: doc.data().chapters.length
+      chapterCount: doc.data().chapters.length,
     };
     delete obj.chapters;
     delete obj.content;

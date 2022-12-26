@@ -63,7 +63,7 @@ export default function AddStory({ onCompleted }) {
             ...getValues(),
             ...urls,
             lastUpdated: Timestamp.fromDate(new Date()),
-            published: Timestamp.fromDate(new Date())
+            published: Timestamp.fromDate(new Date()),
           };
           delete story.storyId;
           const docRef = doc(store, "stories", getValues("storyId"));

@@ -31,7 +31,6 @@ export default function About({ image }) {
               sometimes funny, mostly twisted thinking process of my mind...
             </p>
             <p>Find Stories down below....</p>
-            {/* <SubscriptionForm /> */}
             <Subscribe />
           </div>
         </div>

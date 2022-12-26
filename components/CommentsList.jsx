@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNotifications } from "@hooks/notifications";
 import noComments from "@images/NoComments.svg";
 import { commentFormValues, commentValidator } from "@lib/validators";
-import { commentsList } from "@services/client";
 import { IconCheck, IconMessagePlus, IconSend, IconX } from "@tabler/icons";
 import dayjs from "dayjs";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -14,12 +13,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../styles/modules/CommentsList.module.scss";
 
-export default function CommentsList({
-  title,
-  type,
-  target,
-  comments = [],
-}) {
+export default function CommentsList({ title, type, target, comments = [] }) {
   const { subscribed } = useSubscription();
   const { showNotification } = useNotifications();
   const [showForm, setShowForm] = useState(false);

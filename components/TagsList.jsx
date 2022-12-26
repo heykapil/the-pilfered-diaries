@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/modules/TagsList.module.scss";
 
 export default function TagsList({ tags = [] }) {

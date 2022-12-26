@@ -9,7 +9,7 @@ import {
   query,
   setDoc,
   Timestamp,
-  where
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useRef, useState } from "react";
@@ -93,11 +93,11 @@ export default function AddChapter({ onCompleted }) {
       const storyRef = doc(store, "stories", selectedStory.id);
       await setDoc(storyRef, storyUpdate, { merge: true }),
         setProcessing("Refreshing Story...");
-        await refreshPages(values.refreshPassword, [
-          `stories/${selectedStory.id}`,
-          `stories/${selectedStory.id}/${values.previousChapter}`,
-        ]);
-        setProcessing("Processing Completed.");
+      await refreshPages(values.refreshPassword, [
+        `stories/${selectedStory.id}`,
+        `stories/${selectedStory.id}/${values.previousChapter}`,
+      ]);
+      setProcessing("Processing Completed.");
       setTimeout(() => {
         reset();
         onCompleted();

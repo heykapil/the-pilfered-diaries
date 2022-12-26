@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import Markdown from "@components/Markdown";
+import { AVG_READING_SPEED } from "@constants/app";
 import grayMatter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
+import React, { useRef, useState } from "react";
 import readingTime from "reading-time";
-import { AVG_READING_SPEED } from "@constants/app";
 import styles from "../../styles/modules/Admin.module.scss";
-import Markdown from "@components/Markdown";
 
 export default function FilePreview() {
   const [fileData, setFileData] = useState(null);
