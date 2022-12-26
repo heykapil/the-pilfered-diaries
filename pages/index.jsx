@@ -75,8 +75,6 @@ export async function getStaticProps() {
     return obj;
   });
 
-  console.log(stories.length);
-
   const posts = postsRes.docs.map((doc) => {
     const obj = {
       ...doc.data(),

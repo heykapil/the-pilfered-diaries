@@ -107,16 +107,14 @@ export default function SingleChapter({ story, chapter, content, comments }) {
             contentType="story-chapter"
           />
         </div>
-        {comments.length > 0 && (
-          <div className="container my-2">
-            <CommentsList
-              type="stories"
-              title={story.title}
-              comments={comments}
-              target={query.slug}
-            />
-          </div>
-        )}
+        <div className="container my-2">
+          <CommentsList
+            type="stories"
+            title={story.title}
+            comments={comments}
+            target={query.slug}
+          />
+        </div>
         {!chapter.nextChapter && (
           <div className="d-flex justify-content-center mb-3">
             <Link
