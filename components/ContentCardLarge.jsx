@@ -51,13 +51,12 @@ export default function ContentCardLarge({ data, variant }) {
           <>
             <p
               className={`mb-${
-                data.wip && data.chapterSlugs.length > 1 ? "0" : "2"
+                data.wip && data.chapterCount > 1 ? "0" : "2"
               } small`}
             >
-              <span className="text-muted">Chapters:</span>{" "}
-              {data.chapterSlugs.length}
+              <span className="text-muted">Chapters:</span> {data.chapterCount}
             </p>
-            {data.wip && data.chapterSlugs.length > 1 && (
+            {data.wip && data.chapterCount > 1 && (
               <p className="mb-2 small">
                 <span className="text-muted">Lastest chapter added:</span>{" "}
                 {dayjs(data.lastUpdated).format(DATE_FORMATS.date)}

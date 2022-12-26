@@ -19,22 +19,11 @@ export default function CommentsList({
   type,
   target,
   comments = [],
-  fetchOnClient = false,
 }) {
   const { subscribed } = useSubscription();
   const { showNotification } = useNotifications();
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [fetchedComments, setFetchedComments] = useState([]);
-
-  useEffect(() => {
-    if (fetchOnClient) {
-      (async () => {
-        const list = await commentsList(type, target);
-        setFetchedComments(list);
-      })();
-    }
-  }, [fetchOnClient, target, type]);
 
   const {
     handleSubmit,
@@ -98,7 +87,7 @@ export default function CommentsList({
   return (
     <>
       <h2 className="text-primary mb-4 mt-2">
-        {COMMENT_HEADER} {title ? <>&ldquo;{title}&rdquo;</> : "this story"}
+        {COMMENT_HEADER} &ldquo;{title}&rdquo;
       </h2>
       {showForm && (
         <form
@@ -198,7 +187,7 @@ export default function CommentsList({
           </div>
         </form>
       )}
-      {(fetchOnClient ? fetchedComments : comments).length === 0 ? (
+      {comments.length === 0 ? (
         <>
           {!showForm ? (
             <div className="d-flex justify-content-center align-items-center flex-column py-4">
@@ -235,7 +224,7 @@ export default function CommentsList({
               </button>
             </div>
           )}
-          {(fetchOnClient ? fetchedComments : comments).map((comment) => (
+          {comments.map((comment) => (
             <div className={styles.comment} key={comment.id}>
               <h5 className="text-light">{comment.userName}</h5>
               <p className="text-muted small fst-italic mb-1">
