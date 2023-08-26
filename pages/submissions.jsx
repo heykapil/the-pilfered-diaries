@@ -284,7 +284,7 @@ export default function Submissions() {
                     <p>
                       {APP_TITLE} is intended to be primarily in English, but we
                       will definitely not skip something just because it is in a
-                      diffent language. Send in your content, irrespective of
+                      different language. Send in your content, irrespective of
                       the language, and we will look it over definitely. As for
                       formats, any supported text format is fine if it can be
                       read on a digital media. I will try to respect the source
