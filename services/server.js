@@ -8,7 +8,7 @@ export function storiesList(limit) {
   return firestore
     .collection("stories")
     .where("draft", "==", false)
-    .orderBy("published", "desc")
+    .orderBy("lastUpdated", "desc")
     .limit(limit)
     .get();
 }
